@@ -1,0 +1,1 @@
+Se quiser ativar o player de música, coloque seu arquivo MP3 nesta pasta com o nome background.mp3.
