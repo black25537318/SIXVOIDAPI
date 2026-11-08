@@ -1,15 +1,9 @@
-
-<!DOCTYPE html>
-<html lang="pt-BR">
+<!DOCTYPE html><html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#08060d">
-<title>SIXVOID APIS — Documentação</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
-
-<style>
+<title>SIXVOID APIS — Documentação</title><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet"><style>
 :root {
   --bg:#08060d;
   --panel:#100c18;
@@ -21,32 +15,27 @@
   --border:rgba(180,120,255,.15);
   --green:#43e6a1;
 }
-
 *{box-sizing:border-box;margin:0;padding:0}
-
-body {
+body{
   background:var(--bg);
   color:var(--text);
   font-family:Inter,sans-serif;
   min-height:100vh;
   overflow-x:hidden;
 }
-
-body:before {
+body:before{
   content:"";
   position:fixed;
   inset:0;
   background:
-    radial-gradient(ellipse at 15% 0%,rgba(130,40,220,.17),transparent 40%),
-    radial-gradient(ellipse at 90% 30%,rgba(90,30,150,.12),transparent 40%);
+  radial-gradient(ellipse at 15% 0%,rgba(130,40,220,.17),transparent 40%),
+  radial-gradient(ellipse at 90% 30%,rgba(90,30,150,.12),transparent 40%);
   pointer-events:none;
   z-index:-1;
 }
-
 button,input{font:inherit}
 a{text-decoration:none;color:inherit}
-
-header {
+header{
   height:72px;
   position:sticky;
   top:0;
@@ -59,23 +48,15 @@ header {
   justify-content:space-between;
   padding:0 6%;
 }
-
-.brand {
+.brand{
   font-family:"Space Grotesk",sans-serif;
   font-size:21px;
   font-weight:800;
   letter-spacing:2px;
 }
-
 .brand span{color:var(--purple)}
-
-.header-right {
-  display:flex;
-  align-items:center;
-  gap:14px;
-}
-
-.status {
+.header-right{display:flex;align-items:center;gap:14px}
+.status{
   color:var(--green);
   font-size:11px;
   background:rgba(67,230,161,.08);
@@ -83,78 +64,43 @@ header {
   padding:7px 11px;
   border-radius:30px;
 }
-
-.menu-btn {
-  width:42px;
-  height:42px;
+.menu-btn{
+  width:42px;height:42px;
   background:var(--panel2);
   border:1px solid var(--border);
-  color:white;
-  border-radius:12px;
-  font-size:22px;
-  cursor:pointer;
+  color:white;border-radius:12px;
+  font-size:22px;cursor:pointer;
 }
-
-.drawer {
-  position:fixed;
-  top:0;
-  right:-310px;
-  width:290px;
-  height:100%;
+.drawer{
+  position:fixed;top:0;right:-310px;
+  width:290px;height:100%;
   background:#100b18;
   border-left:1px solid var(--border);
   z-index:100;
   padding:25px;
   transition:.3s;
-  overflow-y:auto;
 }
-
 .drawer.open{right:0}
 .drawer h3{margin:25px 0;color:var(--purple)}
-
-.drawer a {
-  display:block;
-  padding:15px;
+.drawer a{
+  display:block;padding:15px;
   border-radius:10px;
   color:#c7bdd4;
   margin:5px 0;
 }
-
-.drawer a:hover {
-  background:var(--panel2);
-  color:white;
+.drawer a:hover{background:var(--panel2);color:white}
+.close{float:right;background:none;border:0;color:white;font-size:25px}
+.overlay{
+  position:fixed;inset:0;background:#0009;
+  z-index:90;display:none;
 }
-
-.close {
-  float:right;
-  background:none;
-  border:0;
-  color:white;
-  font-size:25px;
-  cursor:pointer;
-}
-
-.overlay {
-  position:fixed;
-  inset:0;
-  background:#0009;
-  z-index:90;
-  display:none;
-}
-
 .overlay.show{display:block}
-
-.container {
-  width:min(1100px,90%);
-  margin:auto;
-}
-
-.hero {
+.container{width:min(1100px,90%);margin:auto}
+.hero{
   padding:75px 0 45px;
   text-align:center;
 }
-
-.tag {
+.tag{
   display:inline-block;
   padding:8px 14px;
   border:1px solid var(--border);
@@ -165,70 +111,50 @@ header {
   letter-spacing:2px;
   margin-bottom:22px;
 }
-
-.hero h1 {
+.hero h1{
   font-family:"Space Grotesk",sans-serif;
   font-size:clamp(38px,8vw,68px);
   line-height:1.05;
   font-weight:800;
 }
-
-.hero h1 span {
+.hero h1 span{
   background:linear-gradient(90deg,#fff,#b66cff,#7928ca);
   -webkit-background-clip:text;
   color:transparent;
 }
-
-.hero p {
-  max-width:550px;
-  margin:18px auto 0;
-  color:var(--muted);
-  line-height:1.8;
-  font-size:14px;
+.hero p{
+  max-width:550px;margin:18px auto 0;
+  color:var(--muted);line-height:1.8;font-size:14px;
 }
-
-.search {
+.search{
   margin:30px auto 0;
   max-width:480px;
   position:relative;
 }
-
-.search input {
-  width:100%;
-  padding:15px 18px;
+.search input{
+  width:100%;padding:15px 18px;
   border:1px solid var(--border);
   border-radius:13px;
   background:var(--panel);
-  color:white;
-  outline:none;
+  color:white;outline:none;
 }
-
 .search input:focus{border-color:var(--purple)}
-
-.section-title {
-  display:flex;
-  align-items:center;
-  gap:12px;
+.section-title{
+  display:flex;align-items:center;gap:12px;
   margin:42px 0 18px;
   font-family:"Space Grotesk",sans-serif;
   font-size:19px;
 }
-
-.section-title:before {
-  content:"";
-  width:4px;
-  height:23px;
-  background:var(--purple);
-  border-radius:5px;
+.section-title:before{
+  content:"";width:4px;height:23px;
+  background:var(--purple);border-radius:5px;
 }
-
-.grid {
+.grid{
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
   gap:16px;
 }
-
-.card {
+.card{
   background:linear-gradient(145deg,#151020,#0e0a15);
   border:1px solid var(--border);
   border-radius:17px;
@@ -237,43 +163,24 @@ header {
   position:relative;
   overflow:hidden;
 }
-
-.card:hover {
+.card:hover{
   transform:translateY(-4px);
   border-color:rgba(168,85,247,.5);
   box-shadow:0 12px 35px #0005;
 }
-
-.card-top {
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:10px;
-}
-
-.card h3 {
-  font-size:16px;
-  font-weight:700;
-}
-
-.badge {
-  font-size:9px;
-  color:var(--green);
+.card-top{display:flex;justify-content:space-between;align-items:center}
+.card h3{font-size:16px;font-weight:700}
+.badge{
+  font-size:9px;color:var(--green);
   border:1px solid rgba(67,230,161,.2);
   background:rgba(67,230,161,.07);
-  border-radius:20px;
-  padding:5px 9px;
-  white-space:nowrap;
+  border-radius:20px;padding:5px 9px;
 }
-
-.card p {
-  color:var(--muted);
-  font-size:12px;
-  margin:13px 0 17px;
-  line-height:1.6;
+.card p{
+  color:var(--muted);font-size:12px;
+  margin:13px 0 17px;line-height:1.6;
 }
-
-.endpoint {
+.endpoint{
   background:#09070d;
   border:1px solid #ffffff0d;
   padding:10px;
@@ -283,30 +190,21 @@ header {
   overflow-wrap:anywhere;
   margin-bottom:13px;
 }
-
-.method {
-  color:#70e9ad;
-  font-weight:800;
+.method{
+  color:#70e9ad;font-weight:800;
   margin-right:7px;
 }
-
-.test {
-  width:100%;
-  padding:11px;
+.test{
+  width:100%;padding:11px;
   background:linear-gradient(90deg,#8b36d8,#6021a4);
-  border:0;
-  border-radius:9px;
-  color:white;
-  font-weight:700;
-  font-size:12px;
-  cursor:pointer;
+  border:0;border-radius:9px;
+  color:white;font-weight:700;
+  font-size:12px;cursor:pointer;
   transition:.2s;
 }
-
 .test:hover{filter:brightness(1.2)}
 .test:active{transform:scale(.98)}
-
-footer {
+footer{
   margin-top:70px;
   padding:28px 10px;
   text-align:center;
@@ -314,378 +212,174 @@ footer {
   color:var(--muted);
   font-size:11px;
 }
-
 footer strong{color:#c18aff}
-
-.empty {
-  display:none;
-  color:var(--muted);
-  padding:30px;
-  text-align:center;
-}
-
-@media(max-width:600px) {
+.empty{display:none;color:var(--muted);padding:30px;text-align:center}
+@media(max-width:600px){
   header{padding:0 5%}
   .hero{padding-top:55px}
   .container{width:91%}
   .grid{grid-template-columns:1fr}
 }
-</style>
-</head>
-
-<body>
-
-<header>
+</style></head><body><header>
   <a href="/" class="brand">SIX<span>VOID</span></a>
-
   <div class="header-right">
     <div class="status">● API ONLINE</div>
     <button class="menu-btn" onclick="openMenu()">☰</button>
   </div>
-</header>
-
-<div class="overlay" id="overlay" onclick="closeMenu()"></div>
-
-<nav class="drawer" id="drawer">
+</header><div class="overlay" id="overlay" onclick="closeMenu()"></div><nav class="drawer" id="drawer">
   <button class="close" onclick="closeMenu()">×</button>
   <h3>SIXVOID MENU</h3>
-
   <a href="/">⌂ Início</a>
   <a href="#pesquisa" onclick="closeMenu()">Pesquisa</a>
   <a href="#criacao" onclick="closeMenu()">Criação</a>
   <a href="#imagens" onclick="closeMenu()">Imagens</a>
-  <a href="#pinterest" onclick="closeMenu()">Pinterest Scrapers</a>
   <a href="#nsfw" onclick="closeMenu()">NSFW</a>
   <a href="/solicitar-key">Solicitar API Key</a>
   <a href="/admin.html">Painel administrativo</a>
   <a href="https://instagram.com/loki.r3x" target="_blank">Instagram</a>
-</nav>
-
-<main class="container">
-
-<section class="hero">
+</nav><main class="container"><section class="hero">
   <div class="tag">DOCUMENTAÇÃO OFICIAL</div>
-
   <h1>EXPLORE A <span>SIXVOID</span></h1>
-
   <p>
     Uma coleção de ferramentas e endpoints para seus projetos.
     Escolha uma API, configure os parâmetros e teste diretamente.
-  </p>
-
-  <div class="search">
-    <input
-      id="search"
-      type="search"
-      placeholder="Pesquisar endpoint..."
-      oninput="filterCards()"
-    >
+  </p>  <div class="search">
+    <input id="search" type="search" placeholder="Pesquisar endpoint..." oninput="filterCards()">
   </div>
-</section>
-
-<section id="pesquisa">
+</section><section id="pesquisa">
   <h2 class="section-title">Pesquisa e informações</h2>
+  <div class="grid"><article class="card" data-search="play store pesquisa aplicativos">
+  <div class="card-top"><h3>PLAY STORE</h3><span class="badge">ONLINE</span></div>
+  <p>Pesquise aplicativos e obtenha informações da Play Store.</p>
+  <div class="endpoint"><span class="method">GET</span>/api/playstore?nome=whatsapp&apikey=SUA_KEY</div>
+  <button class="test" onclick="testApi('/api/playstore?nome=whatsapp')">TESTAR API</button>
+</article>
 
-  <div class="grid">
+<article class="card" data-search="nerding anime pesquisa">
+  <div class="card-top"><h3>NERDING</h3><span class="badge">ONLINE</span></div>
+  <p>Pesquisa de conteúdo utilizando o serviço Nerding.</p>
+  <div class="endpoint"><span class="method">GET</span>/api/nerding?q=anime&apikey=SUA_KEY</div>
+  <button class="test" onclick="testApi('/api/nerding?q=anime')">TESTAR API</button>
+</article>
 
-    <article class="card" data-search="play store pesquisa aplicativos">
-      <div class="card-top">
-        <h3>PLAY STORE</h3>
-        <span class="badge">ONLINE</span>
-      </div>
-      <p>Pesquise aplicativos e obtenha informações da Play Store.</p>
-      <div class="endpoint"><span class="method">GET</span>/api/playstore?nome=whatsapp&apikey=SUA_KEY</div>
-      <button class="test" onclick="testApi('/api/playstore?nome=whatsapp')">TESTAR API</button>
-    </article>
-
-    <article class="card" data-search="nerding anime pesquisa">
-      <div class="card-top">
-        <h3>NERDING</h3>
-        <span class="badge">ONLINE</span>
-      </div>
-      <p>Pesquisa de conteúdo utilizando o serviço Nerding.</p>
-      <div class="endpoint"><span class="method">GET</span>/api/nerding?q=anime&apikey=SUA_KEY</div>
-      <button class="test" onclick="testApi('/api/nerding?q=anime')">TESTAR API</button>
-    </article>
-
-    <article class="card" data-search="estadao noticias jornal">
-      <div class="card-top">
-        <h3>NOTÍCIAS ESTADÃO</h3>
-        <span class="badge">ONLINE</span>
-      </div>
-      <p>Consulte notícias disponibilizadas pelo serviço Estadão.</p>
-      <div class="endpoint"><span class="method">GET</span>/api/noticias/estadao?apikey=SUA_KEY</div>
-      <button class="test" onclick="testApi('/api/noticias/estadao')">TESTAR API</button>
-    </article>
+<article class="card" data-search="estadao noticias jornal">
+  <div class="card-top"><h3>NOTÍCIAS ESTADÃO</h3><span class="badge">ONLINE</span></div>
+  <p>Consulte notícias disponibilizadas pelo serviço Estadão.</p>
+  <div class="endpoint"><span class="method">GET</span>/api/noticias/estadao?apikey=SUA_KEY</div>
+  <button class="test" onclick="testApi('/api/noticias/estadao')">TESTAR API</button>
+</article>
 
   </div>
-</section>
-
-<section id="criacao">
+</section><section id="criacao">
   <h2 class="section-title">Criação e personalização</h2>
+  <div class="grid"><article class="card" data-search="gerar nick nickname nome">
+  <div class="card-top"><h3>GERAR NICK</h3><span class="badge">ONLINE</span></div>
+  <p>Gere sugestões de nicknames a partir de um nome.</p>
+  <div class="endpoint"><span class="method">GET</span>/api/fazernick?nome=SANDRO&apikey=SUA_KEY</div>
+  <button class="test" onclick="testApi('/api/fazernick?nome=SANDRO')">TESTAR API</button>
+</article>
 
-  <div class="grid">
+<article class="card" data-search="ttp texto efeito imagem">
+  <div class="card-top"><h3>TTP</h3><span class="badge">ONLINE</span></div>
+  <p>Criação de imagem estilizada com texto personalizado.</p>
+  <div class="endpoint"><span class="method">GET</span>/api/ttp?texto=sad&apikey=SUA_KEY</div>
+  <button class="test" onclick="testApi('/api/ttp?texto=sad')">TESTAR API</button>
+</article>
 
-    <article class="card" data-search="gerar nick nickname nome">
-      <div class="card-top">
-        <h3>GERAR NICK</h3>
-        <span class="badge">ONLINE</span>
-      </div>
-      <p>Gere sugestões de nicknames a partir de um nome.</p>
-      <div class="endpoint"><span class="method">GET</span>/api/fazernick?nome=SANDRO&apikey=SUA_KEY</div>
-      <button class="test" onclick="testApi('/api/fazernick?nome=SANDRO')">TESTAR API</button>
-    </article>
-
-    <article class="card" data-search="ttp texto efeito imagem">
-      <div class="card-top">
-        <h3>TTP</h3>
-        <span class="badge">ONLINE</span>
-      </div>
-      <p>Criação de imagem estilizada com texto personalizado.</p>
-      <div class="endpoint"><span class="method">GET</span>/api/ttp?texto=sad&apikey=SUA_KEY</div>
-      <button class="test" onclick="testApi('/api/ttp?texto=sad')">TESTAR API</button>
-    </article>
-
-    <article class="card" data-search="metadinha imagem">
-      <div class="card-top">
-        <h3>METADINHA</h3>
-        <span class="badge">ONLINE</span>
-      </div>
-      <p>Obtenha imagens aleatórias para metadinhas.</p>
-      <div class="endpoint"><span class="method">GET</span>/random/metadinha?apikey=SUA_KEY</div>
-      <button class="test" onclick="testApi('/random/metadinha')">TESTAR API</button>
-    </article>
+<article class="card" data-search="metadinha imagem">
+  <div class="card-top"><h3>METADINHA</h3><span class="badge">ONLINE</span></div>
+  <p>Obtenha imagens aleatórias para metadinhas.</p>
+  <div class="endpoint"><span class="method">GET</span>/random/metadinha?apikey=SUA_KEY</div>
+  <button class="test" onclick="testApi('/random/metadinha')">TESTAR API</button>
+</article>
 
   </div>
-</section>
-
-<section id="imagens">
+</section><section id="imagens">
   <h2 class="section-title">Geradores de imagens PLAQ</h2>
   <div class="grid" id="plaqGrid"></div>
-</section>
-
-<section id="pinterest">
-  <h2 class="section-title">Pinterest Scrapers</h2>
-
-  <div class="grid">
-
-    <article class="card" data-search="pinterest search pesquisa imagens pins">
-      <div class="card-top">
-        <h3>PINTEREST SEARCH</h3>
-        <span class="badge">ONLINE</span>
-      </div>
-      <p>Pesquise imagens diretamente no Pinterest utilizando palavras-chave.</p>
-      <div class="endpoint">
-        <span class="method">GET</span>/pinterest/search?query=anime&apikey=SUA_KEY
-      </div>
-      <button class="test" onclick="testPinterest('search')">TESTAR API</button>
-    </article>
-
-    <article class="card" data-search="pinterest download baixar pin imagem">
-      <div class="card-top">
-        <h3>PINTEREST DOWNLOAD</h3>
-        <span class="badge">ONLINE</span>
-      </div>
-      <p>Extraia informações e a URL pública da imagem através do link de um Pin.</p>
-      <div class="endpoint">
-        <span class="method">GET</span>/pinterest/download?url=LINK&apikey=SUA_KEY
-      </div>
-      <button class="test" onclick="testPinterest('download')">TESTAR API</button>
-    </article>
-
-    <article class="card" data-search="pinterest random aleatório imagens">
-      <div class="card-top">
-        <h3>PINTEREST RANDOM</h3>
-        <span class="badge">ONLINE</span>
-      </div>
-      <p>Retorne uma imagem aleatória do Pinterest com base em uma pesquisa.</p>
-      <div class="endpoint">
-        <span class="method">GET</span>/pinterest/random?query=dark&apikey=SUA_KEY
-      </div>
-      <button class="test" onclick="testPinterest('random')">TESTAR API</button>
-    </article>
-
-  </div>
-</section>
-
-<section id="nsfw">
+</section><section id="nsfw">
   <h2 class="section-title">Conteúdo NSFW</h2>
+  <div class="grid"><article class="card" data-search="nsfw ass hentai">
+  <div class="card-top"><h3>NSFW ASS</h3><span class="badge">ONLINE</span></div>
+  <p>Endpoint de conteúdo adulto.</p>
+  <div class="endpoint"><span class="method">GET</span>/nsfw/ass?apikey=SUA_KEY</div>
+  <button class="test" onclick="testApi('/nsfw/ass')">TESTAR API</button>
+</article>
 
-  <div class="grid">
+<article class="card" data-search="nsfw cum">
+  <div class="card-top"><h3>NSFW CUM</h3><span class="badge">ONLINE</span></div>
+  <p>Endpoint de conteúdo adulto.</p>
+  <div class="endpoint"><span class="method">GET</span>/nsfw/cum?apikey=SUA_KEY</div>
+  <button class="test" onclick="testApi('/nsfw/cum')">TESTAR API</button>
+</article>
 
-    <article class="card" data-search="nsfw ass hentai">
-      <div class="card-top">
-        <h3>NSFW ASS</h3>
-        <span class="badge">ONLINE</span>
-      </div>
-      <p>Endpoint de conteúdo adulto.</p>
-      <div class="endpoint"><span class="method">GET</span>/nsfw/ass?apikey=SUA_KEY</div>
-      <button class="test" onclick="testApi('/nsfw/ass')">TESTAR API</button>
-    </article>
-
-    <article class="card" data-search="nsfw cum">
-      <div class="card-top">
-        <h3>NSFW CUM</h3>
-        <span class="badge">ONLINE</span>
-      </div>
-      <p>Endpoint de conteúdo adulto.</p>
-      <div class="endpoint"><span class="method">GET</span>/nsfw/cum?apikey=SUA_KEY</div>
-      <button class="test" onclick="testApi('/nsfw/cum')">TESTAR API</button>
-    </article>
-
-    <article class="card" data-search="nsfw gangbang">
-      <div class="card-top">
-        <h3>NSFW GANGBANG</h3>
-        <span class="badge">ONLINE</span>
-      </div>
-      <p>Endpoint de conteúdo adulto.</p>
-      <div class="endpoint"><span class="method">GET</span>/nsfw/gangbang?apikey=SUA_KEY</div>
-      <button class="test" onclick="testApi('/nsfw/gangbang')">TESTAR API</button>
-    </article>
+<article class="card" data-search="nsfw gangbang">
+  <div class="card-top"><h3>NSFW GANGBANG</h3><span class="badge">ONLINE</span></div>
+  <p>Endpoint de conteúdo adulto.</p>
+  <div class="endpoint"><span class="method">GET</span>/nsfw/gangbang?apikey=SUA_KEY</div>
+  <button class="test" onclick="testApi('/nsfw/gangbang')">TESTAR API</button>
+</article>
 
   </div>
-</section>
-
-</main>
-
-<footer>
+</section></main><footer>
   <p>© 2026 <strong>SIXVOID APIS</strong> — Todos os direitos reservados.</p>
   <p style="margin-top:8px">POWERED BY VOID</p>
-</footer>
-
-<script>
+</footer><script>
 const API_KEY = localStorage.getItem('sixvoid_apikey') || '';
 
-function openMenu() {
+function openMenu(){
   document.getElementById('drawer').classList.add('open');
   document.getElementById('overlay').classList.add('show');
 }
-
-function closeMenu() {
+function closeMenu(){
   document.getElementById('drawer').classList.remove('open');
   document.getElementById('overlay').classList.remove('show');
 }
-
-function filterCards() {
+function filterCards(){
   const value = document.getElementById('search').value.toLowerCase();
-
-  document.querySelectorAll('.card').forEach(card => {
-    const search = card.dataset.search || '';
-    const content = card.innerText.toLowerCase();
-
-    card.style.display =
-      search.includes(value) || content.includes(value) ? '' : 'none';
+  document.querySelectorAll('.card').forEach(card=>{
+    card.style.display = card.dataset.search.includes(value) ||
+      card.innerText.toLowerCase().includes(value) ? '' : 'none';
   });
 }
-
-function obterApiKey() {
-  let key = localStorage.getItem('sixvoid_apikey') || '';
-
-  if (!key) {
-    key = prompt('Informe sua API Key para testar:');
-
-    if (!key || !key.trim()) return null;
-
-    key = key.trim();
-    localStorage.setItem('sixvoid_apikey', key);
+function testApi(endpoint){
+  if(!API_KEY){
+    const key = prompt('Informe sua API Key para testar:');
+    if(!key) return;
+    localStorage.setItem('sixvoid_apikey',key.trim());
+    location.reload();
+    return;
   }
-
-  return key;
-}
-
-function testApi(endpoint) {
-  const key = obterApiKey();
-
-  if (!key) return;
-
-  const url = endpoint +
-    (endpoint.includes('?') ? '&' : '?') +
-    'apikey=' + encodeURIComponent(key);
-
-  window.open(url, '_blank', 'noopener');
-}
-
-function testPinterest(tipo) {
-  let endpoint = '';
-
-  if (tipo === 'search') {
-    const query = prompt('O que deseja pesquisar no Pinterest?', 'anime');
-
-    if (!query || !query.trim()) return;
-
-    endpoint = '/pinterest/search?query=' + encodeURIComponent(query.trim());
-  }
-
-  else if (tipo === 'download') {
-    const url = prompt('Cole o link do Pin do Pinterest:');
-
-    if (!url || !url.trim()) return;
-
-    endpoint = '/pinterest/download?url=' + encodeURIComponent(url.trim());
-  }
-
-  else if (tipo === 'random') {
-    const query = prompt('Qual categoria deseja pesquisar?', 'dark aesthetic');
-
-    if (!query || !query.trim()) return;
-
-    endpoint = '/pinterest/random?query=' + encodeURIComponent(query.trim());
-  }
-
-  const key = obterApiKey();
-
-  if (!key) return;
-
-  const url = endpoint + '&apikey=' + encodeURIComponent(key);
-
-  window.open(url, '_blank', 'noopener');
+  const url = endpoint + (endpoint.includes('?') ? '&' : '?') +
+    'apikey=' + encodeURIComponent(API_KEY);
+  window.open(url,'_blank','noopener');
 }
 
 const plaqGrid = document.getElementById('plaqGrid');
-
-for (let i = 0; i <= 8; i++) {
-  const endpoint = i === 0 ? '/api/plaq' : '/api/plaq' + i;
-  const name = i === 0 ? 'PLAQ' : 'PLAQ ' + i;
-
+for(let i=0;i<=8;i++){
+  const endpoint = i===0 ? '/api/plaq' : '/api/plaq'+i;
+  const name = i===0 ? 'PLAQ' : 'PLAQ '+i;
   const card = document.createElement('article');
-
-  card.className = 'card';
-  card.dataset.search = 'plaq imagem gerador ' + name.toLowerCase();
-
-  card.innerHTML = `
-    <div class="card-top">
-      <h3>${name}</h3>
-      <span class="badge">ONLINE</span>
-    </div>
-
+  card.className='card';
+  card.dataset.search='plaq imagem gerador '+name.toLowerCase();
+  card.innerHTML=`
+    <div class="card-top"><h3>${name}</h3><span class="badge">ONLINE</span></div>
     <p>Gere uma imagem personalizada com texto.</p>
-
-    <div class="endpoint">
-      <span class="method">GET</span>${endpoint}?texto=VOID&apikey=SUA_KEY
-    </div>
-
-    <button class="test" type="button">TESTAR API</button>
-  `;
-
-  card.querySelector('button').addEventListener('click', () => {
-    const text = prompt('Digite o texto da imagem:', 'SIXVOID');
-
-    if (text === null || !text.trim()) return;
-
-    const key = obterApiKey();
-
-    if (!key) return;
-
-    const url = endpoint +
-      '?texto=' + encodeURIComponent(text.trim()) +
-      '&apikey=' + encodeURIComponent(key);
-
-    window.open(url, '_blank', 'noopener');
+    <div class="endpoint"><span class="method">GET</span>${endpoint}?texto=VOID&apikey=SUA_KEY</div>
+    <button class="test" type="button">TESTAR API</button>`;
+  card.querySelector('button').addEventListener('click',()=>{
+    const text = prompt('Digite o texto da imagem:','SIXVOID');
+    if(text===null || !text.trim()) return;
+    if(!API_KEY){
+      const k=prompt('Informe sua API Key:');
+      if(!k) return;
+      localStorage.setItem('sixvoid_apikey',k.trim());
+      location.reload();
+      return;
+    }
+    window.open(endpoint+'?texto='+encodeURIComponent(text)+'&apikey='+encodeURIComponent(API_KEY),'_blank','noopener');
   });
-
   plaqGrid.appendChild(card);
 }
-</script>
-
-</body>
+</script></body>
 </html>
