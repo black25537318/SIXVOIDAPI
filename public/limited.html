@@ -2,581 +2,406 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#07060b">
-
-    <title>SIXVOID APIS | Token Inválido</title>
-
-    <link rel="icon" href="https://i.imgur.com/gLP69vO.jpeg">
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
-
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-
-    <style>
-        :root {
-            --bg: #07060b;
-            --purple: #8b4dff;
-            --pink: #c45cff;
-            --white: #f8f5ff;
-            --muted: #a49ab4;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        html, body {
-            width: 100%;
-            min-height: 100%;
-        }
-
-        body {
-            min-height: 100vh;
-            overflow: hidden;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-
-            background:
-                radial-gradient(
-                    circle at 50% 15%,
-                    rgba(139,77,255,.17),
-                    transparent 38%
-                ),
-                radial-gradient(
-                    circle at 90% 90%,
-                    rgba(196,92,255,.09),
-                    transparent 35%
-                ),
-                var(--bg);
-
-            color: var(--white);
-            font-family: "DM Sans", sans-serif;
-        }
-
-        /* FUNDO ANIMADO */
-
-        .background {
-            position: fixed;
-            inset: 0;
-            overflow: hidden;
-            pointer-events: none;
-            z-index: 0;
-        }
-
-        .glow {
-            position: absolute;
-            width: 350px;
-            height: 350px;
-            border-radius: 50%;
-            filter: blur(100px);
-            opacity: .18;
-            animation: glowMove 12s ease-in-out infinite alternate;
-        }
-
-        .glow.one {
-            background: #7136d6;
-            top: -180px;
-            left: -100px;
-        }
-
-        .glow.two {
-            background: #c45cff;
-            bottom: -200px;
-            right: -100px;
-            animation-delay: -5s;
-        }
-
-        .stars {
-            position: absolute;
-            inset: 0;
-            background-image:
-                radial-gradient(1px 1px at 10% 20%, #fff 100%, transparent),
-                radial-gradient(1px 1px at 30% 70%, #c9aaff 100%, transparent),
-                radial-gradient(2px 2px at 60% 30%, #fff 100%, transparent),
-                radial-gradient(1px 1px at 80% 80%, #fff 100%, transparent),
-                radial-gradient(1px 1px at 90% 15%, #c9aaff 100%, transparent);
-
-            background-size: 260px 260px;
-            animation: starsMove 45s linear infinite;
-            opacity: .55;
-        }
-
-        /* CONTEÚDO */
-
-        .container {
-            width: 100%;
-            max-width: 440px;
-            position: relative;
-            z-index: 2;
-            animation: appear .9s ease both;
-        }
-
-        .top-label {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 18px;
-
-            color: #b69bdf;
-            font-size: 10px;
-            font-weight: 800;
-            letter-spacing: 4px;
-        }
-
-        .top-label::before,
-        .top-label::after {
-            content: "";
-            width: 30px;
-            height: 1px;
-            background: linear-gradient(
-                90deg,
-                transparent,
-                var(--purple)
-            );
-        }
-
-        .card {
-            position: relative;
-            overflow: hidden;
-            text-align: center;
-
-            padding: 40px 27px 30px;
-
-            border: 1px solid rgba(139,77,255,.25);
-            border-radius: 25px;
-
-            background: linear-gradient(
-                145deg,
-                rgba(25,18,39,.95),
-                rgba(10,8,16,.96)
-            );
-
-            box-shadow:
-                0 25px 80px rgba(0,0,0,.5),
-                0 0 45px rgba(139,77,255,.10),
-                inset 0 1px rgba(255,255,255,.04);
-
-            backdrop-filter: blur(18px);
-        }
-
-        .card::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 15%;
-            width: 70%;
-            height: 1px;
-
-            background: linear-gradient(
-                90deg,
-                transparent,
-                var(--pink),
-                transparent
-            );
-
-            box-shadow: 0 0 15px var(--purple);
-        }
-
-        /* LOGO */
-
-        .logo {
-            width: 110px;
-            height: 110px;
-
-            margin: 0 auto 23px;
-
-            display: flex;
-            justify-content: center;
-            align-items: center;
-
-            border-radius: 30px;
-
-            background: linear-gradient(
-                145deg,
-                #35165c,
-                #100b19
-            );
-
-            border: 1px solid rgba(174,124,255,.55);
-
-            box-shadow:
-                0 0 35px rgba(139,77,255,.3),
-                inset 0 0 25px rgba(139,77,255,.12);
-
-            transform: rotate(-6deg);
-            animation: floating 4s ease-in-out infinite;
-        }
-
-        .logo span {
-            font-family: "Space Grotesk", sans-serif;
-            font-size: 70px;
-            font-weight: 800;
-            font-style: italic;
-
-            color: #fff;
-
-            text-shadow:
-                0 0 10px #8b4dff,
-                0 0 30px #a66aff;
-
-            transform: rotate(6deg);
-        }
-
-        h1 {
-            font-family: "Space Grotesk", sans-serif;
-            font-size: 32px;
-            font-weight: 700;
-            letter-spacing: 1px;
-        }
-
-        .subtitle {
-            margin-top: 8px;
-            color: #a995c5;
-            font-size: 10px;
-            letter-spacing: 4px;
-            text-transform: uppercase;
-        }
-
-        .divider {
-            width: 60px;
-            height: 2px;
-            margin: 27px auto;
-
-            background: linear-gradient(
-                90deg,
-                var(--purple),
-                var(--pink)
-            );
-
-            box-shadow: 0 0 15px var(--purple);
-        }
-
-        /* ERRO */
-
-        .error-icon {
-            width: 48px;
-            height: 48px;
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            margin: 0 auto 15px;
-
-            border-radius: 15px;
-
-            color: #d8bdff;
-            font-size: 20px;
-
-            background: rgba(139,77,255,.13);
-            border: 1px solid rgba(174,124,255,.25);
-        }
-
-        .error-title {
-            color: #f3eaff;
-            font-size: 15px;
-            font-weight: 800;
-            letter-spacing: 3px;
-        }
-
-        .description {
-            max-width: 310px;
-            margin: 12px auto 25px;
-
-            color: var(--muted);
-            font-size: 13px;
-            line-height: 1.8;
-        }
-
-        /* BOTÕES */
-
-        .actions {
-            display: grid;
-            gap: 12px;
-        }
-
-        .btn {
-            min-height: 49px;
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-
-            padding: 12px 18px;
-
-            border-radius: 12px;
-
-            text-decoration: none;
-            font-size: 11px;
-            font-weight: 800;
-            letter-spacing: 1.5px;
-
-            transition: .3s ease;
-        }
-
-        .btn:hover {
-            transform: translateY(-4px);
-        }
-
-        .btn-buy {
-            color: white;
-
-            background: linear-gradient(
-                100deg,
-                #7136d6,
-                #9b52ed,
-                #c45cff
-            );
-
-            box-shadow: 0 8px 25px rgba(139,77,255,.25);
-        }
-
-        .btn-buy:hover {
-            color: white;
-            box-shadow: 0 10px 35px rgba(139,77,255,.45);
-        }
-
-        .btn-back {
-            color: #d6c9e8;
-            background: rgba(255,255,255,.025);
-            border: 1px solid rgba(176,139,225,.22);
-        }
-
-        .btn-back:hover {
-            color: white;
-            border-color: var(--purple);
-            background: rgba(139,77,255,.08);
-        }
-
-        /* REDES SOCIAIS */
-
-        .socials {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin-top: 25px;
-        }
-
-        .socials a {
-            width: 40px;
-            height: 40px;
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            color: #b9a9ce;
-            font-size: 17px;
-
-            border-radius: 12px;
-            border: 1px solid rgba(176,139,225,.15);
-            background: rgba(255,255,255,.035);
-
-            text-decoration: none;
-            transition: .3s;
-        }
-
-        .socials a:hover {
-            color: white;
-            transform: translateY(-4px);
-            border-color: var(--purple);
-            box-shadow: 0 5px 20px rgba(139,77,255,.2);
-        }
-
-        /* RODAPÉ */
-
-        .footer {
-            margin-top: 22px;
-            text-align: center;
-
-            color: #716580;
-            font-size: 9px;
-            letter-spacing: 2px;
-        }
-
-        .footer strong {
-            color: #a47bdf;
-        }
-
-        /* ANIMAÇÕES */
-
-        @keyframes appear {
-            from {
-                opacity: 0;
-                transform: translateY(30px) scale(.97);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-            }
-        }
-
-        @keyframes floating {
-            0%, 100% {
-                transform: translateY(0) rotate(-6deg);
-            }
-            50% {
-                transform: translateY(-9px) rotate(-2deg);
-            }
-        }
-
-        @keyframes glowMove {
-            from {
-                transform: translate(0,0) scale(1);
-            }
-            to {
-                transform: translate(60px,-40px) scale(1.2);
-            }
-        }
-
-        @keyframes starsMove {
-            from {
-                transform: translateY(0);
-            }
-            to {
-                transform: translateY(-260px);
-            }
-        }
-
-        /* CELULARES */
-
-        @media (max-width: 420px) {
-            .card {
-                padding: 35px 21px 27px;
-            }
-
-            h1 {
-                font-size: 28px;
-            }
-
-            .logo {
-                width: 98px;
-                height: 98px;
-            }
-
-            .logo span {
-                font-size: 62px;
-            }
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-            *, *::before, *::after {
-                animation-duration: .01ms !important;
-                animation-iteration-count: 1 !important;
-                scroll-behavior: auto !important;
-            }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#080610">
+
+<title>SIXVOID APIS | Token Inválido</title>
+
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+<style>
+:root{
+--bg:#080610;
+--panel:#151020;
+--purple:#9860ff;
+--pink:#c45cff;
+--text:#f7f2ff;
+--muted:#a79bb9;
+--line:#a77aff35;
+}
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+
+body{
+min-height:100vh;
+display:flex;
+align-items:center;
+justify-content:center;
+overflow:hidden;
+padding:20px;
+background:
+radial-gradient(ellipse at 15% 0%,#54248855,transparent 42%),
+radial-gradient(ellipse at 90% 90%,#7026a522,transparent 40%),
+var(--bg);
+color:var(--text);
+font-family:'DM Sans',sans-serif;
+}
+
+/* FUNDO */
+
+.background{
+position:fixed;
+inset:0;
+overflow:hidden;
+pointer-events:none;
+}
+
+.glow{
+position:absolute;
+width:350px;
+height:350px;
+border-radius:50%;
+filter:blur(100px);
+opacity:.15;
+animation:glowMove 8s ease-in-out infinite alternate;
+}
+
+.glow.one{
+background:#8b4dff;
+top:-150px;
+left:-100px;
+}
+
+.glow.two{
+background:#c45cff;
+right:-150px;
+bottom:-150px;
+animation-delay:2s;
+}
+
+@keyframes glowMove{
+from{transform:translate(0,0) scale(1)}
+to{transform:translate(50px,40px) scale(1.2)}
+}
+
+/* PARTICULAS */
+
+.particle{
+position:absolute;
+width:3px;
+height:3px;
+background:#bd91ff;
+border-radius:50%;
+opacity:.5;
+box-shadow:0 0 10px #9860ff;
+animation:float 7s linear infinite;
+}
+
+@keyframes float{
+0%{
+transform:translateY(100vh);
+opacity:0;
+}
+20%{opacity:.6}
+80%{opacity:.5}
+100%{
+transform:translateY(-20vh);
+opacity:0;
+}
+}
+
+/* CONTEUDO */
+
+.container{
+position:relative;
+z-index:2;
+width:100%;
+max-width:460px;
+text-align:center;
+padding:35px 27px;
+border:1px solid var(--line);
+border-radius:22px;
+background:linear-gradient(145deg,#1b1429ed,#100d18f5);
+box-shadow:
+0 25px 90px #0009,
+0 0 50px #9860ff12;
+animation:appear .8s ease both;
+}
+
+@keyframes appear{
+from{
+opacity:0;
+transform:translateY(30px) scale(.96);
+}
+to{
+opacity:1;
+transform:translateY(0) scale(1);
+}
+}
+
+/* LOGO */
+
+.logo{
+display:flex;
+align-items:center;
+justify-content:center;
+gap:10px;
+font:700 17px 'Space Grotesk';
+letter-spacing:2px;
+margin-bottom:35px;
+}
+
+.logo-icon{
+width:43px;
+height:43px;
+display:grid;
+place-items:center;
+border-radius:13px;
+background:linear-gradient(135deg,#ad76ff,#4c187f);
+box-shadow:0 0 30px #9860ff55;
+font-size:15px;
+}
+
+/* ICONE DE ERRO */
+
+.error-icon{
+width:95px;
+height:95px;
+margin:0 auto 25px;
+display:grid;
+place-items:center;
+border-radius:50%;
+border:1px solid #ff648d55;
+background:radial-gradient(circle,#ff477a22,transparent 70%);
+box-shadow:0 0 40px #ff477a18;
+animation:pulse 2.5s ease-in-out infinite;
+}
+
+.error-icon i{
+font-size:38px;
+color:#ff6d91;
+}
+
+@keyframes pulse{
+0%,100%{
+transform:scale(1);
+box-shadow:0 0 25px #ff477a15;
+}
+50%{
+transform:scale(1.06);
+box-shadow:0 0 45px #ff477a35;
+}
+}
+
+/* TEXTOS */
+
+.eyebrow{
+font-size:10px;
+font-weight:700;
+letter-spacing:3px;
+color:#c7a9ff;
+margin-bottom:12px;
+}
+
+h1{
+font:700 clamp(25px,6vw,34px) 'Space Grotesk';
+margin-bottom:12px;
+}
+
+h1 span{
+color:#ff7298;
+}
+
+.description{
+font-size:13px;
+line-height:1.8;
+color:var(--muted);
+margin-bottom:25px;
+}
+
+/* STATUS */
+
+.status{
+padding:14px;
+margin-bottom:25px;
+border:1px solid #ff648d35;
+border-radius:12px;
+background:#ff477a0c;
+text-align:left;
+}
+
+.status-title{
+display:flex;
+align-items:center;
+gap:8px;
+font-size:11px;
+font-weight:700;
+color:#ff8eaa;
+margin-bottom:6px;
+}
+
+.status p{
+font-size:11px;
+line-height:1.6;
+color:#c6aebb;
+}
+
+/* BOTOES */
+
+.buttons{
+display:flex;
+flex-direction:column;
+gap:11px;
+}
+
+.btn{
+display:flex;
+align-items:center;
+justify-content:center;
+gap:10px;
+width:100%;
+padding:15px;
+border-radius:11px;
+text-decoration:none;
+font-size:11px;
+font-weight:800;
+letter-spacing:1.2px;
+transition:.25s;
+}
+
+.btn-buy{
+color:white;
+background:linear-gradient(110deg,#8653e8,#b56ae0);
+box-shadow:0 8px 25px #9860ff25;
+}
+
+.btn-buy:hover{
+transform:translateY(-3px);
+box-shadow:0 12px 35px #9860ff50;
+}
+
+.btn-back{
+color:#cbb6f5;
+border:1px solid var(--line);
+background:#ffffff05;
+}
+
+.btn-back:hover{
+background:#9860ff15;
+border-color:#9860ff80;
+transform:translateY(-2px);
+}
+
+/* FOOTER */
+
+.footer{
+margin-top:30px;
+font-size:9px;
+letter-spacing:1px;
+color:#766b84;
+}
+
+.footer span{
+color:#b58aff;
+}
+
+/* MOBILE */
+
+@media(max-width:400px){
+.container{
+padding:28px 19px;
+}
+
+.logo{
+font-size:14px;
+}
+
+.error-icon{
+width:82px;
+height:82px;
+}
+}
+</style>
 </head>
 
 <body>
 
-    <!-- FUNDO ANIMADO -->
+<div class="background">
+<div class="glow one"></div>
+<div class="glow two"></div>
+</div>
 
-    <div class="background">
-        <div class="glow one"></div>
-        <div class="glow two"></div>
-        <div class="stars"></div>
-    </div>
+<main class="container">
 
-    <!-- TELA DE ERRO -->
+<div class="logo">
+<div class="logo-icon">SV</div>
+SIXVOID APIS
+</div>
 
-    <main class="container">
+<div class="error-icon">
+<i class="fa-solid fa-lock"></i>
+</div>
 
-        <div class="top-label">
-            SIXVOID NETWORK
-        </div>
+<div class="eyebrow">API MANAGEMENT SYSTEM</div>
 
-        <section class="card">
+<h1>TOKEN <span>INVÁLIDO</span></h1>
 
-            <div class="logo">
-                <span>S</span>
-            </div>
+<p class="description">
+Não foi possível autorizar sua solicitação.
+Sua API Key pode estar inválida, expirada ou sem acesso disponível.
+</p>
 
-            <h1>SIXVOID APIS</h1>
+<div class="status">
+<div class="status-title">
+<i class="fa-solid fa-circle-exclamation"></i>
+ACESSO NÃO AUTORIZADO
+</div>
 
-            <p class="subtitle">
-                API MANAGEMENT SYSTEM
-            </p>
+<p>
+Verifique sua API Key ou adquira um plano para continuar utilizando os serviços da SIXVOID APIS.
+</p>
+</div>
 
-            <div class="divider"></div>
+<div class="buttons">
 
-            <div class="error-icon">
-                <i class="fa-solid fa-shield-halved"></i>
-            </div>
+<a href="/solicitar-key.html" class="btn btn-buy">
+<i class="fa-solid fa-cart-shopping"></i>
+COMPRAR TOKEN
+</a>
 
-            <h2 class="error-title">
-                TOKEN INVÁLIDO
-            </h2>
+<a href="/" class="btn btn-back">
+<i class="fa-solid fa-arrow-left"></i>
+VOLTAR AO INÍCIO
+</a>
 
-            <p class="description">
-                A chave de acesso informada não é válida
-                ou não foi reconhecida pelo sistema.
-                Confira seu token ou adquira um novo
-                para continuar utilizando nossos serviços.
-            </p>
+</div>
 
-            <div class="actions">
+<div class="footer">
+© <span id="year"></span> SIXVOID APIS · DEVELOPED BY VOID
+</div>
 
-                <a href="/planos" class="btn btn-buy">
-                    <i class="fa-solid fa-cart-shopping"></i>
-                    COMPRAR TOKEN
-                </a>
+</main>
 
-                <a href="/dash" class="btn btn-back">
-                    <i class="fa-solid fa-arrow-left"></i>
-                    VOLTAR
-                </a>
+<script>
+// ANO AUTOMÁTICO
+document.getElementById('year').textContent =
+new Date().getFullYear();
 
-            </div>
+// PARTICULAS
+const background = document.querySelector('.background');
 
-            <div class="socials">
+for(let i=0;i<35;i++){
 
-                <a
-                    href="https://chat.whatsapp.com/ExCKNRkLlFgKZkCZDX2nIA"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label="Comunidade"
-                >
-                    <i class="fa-brands fa-telegram"></i>
-                </a>
+const particle = document.createElement('div');
 
-                <a
-                    href="https://wa.me/555531972595934"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label="Suporte"
-                >
-                    <i class="fa-brands fa-whatsapp"></i>
-                </a>
+particle.className = 'particle';
 
-            </div>
+particle.style.left = Math.random()*100+'%';
+particle.style.animationDelay = Math.random()*7+'s';
+particle.style.animationDuration = (5+Math.random()*8)+'s';
+particle.style.opacity = Math.random()*.6;
 
-        </section>
+background.appendChild(particle);
 
-        <footer class="footer">
-            © <span id="year"></span>
-            <strong>SIXVOID APIS</strong>
-            · ALL RIGHTS RESERVED
-        </footer>
-
-    </main>
-
-    <script>
-        document.getElementById("year").textContent =
-            new Date().getFullYear();
-    </script>
+}
+</script>
 
 </body>
 </html>
