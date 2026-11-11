@@ -1,5 +1,386 @@
-<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#080610"><title>SIXVOID | Solicitar API Key</title><link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet"><style>
-:root{--bg:#080610;--panel:#151020;--line:#a77aff35;--text:#f7f2ff;--muted:#a79bb9;--purple:#9860ff}*{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(ellipse at 15% 0%,#54248855,transparent 42%),var(--bg);color:var(--text);font-family:'DM Sans',sans-serif}.top{height:72px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 max(18px,calc((100vw - 950px)/2));background:#090711dd;position:sticky;top:0}.brand{font:700 15px 'Space Grotesk';letter-spacing:2px;color:white;text-decoration:none}.brand span{display:inline-grid;place-items:center;width:39px;height:39px;margin-right:9px;border-radius:12px;background:linear-gradient(135deg,#ad76ff,#4c187f)}.wrap{width:min(950px,calc(100% - 30px));margin:48px auto}.box{max-width:650px;margin:auto;padding:clamp(20px,5vw,34px);border:1px solid var(--line);border-radius:20px;background:linear-gradient(145deg,#1b1429,#100d18);box-shadow:0 20px 65px #0005}.eyebrow{font-size:10px;letter-spacing:2px;color:#c7a9ff;font-weight:700}.box h1{font:700 clamp(26px,5vw,36px) 'Space Grotesk';margin:10px 0}.box p{font-size:13px;line-height:1.7;color:var(--muted)}.field{margin:17px 0}.field label{display:block;font-size:11px;color:#d3c0f5;margin-bottom:8px}.field input,.field select,.field textarea{width:100%;padding:14px;background:#0b0912;border:1px solid #51416c;border-radius:11px;color:white;outline:none;font:13px 'DM Sans'}.field textarea{min-height:90px;resize:vertical}.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--purple)}.btn{border:0;border-radius:11px;padding:15px 18px;background:linear-gradient(110deg,#8653e8,#b56ae0);color:white;font-weight:700;font-size:11px;letter-spacing:1px;cursor:pointer;width:100%}.btn:disabled{opacity:.5}.hint{padding:13px;border:1px solid var(--line);background:#8c4dff12;border-radius:11px;color:#cbb6f5;font-size:11px;line-height:1.6;margin:16px 0}.hidden{display:none!important}.status{font-size:12px;color:#ff9dbb;margin-top:12px}footer{text-align:center;padding:24px;color:#81768f;font-size:10px}@media(min-width:700px){.wrap{margin-top:65px}}
-</style></head><body><header class="top"><a class="brand" href="/"><span>SV</span>SIXVOID APIS</a><a href="/docs.html" style="color:#c9b4ee;text-decoration:none;font-size:12px">Documentação ↗</a></header><main class="wrap"><section class="box"><div class="eyebrow">ACCESS REQUEST / SIXVOID</div><h1>Solicitar acesso.</h1><p>Peça uma nova API Key ou solicite a recarga de uma chave existente. A solicitação será enviada diretamente ao proprietário para análise.</p><form id="requestForm"><div class="field"><label for="kind">O que você deseja?</label><select id="kind"><option value="Nova API Key">Criar uma nova API Key</option><option value="Recarga de API Key">Recarregar uma API Key</option></select></div><div class="field"><label for="name">Seu nome / identificação</label><input id="name" maxlength="70" placeholder="Como podemos te chamar?" required></div><div class="field hidden" id="keyField"><label for="key">API Key que deseja recarregar</label><input id="key" maxlength="150" placeholder="Cole sua API Key"></div><div class="field"><label for="plan">Plano ou quantidade desejada</label><select id="plan"><option value="Quero conversar sobre os planos">Ainda quero consultar os planos</option><option value="1.000 requisições">1.000 requisições</option><option value="5.000 requisições">5.000 requisições</option><option value="10.000 requisições">10.000 requisições</option><option value="25.000 requisições">25.000 requisições</option><option value="50.000 requisições">50.000 requisições</option></select></div><div class="field"><label for="details">Detalhes adicionais (opcional)</label><textarea id="details" maxlength="500" placeholder="Escreva uma observação para o proprietário..."></textarea></div><button class="btn" id="sendBtn" type="submit">CONTINUAR PELO WHATSAPP</button><div class="status" id="status"></div></form><div class="hint">A SIXVOID não gera nem recarrega chaves automaticamente por esta página. O proprietário confirma a solicitação e libera a chave após a aprovação.</div></section></main><footer>© 2026 SIXVOID APIS · DEVELOPED BY VOID</footer><script>
-const $=id=>document.getElementById(id);let whatsapp='';$('kind').addEventListener('change',()=>{$('keyField').classList.toggle('hidden',$('kind').value!=='Recarga de API Key');$('key').required=$('kind').value==='Recarga de API Key'});fetch('/api/public/config').then(r=>r.json()).then(c=>{whatsapp=c.supportWhatsapp||'';if(!whatsapp){$('sendBtn').disabled=true;$('status').textContent='O contato do proprietário ainda não foi configurado. Tente novamente mais tarde.'}}).catch(()=>{$('sendBtn').disabled=true;$('status').textContent='Não foi possível carregar o contato do suporte.'});$('requestForm').addEventListener('submit',e=>{e.preventDefault();if(!whatsapp){$('status').textContent='WhatsApp do proprietário não configurado.';return}if($('kind').value==='Recarga de API Key'&&!$('key').value.trim()){ $('status').textContent='Informe a API Key que deseja recarregar.';return}const lines=['Olá, VOID! Vim pela SIXVOID APIS.','Solicitação: '+$('kind').value,'Nome: '+$('name').value.trim(),'Plano/quantidade: '+$('plan').value];if($('key').value.trim())lines.push('API Key: '+$('key').value.trim());if($('details').value.trim())lines.push('Detalhes: '+$('details').value.trim());window.open('https://wa.me/'+whatsapp+'?text='+encodeURIComponent(lines.join('\n')),'_blank','noopener')});
-</script></body></html>
+
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#080610">
+<title>SIXVOID | Loja de API Keys</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<script src="https://sdk.mercadopago.com/js/v2"></script>
+<style>
+:root{--bg:#080610;--panel:#151020;--line:#a77aff35;--text:#f7f2ff;--muted:#a79bb9;--purple:#9860ff;--pink:#c56cff;--green:#76e2ad}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;background:radial-gradient(ellipse at 15% 0%,#54248855,transparent 42%),var(--bg);color:var(--text);font-family:'DM Sans',sans-serif}
+.top{height:72px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 max(18px,calc((100vw - 950px)/2));background:#090711ed;position:sticky;top:0;z-index:5;backdrop-filter:blur(14px)}
+.brand{font:700 15px 'Space Grotesk';letter-spacing:2px;color:white;text-decoration:none;display:flex;align-items:center}
+.brand span{display:inline-grid;place-items:center;width:39px;height:39px;margin-right:9px;border-radius:12px;background:linear-gradient(135deg,#ad76ff,#4c187f)}
+.top a:last-child{color:#c9b4ee;text-decoration:none;font-size:12px}
+.wrap{width:min(950px,calc(100% - 30px));margin:38px auto}
+.box{max-width:690px;margin:auto;padding:clamp(20px,5vw,34px);border:1px solid var(--line);border-radius:20px;background:linear-gradient(145deg,#1b1429,#100d18);box-shadow:0 20px 65px #0005}
+.eyebrow{font-size:10px;letter-spacing:2px;color:#c7a9ff;font-weight:700}
+.box h1{font:700 clamp(26px,5vw,36px) 'Space Grotesk';margin:10px 0}
+.intro{font-size:13px;line-height:1.7;color:var(--muted)}
+.field{margin:17px 0}
+.field label{display:block;font-size:11px;color:#d3c0f5;margin-bottom:8px}
+.field input,.field select{width:100%;padding:14px;background:#0b0912;border:1px solid #51416c;border-radius:11px;color:white;outline:none;font:13px 'DM Sans'}
+.field input:focus,.field select:focus{border-color:var(--purple)}
+.btn{border:0;border-radius:11px;padding:15px 18px;background:linear-gradient(110deg,#8653e8,#b56ae0);color:white;font-weight:700;font-size:11px;letter-spacing:1px;cursor:pointer;width:100%}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.hint{padding:13px;border:1px solid var(--line);background:#8c4dff12;border-radius:11px;color:#cbb6f5;font-size:11px;line-height:1.6;margin:16px 0}
+.status{font-size:12px;color:#ffb2cb;line-height:1.6;margin-top:13px}
+.hidden{display:none!important}
+.divider{height:1px;background:var(--line);margin:24px 0}
+.section-title{font:600 15px 'Space Grotesk';margin:0 0 14px}
+.payment-wrap{margin-top:20px;padding:16px;border:1px solid var(--line);border-radius:14px;background:#0b0912}
+.result{margin-top:18px;padding:16px;border:1px solid #76e2ad55;border-radius:13px;background:#76e2ad0d}
+.result h3{margin:0 0 8px;color:var(--green);font:600 16px 'Space Grotesk'}
+.key-output{display:block;overflow-wrap:anywhere;padding:13px;background:#080610;border:1px solid #76e2ad44;border-radius:9px;color:#fff;font-size:12px;margin:10px 0}
+.small{font-size:11px;color:var(--muted);line-height:1.6}
+.pix-image{display:block;width:190px;max-width:100%;margin:12px auto;border-radius:8px;background:white;padding:8px}
+.pix-code{width:100%;min-height:78px;padding:10px;background:#080610;border:1px solid #51416c;border-radius:9px;color:white;font-size:11px;resize:vertical}
+.copy{margin-top:9px;background:#302044;border:1px solid var(--line);color:#fff;border-radius:8px;padding:10px 12px;font-size:11px;cursor:pointer}
+.support{display:inline-block;color:#d9c3ff;text-decoration:none;font-size:11px;margin-top:16px}
+footer{text-align:center;padding:24px;color:#81768f;font-size:10px}
+@media(min-width:700px){.wrap{margin-top:55px}}
+#paymentBrick_container{min-height:80px}
+</style>
+</head>
+<body>
+
+<header class="top">
+<a class="brand" href="/"><span>SV</span>SIXVOID APIS</a>
+<a href="/docs.html">Documentação ↗</a>
+</header>
+
+<main class="wrap">
+<section class="box">
+
+<div class="eyebrow">SECURE CHECKOUT / SIXVOID</div>
+<h1>Adquira sua API Key.</h1>
+<p class="intro">Escolha um plano, informe seus dados e pague com Pix ou cartão diretamente nesta página. Após a confirmação do Mercado Pago, sua chave será liberada automaticamente.</p>
+
+<form id="orderForm">
+
+<div class="field">
+<label for="kind">O que deseja fazer?</label>
+<select id="kind">
+<option value="new">Criar uma nova API Key</option>
+<option value="recharge">Recarregar uma API Key existente</option>
+</select>
+</div>
+
+<div class="field">
+<label for="name">Seu nome</label>
+<input id="name" maxlength="70" placeholder="Como podemos te chamar?" autocomplete="name" required>
+</div>
+
+<div class="field">
+<label for="email">E-mail para identificação do pagamento</label>
+<input id="email" type="email" maxlength="120" placeholder="voce@email.com" autocomplete="email" required>
+</div>
+
+<div class="field hidden" id="keyField">
+<label for="apiKey">API Key que deseja recarregar</label>
+<input id="apiKey" maxlength="150" placeholder="Cole sua API Key">
+</div>
+
+<div class="field">
+<label for="plan">Plano de requisições</label>
+<select id="plan" required>
+<option value="">Carregando planos...</option>
+</select>
+</div>
+
+<button class="btn" id="continueBtn" type="submit">CONTINUAR PARA PAGAMENTO</button>
+<div class="status" id="status" role="status" aria-live="polite"></div>
+
+</form>
+
+<section id="checkoutSection" class="hidden">
+<div class="divider"></div>
+<h2 class="section-title">Pagamento seguro</h2>
+<p class="small" id="orderSummary"></p>
+<div class="payment-wrap">
+<div id="paymentBrick_container"></div>
+</div>
+</section>
+
+<section id="pixResult" class="result hidden">
+<h3>Pix gerado! Falta só confirmar.</h3>
+<p class="small">Escaneie o QR Code ou copie o código Pix. A página verificará a confirmação automaticamente.</p>
+<img id="pixQr" class="pix-image hidden" alt="QR Code Pix">
+<textarea id="pixCode" class="pix-code" readonly></textarea>
+<button class="copy" id="copyPix" type="button">COPIAR CÓDIGO PIX</button>
+</section>
+
+<section id="keyResult" class="result hidden">
+<h3>Pagamento aprovado!</h3>
+<p class="small">Sua API Key foi liberada. Copie e guarde em local seguro.</p>
+<code id="keyOutput" class="key-output"></code>
+<p class="small" id="remainingText"></p>
+<button class="copy" id="copyKey" type="button">COPIAR API KEY</button>
+</section>
+
+<a id="supportLink" class="support hidden" target="_blank" rel="noopener">Precisa de ajuda? Fale com o suporte.</a>
+
+<div class="hint">
+Os pagamentos são processados pelo Mercado Pago. A SIXVOID só libera ou recarrega a chave após confirmar o status aprovado diretamente no servidor. O suporte fica disponível apenas para dúvidas e problemas.
+</div>
+
+</section>
+</main>
+
+<footer>© 2026 SIXVOID APIS · DEVELOPED BY VOID</footer>
+
+<script>
+const $=id=>document.getElementById(id);
+let config=null,mp=null,brickController=null,currentOrderId='',pollHandle=null;
+
+function showStatus(message){
+$('status').textContent=message||'';
+}
+
+function money(value){
+return Number(value).toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
+}
+
+function stopPolling(){
+if(pollHandle){
+clearInterval(pollHandle);
+pollHandle=null;
+}
+}
+
+function showKey(data){
+stopPolling();
+$('pixResult').classList.add('hidden');
+$('keyResult').classList.remove('hidden');
+$('keyOutput').textContent=data.apikey;
+$('remainingText').textContent=`Saldo disponível: ${Number(data.remaining||0).toLocaleString('pt-BR')} requisições.`;
+$('checkoutSection').classList.add('hidden');
+$('orderForm').classList.add('hidden');
+}
+
+function startPolling(){
+stopPolling();
+pollHandle=setInterval(async()=>{
+try{
+const r=await fetch(`/api/payments/orders/${encodeURIComponent(currentOrderId)}`);
+const data=await r.json();
+if(data.status==='approved'&&data.apikey){
+showKey(data);
+}else if(data.status==='rejected'){
+stopPolling();
+showStatus('O pagamento não foi aprovado. Você pode tentar novamente ou falar com o suporte.');
+}
+}catch(e){}
+},4500);
+}
+
+async function loadConfig(){
+try{
+const r=await fetch('/api/payments/plans');
+const data=await r.json();
+config=data;
+
+if(!data.enabled){
+$('plan').innerHTML='<option value="">Pagamentos indisponíveis</option>';
+$('continueBtn').disabled=true;
+showStatus('A loja ainda não foi configurada pelo administrador.');
+return;
+}
+
+if(!data.plans?.length){
+$('plan').innerHTML='<option value="">Planos ainda não cadastrados</option>';
+$('continueBtn').disabled=true;
+showStatus('Os preços dos planos ainda não foram configurados.');
+return;
+}
+
+$('plan').innerHTML='<option value="">Selecione um plano</option>'+
+data.plans.map(p=>`<option value="${p.id}">${p.label} — ${money(p.price)}</option>`).join('');
+
+mp=new MercadoPago(data.publicKey,{locale:'pt-BR'});
+
+}catch(e){
+$('continueBtn').disabled=true;
+showStatus('Não foi possível carregar os planos. Atualize a página.');
+}
+}
+
+$('kind').addEventListener('change',()=>{
+const recharge=$('kind').value==='recharge';
+$('keyField').classList.toggle('hidden',!recharge);
+$('apiKey').required=recharge;
+});
+
+$('orderForm').addEventListener('submit',async e=>{
+e.preventDefault();
+showStatus('Preparando seu pedido...');
+$('continueBtn').disabled=true;
+
+try{
+const payload={
+kind:$('kind').value,
+name:$('name').value.trim(),
+email:$('email').value.trim(),
+planId:$('plan').value,
+apiKey:$('apiKey').value.trim()
+};
+
+const response=await fetch('/api/payments/orders',{
+method:'POST',
+headers:{'Content-Type':'application/json'},
+body:JSON.stringify(payload)
+});
+
+const data=await response.json();
+
+if(!response.ok||!data.success){
+throw new Error(data.message||'Não foi possível criar o pedido.');
+}
+
+currentOrderId=data.orderId;
+
+$('orderSummary').textContent=
+`Pedido ${currentOrderId.slice(0,10)} · Total: ${money(data.amount)} · ${$('plan').selectedOptions[0].textContent}`;
+
+$('checkoutSection').classList.remove('hidden');
+$('continueBtn').classList.add('hidden');
+
+showStatus('Escolha Pix ou cartão no formulário abaixo.');
+
+await renderPayment(data);
+
+}catch(error){
+showStatus(error.message);
+$('continueBtn').disabled=false;
+}
+});
+
+async function renderPayment(order){
+
+if(!mp){
+throw new Error('Mercado Pago não inicializado.');
+}
+
+if(brickController){
+try{
+await brickController.unmount();
+}catch(e){}
+}
+
+const bricks=mp.bricks();
+
+brickController=await bricks.create(
+'payment',
+'paymentBrick_container',
+{
+initialization:{
+amount:Number(order.amount),
+payer:{email:$('email').value.trim()}
+},
+customization:{
+visual:{
+style:{theme:'dark'}
+}
+},
+callbacks:{
+onReady:()=>{},
+
+onError:error=>{
+console.error('Payment Brick:',error);
+showStatus('O formulário de pagamento apresentou um erro. Atualize a página e tente novamente.');
+},
+
+onSubmit:async(formData)=>{
+
+showStatus('Enviando pagamento com segurança...');
+
+const response=await fetch('/api/payments/process',{
+method:'POST',
+headers:{'Content-Type':'application/json'},
+body:JSON.stringify({
+orderId:currentOrderId,
+formData
+})
+});
+
+const result=await response.json();
+
+if(!response.ok||!result.success){
+throw new Error(result.message||'Não foi possível processar o pagamento.');
+}
+
+if(result.status==='approved'&&result.apikey){
+showKey(result);
+return result;
+}
+
+if(result.pix?.qrCode){
+
+$('pixResult').classList.remove('hidden');
+$('pixCode').value=result.pix.qrCode;
+
+if(result.pix.qrCodeBase64){
+$('pixQr').src=`data:image/png;base64,${result.pix.qrCodeBase64}`;
+$('pixQr').classList.remove('hidden');
+}
+
+if(result.pix.ticketUrl){
+const link=document.createElement('a');
+link.href=result.pix.ticketUrl;
+link.target='_blank';
+link.rel='noopener';
+link.textContent='Abrir página do Pix';
+link.className='support';
+$('pixResult').appendChild(link);
+}
+
+}
+
+showStatus('Pagamento criado. Aguardando confirmação do Mercado Pago...');
+startPolling();
+
+return result;
+
+}
+}
+}
+);
+
+}
+
+$('copyPix').addEventListener('click',async()=>{
+try{
+await navigator.clipboard.writeText($('pixCode').value);
+$('copyPix').textContent='CÓDIGO COPIADO!';
+}catch(e){
+$('pixCode').select();
+document.execCommand('copy');
+$('copyPix').textContent='CÓDIGO COPIADO!';
+}
+});
+
+$('copyKey').addEventListener('click',async()=>{
+try{
+await navigator.clipboard.writeText($('keyOutput').textContent);
+$('copyKey').textContent='API KEY COPIADA!';
+}catch(e){}
+});
+
+fetch('/api/public/config')
+.then(r=>r.json())
+.then(c=>{
+if(c.supportWhatsapp){
+$('supportLink').href=`https://wa.me/${c.supportWhatsapp}`;
+$('supportLink').classList.remove('hidden');
+}
+})
+.catch(()=>{});
+
+loadConfig();
+</script>
+</body>
+</html>
