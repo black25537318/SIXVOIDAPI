@@ -353,52 +353,91 @@ const $ = id => document.getElementById(id);
 
 let whatsapp = '';
 let planos = [];
-let planosCarregados = false;
-let contatoCarregado = false;
+let dadosCarregados = false;
 
 function formatarNumero(valor){
 return Number(valor).toLocaleString('pt-BR');
 }
 
+function formatarPreco(valor){
+return Number(valor).toLocaleString('pt-BR',{
+style:'currency',
+currency:'BRL'
+});
+}
+
 function atualizarBotao(){
 $('sendBtn').disabled = !(
-planosCarregados &&
-contatoCarregado &&
+dadosCarregados &&
 whatsapp &&
 planos.length > 0
 );
 }
 
+function mostrarStatus(mensagem,tipo=''){
+$('status').textContent = mensagem;
+$('status').className = 'status ' + tipo;
+}
+
 // MOSTRAR / OCULTAR CAMPO DE API KEY
 $('kind').addEventListener('change', () => {
+
 const recarga = $('kind').value === 'Recarga de API Key';
 
-$('keyField').classList.toggle('hidden', !recarga);
+$('keyField').classList.toggle('hidden',!recarga);
 $('key').required = recarga;
+
 });
 
-// CARREGAR PLANOS DO INDEX.JS
-async function carregarPlanos(){
+// CARREGAR PLANOS E CONTATO DO SERVIDOR
+async function carregarDados(){
 
 const select = $('plan');
 
+mostrarStatus('Carregando informações da SIXVOID...','loading');
+
 try{
 
-const response = await fetch('/api/payments/plans', {
+const response = await fetch('/api/public/config',{
 method:'GET',
-headers:{'Accept':'application/json'}
+headers:{
+'Accept':'application/json'
+},
+cache:'no-store'
 });
 
-const data = await response.json();
-
-if(!response.ok || !data.success || !Array.isArray(data.plans)){
-throw new Error(data.error || 'Resposta inválida ao carregar planos.');
+if(!response.ok){
+throw new Error('Erro HTTP ' + response.status);
 }
 
-planos = data.plans;
+const config = await response.json();
+
+if(!config || typeof config !== 'object'){
+throw new Error('Resposta inválida do servidor.');
+}
+
+// CONTATO DO PROPRIETÁRIO
+whatsapp = String(config.supportWhatsapp || '').replace(/\D/g,'');
+
+// PLANOS RETORNADOS PELO INDEX.JS
+if(!Array.isArray(config.plans)){
+throw new Error('O servidor não retornou a lista de planos.');
+}
+
+planos = config.plans.map(plano => ({
+id:String(plano.id),
+label:plano.label,
+requests:Number(plano.amount),
+price:Number(plano.price)
+})).filter(plano =>
+plano.id &&
+plano.requests > 0 &&
+Number.isFinite(plano.price) &&
+plano.price > 0
+);
 
 if(!planos.length){
-throw new Error('Nenhum plano está disponível.');
+throw new Error('Nenhum plano com preço válido foi encontrado.');
 }
 
 select.innerHTML = '<option value="">Selecione um plano</option>';
@@ -409,46 +448,47 @@ const option = document.createElement('option');
 
 option.value = plano.id;
 
-const requisicoes = plano.requests ?? plano.limit ?? 0;
-
-const preco = plano.formattedPrice ??
-Number(plano.price || 0).toLocaleString('pt-BR',{
-style:'currency',
-currency:'BRL'
-});
-
 option.textContent =
-`${formatarNumero(requisicoes)} requisições — ${preco}`;
+(plano.label || formatarNumero(plano.requests)+' requisições') +
+' — ' + formatarPreco(plano.price);
 
 select.appendChild(option);
 
 });
 
-planosCarregados = true;
+dadosCarregados = true;
 
-$('status').textContent = '';
-$('status').className = 'status';
+if(!whatsapp){
+mostrarStatus('Os planos foram carregados, mas o WhatsApp do proprietário não está configurado.');
+}else{
+mostrarStatus('Planos carregados com sucesso.','success');
+}
 
 }catch(error){
 
-console.error('Erro ao carregar planos:', error);
+console.error('Erro ao carregar dados:',error);
+
+planos = [];
+dadosCarregados = false;
 
 select.innerHTML = '<option value="">Planos indisponíveis</option>';
 
-$('status').textContent =
-'Não foi possível carregar os planos. Verifique a rota /api/payments/plans no servidor.';
+$('planInfo').style.display = 'none';
 
-$('status').className = 'status';
+mostrarStatus(
+'Não foi possível carregar os planos. Verifique a configuração pública do servidor.'
+);
 
 }
 
 atualizarBotao();
+
 }
 
 // MOSTRAR PREÇO DO PLANO SELECIONADO
 $('plan').addEventListener('change', () => {
 
-const plano = planos.find(p => String(p.id) === String($('plan').value));
+const plano = planos.find(p => p.id === $('plan').value);
 
 if(!plano){
 
@@ -457,92 +497,32 @@ return;
 
 }
 
-const requisicoes = plano.requests ?? plano.limit ?? 0;
-
-const preco = plano.formattedPrice ??
-Number(plano.price || 0).toLocaleString('pt-BR',{
-style:'currency',
-currency:'BRL'
-});
-
-$('planPrice').textContent = preco;
+$('planPrice').textContent = formatarPreco(plano.price);
 
 $('planRequests').textContent =
-formatarNumero(requisicoes) + ' requisições disponíveis';
+formatarNumero(plano.requests) + ' requisições disponíveis';
 
 $('planInfo').style.display = 'block';
 
 });
 
-// CARREGAR CONTATO DO PROPRIETÁRIO
-async function carregarContato(){
-
-try{
-
-const response = await fetch('/api/public/config', {
-headers:{'Accept':'application/json'}
-});
-
-if(!response.ok){
-throw new Error('Falha ao consultar configuração.');
-}
-
-const config = await response.json();
-
-whatsapp = String(config.supportWhatsapp || '').replace(/\D/g,'');
-
-if(!whatsapp){
-
-$('status').textContent =
-'O contato do proprietário ainda não foi configurado.';
-
-$('status').className = 'status';
-
-return;
-
-}
-
-contatoCarregado = true;
-
-}catch(error){
-
-console.error('Erro ao carregar contato:', error);
-
-$('status').textContent =
-'Não foi possível carregar o contato do suporte.';
-
-$('status').className = 'status';
-
-}
-
-atualizarBotao();
-}
-
 // ENVIAR SOLICITAÇÃO PELO WHATSAPP
-$('requestForm').addEventListener('submit', event => {
+$('requestForm').addEventListener('submit',event => {
 
 event.preventDefault();
 
 if(!whatsapp){
-
-$('status').textContent =
-'WhatsApp do proprietário não configurado.';
-
+mostrarStatus('WhatsApp do proprietário não configurado.');
 return;
-
 }
 
 const tipo = $('kind').value;
 
-const plano = planos.find(p => String(p.id) === String($('plan').value));
+const plano = planos.find(p => p.id === $('plan').value);
 
 if(!plano){
-
-$('status').textContent =
-'Selecione um plano válido.';
-
+mostrarStatus('Selecione um plano válido.');
 return;
-
 }
 
 const nome = $('name').value.trim();
@@ -550,30 +530,14 @@ const chave = $('key').value.trim();
 const detalhes = $('details').value.trim();
 
 if(!nome){
-
-$('status').textContent =
-'Informe seu nome ou identificação.';
-
+mostrarStatus('Informe seu nome ou identificação.');
 return;
-
 }
 
 if(tipo === 'Recarga de API Key' && !chave){
-
-$('status').textContent =
-'Informe a API Key que deseja recarregar.';
-
+mostrarStatus('Informe a API Key que deseja recarregar.');
 return;
-
 }
-
-const requisicoes = plano.requests ?? plano.limit ?? 0;
-
-const preco = plano.formattedPrice ??
-Number(plano.price || 0).toLocaleString('pt-BR',{
-style:'currency',
-currency:'BRL'
-});
 
 const linhas = [
 
@@ -587,9 +551,9 @@ const linhas = [
 
 'Nome: ' + nome,
 
-'Plano: ' + formatarNumero(requisicoes) + ' requisições',
+'Plano: ' + formatarNumero(plano.requests) + ' requisições',
 
-'Valor: ' + preco
+'Valor: ' + formatarPreco(plano.price)
 
 ];
 
@@ -614,8 +578,7 @@ window.open(url,'_blank','noopener');
 $('year').textContent = new Date().getFullYear();
 
 // INICIALIZAÇÃO
-carregarPlanos();
-carregarContato();
+carregarDados();
 
 </script>
 
