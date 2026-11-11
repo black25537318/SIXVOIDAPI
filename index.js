@@ -95,6 +95,65 @@ app.use((req, res, next) => {
   next();
 });
 
+// PLANOS DE CRÉDITOS SIXVOID APIS
+const PLAN_DEFINITIONS = [
+  {
+    id: '1000',
+    label: '1.000 requisições',
+    amount: 1000,
+    price: Number(process.env.PRICE_1000 || 1.00)
+  },
+  {
+    id: '20000',
+    label: '20.000 requisições',
+    amount: 20000,
+    price: Number(process.env.PRICE_20000 || 4.00)
+  },
+  {
+    id: '50000',
+    label: '50.000 requisições',
+    amount: 50000,
+    price: Number(process.env.PRICE_50000 || 8.00)
+  },
+  {
+    id: '100000',
+    label: '100.000 requisições',
+    amount: 100000,
+    price: Number(process.env.PRICE_100000 || 15.00)
+  },
+  {
+    id: '250000',
+    label: '250.000 requisições',
+    amount: 250000,
+    price: Number(process.env.PRICE_250000 || 30.00)
+  },
+  {
+    id: '500000',
+    label: '500.000 requisições',
+    amount: 500000,
+    price: Number(process.env.PRICE_500000 || 50.00)
+  },
+  {
+    id: '1000000',
+    label: '1.000.000 requisições',
+    amount: 1000000,
+    price: Number(process.env.PRICE_1000000 || 80.00)
+  }
+];
+
+app.get('/api/plans', (req, res) => {
+  res.json({
+    success: true,
+    plans: PLAN_DEFINITIONS.map(plan => ({
+      id: plan.id,
+      label: plan.label,
+      requests: plan.amount,
+      price: plan.price,
+      formattedPrice: `R$ ${plan.price.toFixed(2).replace('.', ',')}`
+    }))
+  });
+});
+
 // Configuração pública: nunca envia a senha administrativa ao navegador.
 app.get('/api/public/config', (req, res) => {
   res.json({
