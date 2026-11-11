@@ -16,7 +16,8 @@
 --line:#a77aff35;
 --text:#f7f2ff;
 --muted:#a79bb9;
---purple:#9860ff
+--purple:#9860ff;
+--pink:#c45cff;
 }
 
 *{box-sizing:border-box}
@@ -24,9 +25,12 @@
 body{
 margin:0;
 min-height:100vh;
-background:radial-gradient(ellipse at 15% 0%,#54248855,transparent 42%),var(--bg);
+background:
+radial-gradient(ellipse at 15% 0%,#54248855,transparent 42%),
+radial-gradient(ellipse at 90% 80%,#7026a522,transparent 40%),
+var(--bg);
 color:var(--text);
-font-family:'DM Sans',sans-serif
+font-family:'DM Sans',sans-serif;
 }
 
 .top{
@@ -37,16 +41,19 @@ align-items:center;
 justify-content:space-between;
 padding:0 max(18px,calc((100vw - 950px)/2));
 background:#090711dd;
+backdrop-filter:blur(15px);
 position:sticky;
 top:0;
-z-index:10
+z-index:10;
 }
 
 .brand{
+display:flex;
+align-items:center;
 font:700 15px 'Space Grotesk';
 letter-spacing:2px;
 color:white;
-text-decoration:none
+text-decoration:none;
 }
 
 .brand span{
@@ -56,12 +63,28 @@ width:39px;
 height:39px;
 margin-right:9px;
 border-radius:12px;
-background:linear-gradient(135deg,#ad76ff,#4c187f)
+background:linear-gradient(135deg,#ad76ff,#4c187f);
+box-shadow:0 0 25px #9860ff55;
 }
+
+.top>a:last-child{
+color:#c9b4ee;
+text-decoration:none;
+font-size:12px;
+transition:.2s;
+}
+
+.top>a:last-child:hover{color:white}
 
 .wrap{
 width:min(950px,calc(100% - 30px));
-margin:48px auto
+margin:48px auto;
+animation:entrar .7s ease both;
+}
+
+@keyframes entrar{
+from{opacity:0;transform:translateY(20px)}
+to{opacity:1;transform:translateY(0)}
 }
 
 .box{
@@ -71,25 +94,40 @@ padding:clamp(20px,5vw,34px);
 border:1px solid var(--line);
 border-radius:20px;
 background:linear-gradient(145deg,#1b1429,#100d18);
-box-shadow:0 20px 65px #0005
+box-shadow:0 20px 65px #0005;
+position:relative;
+overflow:hidden;
+}
+
+.box:before{
+content:"";
+position:absolute;
+width:220px;
+height:220px;
+right:-110px;
+top:-130px;
+background:#9860ff22;
+filter:blur(45px);
+border-radius:50%;
+pointer-events:none;
 }
 
 .eyebrow{
 font-size:10px;
 letter-spacing:2px;
 color:#c7a9ff;
-font-weight:700
+font-weight:700;
 }
 
 .box h1{
 font:700 clamp(26px,5vw,36px) 'Space Grotesk';
-margin:10px 0
+margin:10px 0;
 }
 
 .box p{
 font-size:13px;
 line-height:1.7;
-color:var(--muted)
+color:var(--muted);
 }
 
 .field{margin:17px 0}
@@ -98,7 +136,7 @@ color:var(--muted)
 display:block;
 font-size:11px;
 color:#d3c0f5;
-margin-bottom:8px
+margin-bottom:8px;
 }
 
 .field input,
@@ -111,23 +149,25 @@ border:1px solid #51416c;
 border-radius:11px;
 color:white;
 outline:none;
-font:13px 'DM Sans'
+font:13px 'DM Sans';
+transition:.2s;
 }
 
 .field select option{
 background:#151020;
-color:white
+color:white;
 }
 
 .field textarea{
 min-height:90px;
-resize:vertical
+resize:vertical;
 }
 
 .field input:focus,
 .field select:focus,
 .field textarea:focus{
-border-color:var(--purple)
+border-color:var(--purple);
+box-shadow:0 0 0 3px #9860ff18;
 }
 
 .btn{
@@ -140,10 +180,19 @@ font-weight:700;
 font-size:11px;
 letter-spacing:1px;
 cursor:pointer;
-width:100%
+width:100%;
+transition:.2s;
 }
 
-.btn:disabled{opacity:.5;cursor:not-allowed}
+.btn:hover:not(:disabled){
+transform:translateY(-2px);
+box-shadow:0 8px 25px #9860ff40;
+}
+
+.btn:disabled{
+opacity:.5;
+cursor:not-allowed;
+}
 
 .hint{
 padding:13px;
@@ -153,7 +202,7 @@ border-radius:11px;
 color:#cbb6f5;
 font-size:11px;
 line-height:1.6;
-margin:16px 0
+margin:16px 0 0;
 }
 
 .hidden{display:none!important}
@@ -162,8 +211,11 @@ margin:16px 0
 font-size:12px;
 color:#ff9dbb;
 margin-top:12px;
-line-height:1.6
+line-height:1.6;
 }
+
+.status.success{color:#9effc2}
+.status.loading{color:#c7a9ff}
 
 .plan-info{
 margin-top:12px;
@@ -171,26 +223,27 @@ padding:14px;
 border:1px solid var(--line);
 background:#8c4dff12;
 border-radius:11px;
-display:none
+display:none;
+animation:entrar .25s ease;
 }
 
 .plan-info strong{
 display:block;
 font:700 22px 'Space Grotesk';
 color:#c7a9ff;
-margin-top:5px
+margin-top:5px;
 }
 
 .plan-info small{
 color:var(--muted);
-font-size:11px
+font-size:11px;
 }
 
 footer{
 text-align:center;
 padding:24px;
 color:#81768f;
-font-size:10px
+font-size:10px;
 }
 
 @media(min-width:700px){
@@ -206,9 +259,7 @@ font-size:10px
 <span>SV</span>SIXVOID APIS
 </a>
 
-<a href="/docs.html" style="color:#c9b4ee;text-decoration:none;font-size:12px">
-Documentação ↗
-</a>
+<a href="/docs.html">Documentação ↗</a>
 </header>
 
 <main class="wrap">
@@ -294,7 +345,7 @@ O proprietário confirma a solicitação e libera a chave após a aprovação.
 </main>
 
 <footer>
-© 2026 SIXVOID APIS · DEVELOPED BY VOID
+© <span id="year"></span> SIXVOID APIS · DEVELOPED BY VOID
 </footer>
 
 <script>
@@ -302,9 +353,20 @@ const $ = id => document.getElementById(id);
 
 let whatsapp = '';
 let planos = [];
+let planosCarregados = false;
+let contatoCarregado = false;
 
 function formatarNumero(valor){
 return Number(valor).toLocaleString('pt-BR');
+}
+
+function atualizarBotao(){
+$('sendBtn').disabled = !(
+planosCarregados &&
+contatoCarregado &&
+whatsapp &&
+planos.length > 0
+);
 }
 
 // MOSTRAR / OCULTAR CAMPO DE API KEY
@@ -322,14 +384,22 @@ const select = $('plan');
 
 try{
 
-const response = await fetch('/api/plans');
+const response = await fetch('/api/payments/plans', {
+method:'GET',
+headers:{'Accept':'application/json'}
+});
+
 const data = await response.json();
 
 if(!response.ok || !data.success || !Array.isArray(data.plans)){
-throw new Error('Resposta inválida');
+throw new Error(data.error || 'Resposta inválida ao carregar planos.');
 }
 
 planos = data.plans;
+
+if(!planos.length){
+throw new Error('Nenhum plano está disponível.');
+}
 
 select.innerHTML = '<option value="">Selecione um plano</option>';
 
@@ -339,14 +409,25 @@ const option = document.createElement('option');
 
 option.value = plano.id;
 
+const requisicoes = plano.requests ?? plano.limit ?? 0;
+
+const preco = plano.formattedPrice ??
+Number(plano.price || 0).toLocaleString('pt-BR',{
+style:'currency',
+currency:'BRL'
+});
+
 option.textContent =
-`${formatarNumero(plano.requests)} requisições — ${plano.formattedPrice}`;
+`${formatarNumero(requisicoes)} requisições — ${preco}`;
 
 select.appendChild(option);
 
 });
 
+planosCarregados = true;
+
 $('status').textContent = '';
+$('status').className = 'status';
 
 }catch(error){
 
@@ -355,16 +436,19 @@ console.error('Erro ao carregar planos:', error);
 select.innerHTML = '<option value="">Planos indisponíveis</option>';
 
 $('status').textContent =
-'Não foi possível carregar os planos. Atualize a página.';
+'Não foi possível carregar os planos. Verifique a rota /api/payments/plans no servidor.';
+
+$('status').className = 'status';
 
 }
 
+atualizarBotao();
 }
 
 // MOSTRAR PREÇO DO PLANO SELECIONADO
 $('plan').addEventListener('change', () => {
 
-const plano = planos.find(p => p.id === $('plan').value);
+const plano = planos.find(p => String(p.id) === String($('plan').value));
 
 if(!plano){
 
@@ -373,10 +457,18 @@ return;
 
 }
 
-$('planPrice').textContent = plano.formattedPrice;
+const requisicoes = plano.requests ?? plano.limit ?? 0;
+
+const preco = plano.formattedPrice ??
+Number(plano.price || 0).toLocaleString('pt-BR',{
+style:'currency',
+currency:'BRL'
+});
+
+$('planPrice').textContent = preco;
 
 $('planRequests').textContent =
-formatarNumero(plano.requests) + ' requisições disponíveis';
+formatarNumero(requisicoes) + ' requisições disponíveis';
 
 $('planInfo').style.display = 'block';
 
@@ -387,33 +479,43 @@ async function carregarContato(){
 
 try{
 
-const response = await fetch('/api/public/config');
+const response = await fetch('/api/public/config', {
+headers:{'Accept':'application/json'}
+});
+
+if(!response.ok){
+throw new Error('Falha ao consultar configuração.');
+}
+
 const config = await response.json();
 
-whatsapp = config.supportWhatsapp || '';
+whatsapp = String(config.supportWhatsapp || '').replace(/\D/g,'');
 
 if(!whatsapp){
 
-$('sendBtn').disabled = true;
-
 $('status').textContent =
 'O contato do proprietário ainda não foi configurado.';
+
+$('status').className = 'status';
 
 return;
 
 }
 
-$('sendBtn').disabled = false;
+contatoCarregado = true;
 
 }catch(error){
 
-$('sendBtn').disabled = true;
+console.error('Erro ao carregar contato:', error);
 
 $('status').textContent =
 'Não foi possível carregar o contato do suporte.';
 
+$('status').className = 'status';
+
 }
 
+atualizarBotao();
 }
 
 // ENVIAR SOLICITAÇÃO PELO WHATSAPP
@@ -432,7 +534,7 @@ return;
 
 const tipo = $('kind').value;
 
-const plano = planos.find(p => p.id === $('plan').value);
+const plano = planos.find(p => String(p.id) === String($('plan').value));
 
 if(!plano){
 
@@ -465,6 +567,14 @@ return;
 
 }
 
+const requisicoes = plano.requests ?? plano.limit ?? 0;
+
+const preco = plano.formattedPrice ??
+Number(plano.price || 0).toLocaleString('pt-BR',{
+style:'currency',
+currency:'BRL'
+});
+
 const linhas = [
 
 'Olá, VOID! Vim pela SIXVOID APIS.',
@@ -477,33 +587,31 @@ const linhas = [
 
 'Nome: ' + nome,
 
-'Plano: ' + formatarNumero(plano.requests) + ' requisições',
+'Plano: ' + formatarNumero(requisicoes) + ' requisições',
 
-'Valor: ' + plano.formattedPrice
+'Valor: ' + preco
 
 ];
 
 if(chave){
-
 linhas.push('API Key: ' + chave);
-
 }
 
 if(detalhes){
-
 linhas.push('Detalhes: ' + detalhes);
-
 }
 
 const mensagem = encodeURIComponent(linhas.join('\n'));
 
-window.open(
-'https://wa.me/' + whatsapp + '?text=' + mensagem,
-'_blank',
-'noopener'
-);
+const url =
+'https://wa.me/' + whatsapp + '?text=' + mensagem;
+
+window.open(url,'_blank','noopener');
 
 });
+
+// ANO AUTOMÁTICO
+$('year').textContent = new Date().getFullYear();
 
 // INICIALIZAÇÃO
 carregarPlanos();
