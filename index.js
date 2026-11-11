@@ -158,21 +158,26 @@ app.get('/api/plans', (req, res) => {
 app.get('/api/public/config', (req, res) => {
   res.json({
     brand: 'SIXVOID APIS',
+
     supportWhatsapp: OWNER_WHATSAPP,
+
     instagram: OWNER_INSTAGRAM,
+
     instagramUrl: OWNER_INSTAGRAM
       ? `https://instagram.com/${encodeURIComponent(OWNER_INSTAGRAM)}`
       : '',
+
     mercadoPagoPublicKey: MP_PUBLIC_KEY,
+
     paymentsEnabled: Boolean(MP_ACCESS_TOKEN && MP_PUBLIC_KEY),
 
     plans: PLAN_DEFINITIONS
-      .filter(plan => Number.isFinite(plan.price) && plan.price > 0)
+      .filter(plan => Number.isFinite(Number(plan.price)) && Number(plan.price) > 0)
       .map(plan => ({
         id: plan.id,
         label: plan.label,
         amount: plan.amount,
-        price: plan.price
+        price: Number(plan.price)
       }))
   });
 });
