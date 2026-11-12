@@ -155,31 +155,31 @@ app.get('/api/plans', (req, res) => {
 });
 
 // Configuração pública: nunca envia a senha administrativa ao navegador.
-app.get('/api/public/config', (req, res) => {
-  res.json({
-    brand: 'SIXVOID APIS',
-
-    supportWhatsapp: OWNER_WHATSAPP,
-
-    instagram: OWNER_INSTAGRAM,
-
-    instagramUrl: OWNER_INSTAGRAM
-      ? `https://instagram.com/${encodeURIComponent(OWNER_INSTAGRAM)}`
-      : '',
-
-    mercadoPagoPublicKey: MP_PUBLIC_KEY,
-
-    paymentsEnabled: Boolean(MP_ACCESS_TOKEN && MP_PUBLIC_KEY),
-
-    plans: PLAN_DEFINITIONS
+app.get('/api/payments/plans', (req, res) => {
+  try {
+    const plans = PLAN_DEFINITIONS
       .filter(plan => Number.isFinite(Number(plan.price)) && Number(plan.price) > 0)
       .map(plan => ({
         id: plan.id,
         label: plan.label,
         amount: plan.amount,
         price: Number(plan.price)
-      }))
-  });
+      }));
+
+    return res.json({
+      success: true,
+      enabled: Boolean(MP_ACCESS_TOKEN && MP_PUBLIC_KEY),
+      publicKey: MP_PUBLIC_KEY,
+      plans
+    });
+  } catch (error) {
+    console.error('[PAYMENTS PLANS]', error);
+
+    return res.status(500).json({
+      success: false,
+      error: 'Erro ao carregar os planos.'
+    });
+  }
 });
 
 app.get('/api/health', (req, res) => res.json({ status: 'online', service: 'SIXVOID APIS' }));
