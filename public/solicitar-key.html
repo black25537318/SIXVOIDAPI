@@ -1,674 +1,722 @@
-
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
 <meta name="theme-color" content="#080610">
-
 <title>SIXVOID | Solicitar API Key</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
-:root {
-    --bg: #080610;
-    --panel: #100c1b;
-    --panel2: #171025;
-    --purple: #9860ff;
-    --purple2: #c45cff;
-    --text: #f7f3ff;
-    --muted: #9990aa;
-    --border: rgba(168, 111, 255, .17);
-    --green: #25d366;
+:root{
+--bg:#080610;
+--panel:#100c1b;
+--panel2:#171025;
+--purple:#9860ff;
+--purple2:#c45cff;
+--text:#f7f3ff;
+--muted:#9990aa;
+--border:rgba(168,111,255,.17);
+--green:#25d366;
+--red:#ef5d91;
+--yellow:#f2c66d;
 }
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+*{margin:0;padding:0;box-sizing:border-box}
+
+body{
+min-height:100vh;
+background:
+radial-gradient(ellipse at 50% -15%,rgba(139,77,255,.20),transparent 55%),
+radial-gradient(ellipse at 100% 100%,rgba(196,92,255,.08),transparent 45%),
+var(--bg);
+color:var(--text);
+font-family:'DM Sans',sans-serif;
+padding:35px 16px;
 }
 
-body {
-    min-height: 100vh;
-    background:
-        radial-gradient(ellipse at 50% -15%, rgba(139,77,255,.20), transparent 55%),
-        radial-gradient(ellipse at 100% 100%, rgba(196,92,255,.08), transparent 45%),
-        var(--bg);
-    color: var(--text);
-    font-family: 'DM Sans', sans-serif;
-    padding: 35px 16px;
+button,input,select{font:inherit}
+
+.container{width:100%;max-width:570px;margin:auto}
+
+.header{text-align:center;margin-bottom:30px}
+
+.logo{
+width:68px;height:68px;border-radius:22px;
+display:flex;align-items:center;justify-content:center;
+margin:0 auto 17px;
+font-family:'Space Grotesk',sans-serif;
+font-size:27px;font-weight:800;
+background:linear-gradient(135deg,#9860ff,#c45cff);
+color:white;box-shadow:0 0 35px rgba(152,96,255,.30)
 }
 
-.container {
-    width: 100%;
-    max-width: 570px;
-    margin: auto;
+.brand{
+font-family:'Space Grotesk',sans-serif;
+font-size:27px;font-weight:800;letter-spacing:2px
 }
 
-.header {
-    text-align: center;
-    margin-bottom: 30px;
+.brand span{color:var(--purple2)}
+
+.subtitle{color:var(--muted);font-size:13px;margin-top:8px}
+
+.card{
+background:linear-gradient(145deg,rgba(22,16,35,.97),rgba(12,9,20,.98));
+border:1px solid var(--border);
+border-radius:20px;padding:25px;
+box-shadow:0 15px 60px rgba(0,0,0,.25)
 }
 
-.logo {
-    width: 68px;
-    height: 68px;
-    border-radius: 22px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto 17px;
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 27px;
-    font-weight: 800;
-    background: linear-gradient(135deg, #9860ff, #c45cff);
-    color: white;
-    box-shadow: 0 0 35px rgba(152,96,255,.30);
+.card-title{
+font-family:'Space Grotesk',sans-serif;
+font-size:19px;font-weight:700;margin-bottom:7px
 }
 
-.brand {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 27px;
-    font-weight: 800;
-    letter-spacing: 2px;
+.card-description{
+font-size:12px;color:var(--muted);
+line-height:1.6;margin-bottom:23px
 }
 
-.brand span {
-    color: var(--purple2);
+.field{margin-bottom:18px}
+
+label{
+display:block;font-size:12px;font-weight:700;
+margin-bottom:9px;color:#ded5ed
 }
 
-.subtitle {
-    color: var(--muted);
-    font-size: 13px;
-    margin-top: 8px;
+input,select{
+width:100%;background:#0b0812;
+border:1px solid var(--border);
+border-radius:11px;padding:14px;
+color:white;font-family:'DM Sans',sans-serif;
+font-size:13px;outline:none;transition:.2s
 }
 
-.card {
-    background: linear-gradient(145deg, rgba(22,16,35,.97), rgba(12,9,20,.98));
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    padding: 25px;
-    box-shadow: 0 15px 60px rgba(0,0,0,.25);
+input:focus,select:focus{
+border-color:var(--purple);
+box-shadow:0 0 0 3px rgba(152,96,255,.10)
 }
 
-.card-title {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 19px;
-    font-weight: 700;
-    margin-bottom: 7px;
+input::placeholder{color:#71697e}
+
+select{cursor:pointer}
+select option{background:#100c1b;color:white}
+
+.type-options{
+display:grid;grid-template-columns:1fr 1fr;gap:10px
 }
 
-.card-description {
-    font-size: 12px;
-    color: var(--muted);
-    line-height: 1.6;
-    margin-bottom: 23px;
+.type-option{position:relative}
+
+.type-option input{
+position:absolute;opacity:0;pointer-events:none
 }
 
-.field {
-    margin-bottom: 18px;
+.type-option label{
+border:1px solid var(--border);
+border-radius:12px;padding:15px 10px;
+text-align:center;cursor:pointer;
+background:#0b0812;transition:.2s;margin:0
 }
 
-label {
-    display: block;
-    font-size: 12px;
-    font-weight: 700;
-    margin-bottom: 9px;
-    color: #ded5ed;
+.type-option label strong{
+display:block;font-size:13px;margin-bottom:5px
 }
 
-input, select, textarea {
-    width: 100%;
-    background: #0b0812;
-    border: 1px solid var(--border);
-    border-radius: 11px;
-    padding: 14px;
-    color: white;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 13px;
-    outline: none;
-    transition: .2s;
+.type-option label small{
+font-size:10px;color:var(--muted);font-weight:400
 }
 
-input:focus, select:focus, textarea:focus {
-    border-color: var(--purple);
-    box-shadow: 0 0 0 3px rgba(152,96,255,.10);
+.type-option input:checked+label{
+border-color:var(--purple);
+background:rgba(152,96,255,.12);
+box-shadow:0 0 18px rgba(152,96,255,.09)
 }
 
-input::placeholder, textarea::placeholder {
-    color: #71697e;
+.plan-info{
+margin-top:11px;padding:14px;border-radius:12px;
+background:rgba(152,96,255,.08);
+border:1px solid rgba(152,96,255,.15);
+display:flex;align-items:center;justify-content:space-between;gap:10px
 }
 
-select {
-    cursor: pointer;
-    appearance: none;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' fill='none' stroke='%23c45cff' stroke-width='2' viewBox='0 0 24 24'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 15px center;
-    padding-right: 40px;
+.plan-info small{
+display:block;color:var(--muted);font-size:10px;margin-bottom:5px
 }
 
-select option {
-    background: #100c1b;
-    color: white;
+.plan-requests{font-size:14px;font-weight:800}
+
+.plan-price{
+font-family:'Space Grotesk',sans-serif;
+font-size:21px;font-weight:800;color:#c994ff
 }
 
-textarea {
-    resize: vertical;
-    min-height: 90px;
+.notice{
+background:rgba(37,211,102,.06);
+border:1px solid rgba(37,211,102,.15);
+color:#b8e9c9;border-radius:11px;
+padding:13px;font-size:11px;
+line-height:1.6;margin:19px 0
 }
 
-.type-options {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
+.submit-btn{
+width:100%;padding:16px;border:none;border-radius:12px;
+background:linear-gradient(110deg,#9860ff,#c45cff);
+color:white;font-family:'Space Grotesk',sans-serif;
+font-weight:800;font-size:13px;letter-spacing:.6px;
+cursor:pointer;transition:.2s;
+box-shadow:0 8px 25px rgba(152,96,255,.20)
 }
 
-.type-option {
-    position: relative;
+.submit-btn:hover{transform:translateY(-2px)}
+.submit-btn:disabled{opacity:.55;cursor:not-allowed;transform:none}
+
+.footer{
+text-align:center;color:#71697e;font-size:11px;
+margin-top:23px;line-height:1.8
 }
 
-.type-option input {
-    position: absolute;
-    opacity: 0;
-    pointer-events: none;
+.footer strong{color:#b78aff}
+
+.hidden{display:none!important}
+
+.pix-box{
+background:#0b0812;border:1px solid var(--border);
+border-radius:14px;padding:17px;margin-top:17px
 }
 
-.type-option label {
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 15px 10px;
-    text-align: center;
-    cursor: pointer;
-    background: #0b0812;
-    transition: .2s;
-    margin: 0;
+.pix-label{
+font-size:10px;letter-spacing:1.5px;
+color:#c9aaff;font-weight:800;margin-bottom:10px
 }
 
-.type-option label strong {
-    display: block;
-    font-size: 13px;
-    margin-bottom: 5px;
+.pix-key{
+font-size:14px;font-weight:700;
+overflow-wrap:anywhere;color:white;margin:10px 0
 }
 
-.type-option label small {
-    font-size: 10px;
-    color: var(--muted);
-    font-weight: 400;
+.pix-holder{font-size:11px;color:var(--muted);line-height:1.7}
+
+.copy-btn{
+width:100%;padding:13px;border-radius:10px;
+border:1px solid #a77aff55;background:#241a35;
+color:white;font-weight:700;font-size:11px;
+cursor:pointer;margin-top:12px
 }
 
-.type-option input:checked + label {
-    border-color: var(--purple);
-    background: rgba(152,96,255,.12);
-    box-shadow: 0 0 18px rgba(152,96,255,.09);
+.order-code{
+font:700 13px monospace;color:#d7baff;
+overflow-wrap:anywhere;margin-top:8px
 }
 
-.plan-info {
-    margin-top: 11px;
-    padding: 14px;
-    border-radius: 12px;
-    background: rgba(152,96,255,.08);
-    border: 1px solid rgba(152,96,255,.15);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 10px;
+.status-box{
+padding:14px;border-radius:11px;
+border:1px solid var(--border);
+background:#8c4dff12;
+font-size:12px;line-height:1.7;margin-top:15px
 }
 
-.plan-info small {
-    display: block;
-    color: var(--muted);
-    font-size: 10px;
-    margin-bottom: 5px;
+.status-box.pending{border-color:#f2c66d55;color:#f2c66d}
+.status-box.approved{border-color:#25d36655;color:#79e9a0}
+.status-box.rejected{border-color:#ef5d9155;color:#ff83a9}
+
+.key-result{
+margin-top:16px;padding:16px;
+border:1px solid #25d36655;
+background:#25d3660b;border-radius:13px
 }
 
-.plan-requests {
-    font-size: 14px;
-    font-weight: 800;
+.key-result strong{
+display:block;color:#79e9a0;
+font-size:12px;margin-bottom:10px
 }
 
-.plan-price {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 21px;
-    font-weight: 800;
-    color: #c994ff;
+.key-result code{
+display:block;font-size:12px;
+color:white;overflow-wrap:anywhere;
+line-height:1.7
 }
 
-.plan-price small {
-    text-align: right;
+.secondary-btn{
+width:100%;margin-top:12px;padding:13px;
+border:1px solid var(--border);
+border-radius:10px;background:#241a35;
+color:white;font-weight:700;font-size:11px;cursor:pointer
 }
 
-.notice {
-    background: rgba(37,211,102,.06);
-    border: 1px solid rgba(37,211,102,.15);
-    color: #b8e9c9;
-    border-radius: 11px;
-    padding: 13px;
-    font-size: 11px;
-    line-height: 1.6;
-    margin: 19px 0;
-}
+.error{color:#ff83a9}
 
-.submit-btn {
-    width: 100%;
-    padding: 16px;
-    border: none;
-    border-radius: 12px;
-    background: linear-gradient(110deg, #9860ff, #c45cff);
-    color: white;
-    font-family: 'Space Grotesk', sans-serif;
-    font-weight: 800;
-    font-size: 13px;
-    letter-spacing: .6px;
-    cursor: pointer;
-    transition: .2s;
-    box-shadow: 0 8px 25px rgba(152,96,255,.20);
-}
-
-.submit-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 10px 30px rgba(152,96,255,.35);
-}
-
-.submit-btn:active {
-    transform: scale(.98);
-}
-
-.footer {
-    text-align: center;
-    color: #71697e;
-    font-size: 11px;
-    margin-top: 23px;
-    line-height: 1.8;
-}
-
-.footer strong {
-    color: #b78aff;
-}
-
-.hidden {
-    display: none;
-}
-
-@media(max-width: 450px) {
-    body {
-        padding: 25px 12px;
-    }
-
-    .card {
-        padding: 20px 16px;
-    }
-
-    .brand {
-        font-size: 24px;
-    }
+@media(max-width:450px){
+body{padding:25px 12px}
+.card{padding:20px 16px}
+.brand{font-size:24px}
 }
 </style>
 </head>
 
 <body>
-
 <div class="container">
 
-    <header class="header">
-        <div class="logo">SV</div>
+<header class="header">
+<div class="logo">SV</div>
+<h1 class="brand">SIXVOID <span>APIS</span></h1>
+<p class="subtitle">Solicite sua API Key ou recarregue seu saldo.</p>
+</header>
 
-        <h1 class="brand">
-            SIXVOID <span>APIS</span>
-        </h1>
+<main class="card">
 
-        <p class="subtitle">
-            Solicite sua API Key ou recarregue seu saldo.
-        </p>
-    </header>
+<section id="formSection">
+<h2 class="card-title">Solicitar API Key</h2>
+<p class="card-description">
+Escolha seu plano, informe seus dados e receba as instruções para pagamento via Pix.
+</p>
 
-    <main class="card">
+<form id="requestForm">
 
-        <h2 class="card-title">Solicitar API Key</h2>
+<div class="field">
+<label>TIPO DE SOLICITAÇÃO</label>
+<div class="type-options">
 
-        <p class="card-description">
-            Escolha o serviço desejado, selecione seu plano e envie sua solicitação para nossa equipe.
-        </p>
+<div class="type-option">
+<input type="radio" name="requestType" id="newKey" value="new" checked>
+<label for="newKey">
+<strong>Nova API Key</strong>
+<small>Quero uma chave nova</small>
+</label>
+</div>
 
-        <form id="requestForm">
+<div class="type-option">
+<input type="radio" name="requestType" id="recharge" value="recharge">
+<label for="recharge">
+<strong>Recarga</strong>
+<small>Já possuo uma chave</small>
+</label>
+</div>
 
-            <div class="field">
-                <label>TIPO DE SOLICITAÇÃO</label>
+</div>
+</div>
 
-                <div class="type-options">
+<div class="field">
+<label for="name">SEU NOME</label>
+<input type="text" id="name" maxlength="80" placeholder="Digite seu nome completo" required>
+</div>
 
-                    <div class="type-option">
-                        <input
-                            type="radio"
-                            name="requestType"
-                            id="newKey"
-                            value="Nova API Key"
-                            checked
-                        >
+<div class="field">
+<label for="email">SEU E-MAIL</label>
+<input type="email" id="email" maxlength="150" placeholder="seuemail@exemplo.com" required>
+</div>
 
-                        <label for="newKey">
-                            <strong>Nova API Key</strong>
-                            <small>Quero uma chave nova</small>
-                        </label>
-                    </div>
+<div class="field" id="keyNameField">
+<label for="keyName">NOME DESEJADO PARA SUA API</label>
+<input type="text" id="keyName" maxlength="40" placeholder="Ex: Loki Premium">
+</div>
 
-                    <div class="type-option">
-                        <input
-                            type="radio"
-                            name="requestType"
-                            id="recharge"
-                            value="Recarga de API Key"
-                        >
+<div class="field hidden" id="keyField">
+<label for="apiKey">SUA API KEY</label>
+<input type="text" id="apiKey" maxlength="200" placeholder="Cole sua API Key existente">
+</div>
 
-                        <label for="recharge">
-                            <strong>Recarga</strong>
-                            <small>Já possuo uma chave</small>
-                        </label>
-                    </div>
+<div class="field">
+<label for="plan">ESCOLHA SEU PLANO</label>
+<select id="plan" required>
+<option value="">Carregando planos...</option>
+</select>
 
-                </div>
-            </div>
+<div class="plan-info">
+<div>
+<small>QUANTIDADE DE REQUISIÇÕES</small>
+<div class="plan-requests" id="requestAmount">Selecione um plano</div>
+</div>
+<div style="text-align:right">
+<small>VALOR DO PLANO</small>
+<div class="plan-price" id="planPrice">R$ 0,00</div>
+</div>
+</div>
+</div>
 
-            <div class="field">
-                <label for="name">SEU NOME</label>
+<button type="submit" class="submit-btn" id="submitBtn">
+GERAR SOLICITAÇÃO PIX
+</button>
 
-                <input
-                    type="text"
-                    id="name"
-                    placeholder="Digite seu nome"
-                    required
-                >
-            </div>
+<div class="status-box hidden" id="formStatus"></div>
 
-            <div class="field hidden" id="keyField">
-                <label for="apiKey">SUA API KEY</label>
+</form>
+</section>
 
-                <input
-                    type="text"
-                    id="apiKey"
-                    placeholder="Cole sua API Key"
-                >
-            </div>
+<section id="paymentSection" class="hidden">
+<h2 class="card-title">Pagamento via Pix</h2>
+<p class="card-description">
+Sua solicitação foi registrada. Faça o pagamento usando os dados abaixo.
+</p>
 
-            <div class="field">
-                <label for="plan">ESCOLHA SEU PLANO</label>
+<div class="pix-box">
+<div class="pix-label">DADOS DO PIX</div>
+<div class="pix-holder">
+Titular: <strong id="pixHolder">Cauã Fellipy Carvalho dos Santos</strong><br>
+Tipo de chave: E-mail
+</div>
+<div class="pix-key" id="pixKey">fellipycaua26@gmail.com</div>
+<button class="copy-btn" id="copyPix" type="button">COPIAR CHAVE PIX</button>
+</div>
 
-                <select id="plan" required>
-                    <option value="">Carregando planos...</option>
-                </select>
+<div class="plan-info">
+<div>
+<small>PLANO CONTRATADO</small>
+<div class="plan-requests" id="paymentRequests">—</div>
+</div>
+<div style="text-align:right">
+<small>VALOR A PAGAR</small>
+<div class="plan-price" id="paymentPrice">—</div>
+</div>
+</div>
 
-                <div class="plan-info">
-                    <div>
-                        <small>QUANTIDADE DE REQUISIÇÕES</small>
-                        <div class="plan-requests" id="requestAmount">
-                            Selecione um plano
-                        </div>
-                    </div>
+<div class="pix-box">
+<div class="pix-label">CÓDIGO DO PEDIDO</div>
+<div class="order-code" id="orderCode">—</div>
+<button class="copy-btn" id="copyOrder" type="button">COPIAR CÓDIGO DO PEDIDO</button>
+</div>
 
-                    <div style="text-align:right">
-                        <small>VALOR DO PLANO</small>
-                        <div class="plan-price" id="planPrice">
-                            R$ 0,00
-                        </div>
-                    </div>
-                </div>
-            </div>
+<div class="status-box pending" id="orderStatus">
+Aguardando confirmação do pagamento. Após pagar, aguarde a análise do administrador.
+</div>
 
-            <div class="field">
-                <label for="details">INFORMAÇÕES ADICIONAIS</label>
+<div class="key-result hidden" id="keyResult">
+<strong>✓ PAGAMENTO APROVADO — SUA API KEY ESTÁ PRONTA</strong>
+<code id="issuedKey"></code>
+<button class="copy-btn" id="copyKey" type="button">COPIAR API KEY</button>
+</div>
 
-                <textarea
-                    id="details"
-                    placeholder="Deseja informar alguma coisa? (opcional)"
-                ></textarea>
-            </div>
+<button class="secondary-btn" id="checkStatus" type="button">↻ VERIFICAR STATUS DO PEDIDO</button>
+<button class="secondary-btn" id="newOrder" type="button">FAZER OUTRA SOLICITAÇÃO</button>
 
-            <div class="notice">
-                Sua solicitação será encaminhada para o WhatsApp da SIXVOID APIS.
-                Nossa equipe dará continuidade ao atendimento por lá.
-            </div>
+<p class="card-description" style="margin:16px 0 0">
+Importante: a confirmação é feita manualmente pela equipe. Não feche esta página antes de guardar o código do pedido.
+</p>
+</section>
 
-            <button type="submit" class="submit-btn">
-                CONTINUAR PELO WHATSAPP
-            </button>
+</main>
 
-        </form>
-
-    </main>
-
-    <footer class="footer">
-        <strong>SIXVOID APIS</strong><br>
-        Tecnologia, desempenho e inovação.<br>
-        © <span id="year"></span> SIXVOID. Todos os direitos reservados.
-    </footer>
+<footer class="footer">
+<strong>SIXVOID APIS</strong><br>
+Tecnologia, desempenho e inovação.<br>
+© <span id="year"></span> SIXVOID. Todos os direitos reservados.
+</footer>
 
 </div>
 
 <script>
-/* ==========================================
-   CONFIGURAÇÕES
-========================================== */
+const $=id=>document.getElementById(id);
 
-const whatsapp = '351961491952';
+const form=$('requestForm');
+const planSelect=$('plan');
 
-/* ==========================================
-   PLANOS DISPONÍVEIS
-========================================== */
+let plans=[];
+let currentOrder=null;
+let accessToken=null;
+let polling=null;
+let pixConfig={
+key:'fellipycaua26@gmail.com',
+name:'Cauã Fellipy Carvalho dos Santos'
+};
 
-const plans = [
-    { requests: 1000, price: 1.00 },
-    { requests: 5000, price: 2.00 },
-    { requests: 10000, price: 3.00 },
-    { requests: 20000, price: 4.00 },
-    { requests: 30000, price: 5.00 },
-    { requests: 40000, price: 6.00 },
-    { requests: 50000, price: 8.00 },
-    { requests: 75000, price: 11.00 },
-    { requests: 100000, price: 15.00 },
-    { requests: 150000, price: 22.00 },
-    { requests: 200000, price: 27.00 },
-    { requests: 250000, price: 30.00 },
-    { requests: 300000, price: 36.00 },
-    { requests: 400000, price: 44.00 },
-    { requests: 500000, price: 50.00 },
-    { requests: 600000, price: 58.00 },
-    { requests: 700000, price: 65.00 },
-    { requests: 800000, price: 70.00 },
-    { requests: 900000, price: 75.00 },
-    { requests: 1000000, price: 80.00 }
-];
-
-/* ==========================================
-   ELEMENTOS
-========================================== */
-
-const form = document.getElementById('requestForm');
-const planSelect = document.getElementById('plan');
-
-const requestAmount = document.getElementById('requestAmount');
-const planPrice = document.getElementById('planPrice');
-
-const keyField = document.getElementById('keyField');
-const apiKeyInput = document.getElementById('apiKey');
-
-const nameInput = document.getElementById('name');
-const detailsInput = document.getElementById('details');
-
-/* ==========================================
-   FORMATADORES
-========================================== */
-
-function formatRequests(value) {
-    return Number(value).toLocaleString('pt-BR');
+function formatRequests(value){
+return Number(value).toLocaleString('pt-BR');
 }
 
-function formatPrice(value) {
-    return Number(value).toLocaleString('pt-BR', {
-        style: 'currency',
-        currency: 'BRL'
-    });
+function formatPrice(value){
+return Number(value).toLocaleString('pt-BR',{
+style:'currency',
+currency:'BRL'
+});
 }
 
-/* ==========================================
-   CARREGAR OS 20 PLANOS
-========================================== */
-
-function loadPlans() {
-    planSelect.innerHTML = '<option value="">Selecione um plano</option>';
-
-    plans.forEach((plan, index) => {
-        const option = document.createElement('option');
-
-        option.value = index;
-
-        option.textContent =
-            `${formatRequests(plan.requests)} requisições — ${formatPrice(plan.price)}`;
-
-        planSelect.appendChild(option);
-    });
+function showMessage(message,error=false){
+const box=$('formStatus');
+box.textContent=message;
+box.classList.remove('hidden');
+box.classList.toggle('error',error);
 }
 
-/* ==========================================
-   ATUALIZAR INFORMAÇÕES DO PLANO
-========================================== */
-
-function updatePlan() {
-    const selectedIndex = planSelect.value;
-
-    if (selectedIndex === '') {
-        requestAmount.textContent = 'Selecione um plano';
-        planPrice.textContent = 'R$ 0,00';
-        return;
-    }
-
-    const plan = plans[Number(selectedIndex)];
-
-    if (!plan) return;
-
-    requestAmount.textContent =
-        formatRequests(plan.requests) + ' requisições';
-
-    planPrice.textContent = formatPrice(plan.price);
+function stopPolling(){
+if(polling){
+clearInterval(polling);
+polling=null;
+}
 }
 
-/* ==========================================
-   ALTERNAR NOVA KEY / RECARGA
-========================================== */
-
-function updateRequestType() {
-    const selected = document.querySelector(
-        'input[name="requestType"]:checked'
-    );
-
-    const isRecharge = selected?.value === 'Recarga de API Key';
-
-    keyField.classList.toggle('hidden', !isRecharge);
-
-    apiKeyInput.required = isRecharge;
-
-    if (!isRecharge) {
-        apiKeyInput.value = '';
-    }
+async function api(url,options={}){
+const response=await fetch(url,{
+credentials:'same-origin',
+...options,
+headers:{
+'Content-Type':'application/json',
+...(options.headers||{})
 }
-
-document.querySelectorAll('input[name="requestType"]').forEach(input => {
-    input.addEventListener('change', updateRequestType);
 });
 
-/* ==========================================
-   ENVIAR SOLICITAÇÃO PELO WHATSAPP
-========================================== */
+let data={};
+try{data=await response.json()}catch{}
 
-form.addEventListener('submit', function(event) {
-    event.preventDefault();
+if(!response.ok){
+throw new Error(data.message||'Não foi possível concluir a operação.');
+}
 
-    const name = nameInput.value.trim();
-    const apiKey = apiKeyInput.value.trim();
-    const details = detailsInput.value.trim();
+return data;
+}
 
-    const selectedType = document.querySelector(
-        'input[name="requestType"]:checked'
-    )?.value;
+async function loadPlans(){
+planSelect.innerHTML='<option value="">Carregando planos...</option>';
 
-    const selectedIndex = planSelect.value;
+try{
+const data=await api('/api/payments/plans');
 
-    if (!name) {
-        alert('Digite seu nome.');
-        nameInput.focus();
-        return;
-    }
+if(!Array.isArray(data.plans)||!data.plans.length){
+throw new Error('Nenhum plano disponível.');
+}
 
-    if (!selectedType) {
-        alert('Selecione o tipo de solicitação.');
-        return;
-    }
+plans=data.plans;
 
-    if (selectedType === 'Recarga de API Key' && !apiKey) {
-        alert('Informe sua API Key para continuar.');
-        apiKeyInput.focus();
-        return;
-    }
+if(data.pix){
+pixConfig.key=data.pix.key||pixConfig.key;
+pixConfig.name=data.pix.name||pixConfig.name;
+}
 
-    if (selectedIndex === '') {
-        alert('Selecione um plano.');
-        planSelect.focus();
-        return;
-    }
+$('pixKey').textContent=pixConfig.key;
+$('pixHolder').textContent=pixConfig.name;
 
-    const plan = plans[Number(selectedIndex)];
+planSelect.innerHTML='<option value="">Selecione um plano</option>';
 
-    if (!plan) {
-        alert('Plano inválido. Selecione novamente.');
-        return;
-    }
-
-    const message = [
-        '*SIXVOID APIS — NOVA SOLICITAÇÃO*',
-        '',
-        '*Tipo:* ' + selectedType,
-        '*Nome:* ' + name,
-        '',
-        '*PLANO ESCOLHIDO*',
-        '*Requisições:* ' + formatRequests(plan.requests),
-        '*Valor:* ' + formatPrice(plan.price),
-        '',
-        selectedType === 'Recarga de API Key'
-            ? '*API Key:* ' + apiKey
-            : '*API Key:* Solicitação de nova chave',
-        '',
-        '*Informações adicionais:*',
-        details || 'Nenhuma informação adicional.',
-        '',
-        'Solicitação enviada pelo site SIXVOID APIS.'
-    ].join('\n');
-
-    const url =
-        'https://wa.me/' +
-        whatsapp +
-        '?text=' +
-        encodeURIComponent(message);
-
-    window.open(url, '_blank', 'noopener,noreferrer');
+plans.forEach(plan=>{
+const option=document.createElement('option');
+option.value=plan.id;
+option.textContent=
+`${formatRequests(plan.requests)} requisições — ${formatPrice(plan.price)}`;
+planSelect.appendChild(option);
 });
 
-/* ==========================================
-   INICIALIZAÇÃO
-========================================== */
+updatePlan();
 
-loadPlans();
+}catch(error){
+planSelect.innerHTML='<option value="">Erro ao carregar planos</option>';
+showMessage(error.message,true);
+}
+}
+
+function updatePlan(){
+const plan=plans.find(p=>String(p.id)===String(planSelect.value));
+
+if(!plan){
+$('requestAmount').textContent='Selecione um plano';
+$('planPrice').textContent='R$ 0,00';
+return;
+}
+
+$('requestAmount').textContent=
+formatRequests(plan.requests)+' requisições';
+
+$('planPrice').textContent=formatPrice(plan.price);
+}
+
+function updateRequestType(){
+const type=document.querySelector('input[name="requestType"]:checked')?.value;
+const recharge=type==='recharge';
+
+$('keyField').classList.toggle('hidden',!recharge);
+$('keyNameField').classList.toggle('hidden',recharge);
+
+$('apiKey').required=recharge;
+$('keyName').required=!recharge;
+}
+
+document.querySelectorAll('input[name="requestType"]').forEach(input=>{
+input.addEventListener('change',updateRequestType);
+});
+
+planSelect.addEventListener('change',updatePlan);
+
+form.addEventListener('submit',async event=>{
+event.preventDefault();
+
+const type=document.querySelector('input[name="requestType"]:checked')?.value;
+const name=$('name').value.trim();
+const email=$('email').value.trim();
+const keyName=$('keyName').value.trim();
+const apiKey=$('apiKey').value.trim();
+const planId=planSelect.value;
+
+if(!name||!email||!planId){
+showMessage('Preencha todos os campos obrigatórios.',true);
+return;
+}
+
+if(type==='new'&&!keyName){
+showMessage('Informe o nome desejado para sua API.',true);
+return;
+}
+
+if(type==='recharge'&&!apiKey){
+showMessage('Informe sua API Key para solicitar uma recarga.',true);
+return;
+}
+
+const submit=$('submitBtn');
+submit.disabled=true;
+submit.textContent='CRIANDO SOLICITAÇÃO...';
+
+try{
+const payload={
+type,
+name,
+email,
+keyName:type==='new'?keyName:'',
+apiKey:type==='recharge'?apiKey:'',
+planId
+};
+
+const data=await api('/api/payments/orders',{
+method:'POST',
+body:JSON.stringify(payload)
+});
+
+if(!data.order||!data.accessToken){
+throw new Error('O servidor não retornou os dados do pedido.');
+}
+
+currentOrder=data.order;
+accessToken=data.accessToken;
+
+$('formSection').classList.add('hidden');
+$('paymentSection').classList.remove('hidden');
+
+$('paymentRequests').textContent=
+formatRequests(currentOrder.requests)+' requisições';
+
+$('paymentPrice').textContent=formatPrice(currentOrder.price);
+$('orderCode').textContent=currentOrder.id;
+
+if(data.pix){
+pixConfig.key=data.pix.key||pixConfig.key;
+pixConfig.name=data.pix.name||pixConfig.name;
+}
+
+$('pixKey').textContent=pixConfig.key;
+$('pixHolder').textContent=pixConfig.name;
+
+updateOrderStatus(currentOrder);
+startPolling();
+
+}catch(error){
+showMessage(error.message,true);
+}finally{
+submit.disabled=false;
+submit.textContent='GERAR SOLICITAÇÃO PIX';
+}
+});
+
+function updateOrderStatus(order){
+const status=String(order.status||'pending').toLowerCase();
+const box=$('orderStatus');
+
+box.classList.remove('pending','approved','rejected');
+
+if(status==='approved'){
+box.classList.add('approved');
+box.textContent='Pagamento aprovado! Sua API Key foi gerada.';
+$('keyResult').classList.remove('hidden');
+$('issuedKey').textContent=order.apikey||'Chave não retornada. Consulte o administrador.';
+stopPolling();
+return;
+}
+
+if(status==='rejected'){
+box.classList.add('rejected');
+box.textContent='Sua solicitação foi recusada. Entre em contato com o suporte caso tenha dúvidas.';
+$('keyResult').classList.add('hidden');
+stopPolling();
+return;
+}
+
+box.classList.add('pending');
+box.textContent='Pedido pendente. Faça o Pix e aguarde a confirmação manual da equipe.';
+}
+
+async function checkOrderStatus(){
+if(!currentOrder||!accessToken)return;
+
+try{
+const data=await api(
+`/api/payments/orders/${encodeURIComponent(currentOrder.id)}?token=${encodeURIComponent(accessToken)}`
+);
+
+if(data.order){
+currentOrder={...currentOrder,...data.order};
+updateOrderStatus(currentOrder);
+}
+}catch(error){
+$('orderStatus').textContent='Não foi possível consultar o pedido. Tente novamente.';
+}
+}
+
+function startPolling(){
+stopPolling();
+checkOrderStatus();
+polling=setInterval(checkOrderStatus,10000);
+}
+
+$('checkStatus').onclick=checkOrderStatus;
+
+$('copyPix').onclick=async()=>{
+try{
+await navigator.clipboard.writeText(pixConfig.key);
+$('copyPix').textContent='CHAVE PIX COPIADA!';
+}catch{
+alert('Não foi possível copiar. Copie a chave manualmente: '+pixConfig.key);
+}
+};
+
+$('copyOrder').onclick=async()=>{
+try{
+await navigator.clipboard.writeText(String(currentOrder?.id||''));
+$('copyOrder').textContent='CÓDIGO COPIADO!';
+}catch{
+alert('Código do pedido: '+currentOrder?.id);
+}
+};
+
+$('copyKey').onclick=async()=>{
+const key=$('issuedKey').textContent;
+try{
+await navigator.clipboard.writeText(key);
+$('copyKey').textContent='API KEY COPIADA!';
+}catch{
+alert('Copie sua API Key manualmente.');
+}
+};
+
+$('newOrder').onclick=()=>{
+stopPolling();
+currentOrder=null;
+accessToken=null;
+form.reset();
+planSelect.value='';
 updatePlan();
 updateRequestType();
+$('paymentSection').classList.add('hidden');
+$('formSection').classList.remove('hidden');
+$('formStatus').classList.add('hidden');
+$('keyResult').classList.add('hidden');
+$('copyPix').textContent='COPIAR CHAVE PIX';
+$('copyOrder').textContent='COPIAR CÓDIGO DO PEDIDO';
+$('copyKey').textContent='COPIAR API KEY';
+};
 
-planSelect.addEventListener('change', updatePlan);
+document.getElementById('year').textContent=new Date().getFullYear();
 
-document.getElementById('year').textContent =
-    new Date().getFullYear();
-
+updateRequestType();
+loadPlans();
 </script>
-
 </body>
 </html>

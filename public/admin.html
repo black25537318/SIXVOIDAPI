@@ -1,4 +1,3 @@
-
 <!doctype html>
 <html lang="pt-BR">
 <head>
@@ -10,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#080610;--panel:#120e1d;--panel2:#191329;--line:#a77aff30;--text:#f7f2ff;--muted:#a79bb9;--purple:#9860ff;--pink:#c16aff;--danger:#ef5d91;--green:#64e0ae}
+:root{--bg:#080610;--panel:#120e1d;--panel2:#191329;--line:#a77aff30;--text:#f7f2ff;--muted:#a79bb9;--purple:#9860ff;--pink:#c16aff;--danger:#ef5d91;--green:#64e0ae;--yellow:#f2c66d}
 *{box-sizing:border-box}
 body{margin:0;background:radial-gradient(ellipse at 12% 0%,#56258b45,transparent 38%),radial-gradient(ellipse at 90% 15%,#512c8530,transparent 35%),var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min-height:100vh}
 button,input{font:inherit}
@@ -49,10 +48,11 @@ button,a{-webkit-tap-highlight-color:transparent}
 .btn{border:0;border-radius:10px;padding:12px 16px;color:white;background:linear-gradient(110deg,#8653e8,#b56ae0);font-weight:700;font-size:11px;letter-spacing:.6px;cursor:pointer}
 .btn.secondary{background:#241a35;border:1px solid var(--line)}
 .btn.danger{background:#72254a}
+.btn.success{background:#17694d}
 .btn:disabled{opacity:.55;cursor:not-allowed}
 .row{display:flex;align-items:center;justify-content:space-between;gap:12px}
-.keylist{display:grid;gap:9px}
-.keyitem{padding:14px;background:#0c0914;border:1px solid var(--line);border-radius:12px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.keylist,.orderlist{display:grid;gap:9px}
+.keyitem,.orderitem{padding:14px;background:#0c0914;border:1px solid var(--line);border-radius:12px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
 .keyvalue{font:600 11px monospace;overflow-wrap:anywhere;color:#e5d9ff}
 .keyname{font:700 13px 'Space Grotesk';color:#c9aaff;margin-bottom:6px;overflow-wrap:anywhere}
 .keymeta{font-size:10px;color:var(--muted);margin-top:5px}
@@ -82,6 +82,15 @@ footer span{color:#c4a1ff}
 .audio-box.open{display:block}
 .audio-box p{font-size:10px;color:var(--muted);margin:6px 0}
 .audio-box input{width:100%;accent-color:#a16aff}
+.order-status{font-size:9px;font-weight:700;letter-spacing:1px;padding:6px 9px;border-radius:7px;display:inline-block;margin-top:8px}
+.order-status.pending{background:#f2c66d18;color:var(--yellow);border:1px solid #f2c66d44}
+.order-status.approved{background:#64e0ae18;color:var(--green);border:1px solid #64e0ae44}
+.order-status.rejected{background:#ef5d9118;color:#ff83a9;border:1px solid #ef5d9144}
+.orderdetails{font-size:11px;color:var(--muted);line-height:1.8;margin-top:8px}
+.orderdetails b{color:#e8dcff}
+.orderkey{font:600 11px monospace;color:var(--green);overflow-wrap:anywhere;margin-top:8px}
+.filterbar{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
+.filterbar button.active{border-color:#b78cff;background:#603a9733;color:#fff}
 @media(max-width:760px){.stats{grid-template-columns:1fr 1fr}.grid2{grid-template-columns:1fr}.container{margin-top:25px}.profile{padding:16px}}
 @media(max-width:390px){.stats{grid-template-columns:1fr 1fr}.card{padding:14px}.card strong{font-size:23px}}
 </style>
@@ -107,6 +116,7 @@ footer span{color:#c4a1ff}
 </div>
 <div class="navgroup">GERENCIAMENTO</div>
 <a class="navlink active" href="#overview" data-page="overview"><b>⌂</b>Painel administrativo</a>
+<a class="navlink" href="#orders" data-page="orders"><b>▣</b>Pedidos Pix</a>
 <a class="navlink" href="#keys" data-page="keys"><b>⌘</b>API Keys</a>
 <a class="navlink" href="/solicitar-key.html"><b>＋</b>Criar / recarregar Key</a>
 <div class="navgroup">SIXVOID</div>
@@ -117,11 +127,10 @@ footer span{color:#c4a1ff}
 </aside>
 
 <main class="container" id="app" aria-live="polite">
-
 <section class="heading">
 <div class="eyebrow">CONTROL CENTER / SIXVOID</div>
 <h1>Painel <span style="color:#bd91ff">administrativo.</span></h1>
-<p>Gerencie credenciais, acompanhe o uso e mantenha sua infraestrutura sob controle.</p>
+<p>Gerencie credenciais, acompanhe o uso e aprove solicitações de pagamento.</p>
 </section>
 
 <section class="profile">
@@ -134,7 +143,6 @@ footer span{color:#c4a1ff}
 </section>
 
 <div class="section-title" id="overview">VISÃO GERAL</div>
-
 <section class="stats">
 <div class="card"><div class="ico">⌘</div><strong id="totalKeys">—</strong><span>Total de API Keys</span></div>
 <div class="card"><div class="ico">◉</div><strong id="activeKeys">—</strong><span>Chaves ativas</span></div>
@@ -143,26 +151,44 @@ footer span{color:#c4a1ff}
 <div class="card"><div class="ico">⛔</div><strong id="blockedKeys">—</strong><span>Chaves bloqueadas</span></div>
 </section>
 
+<div class="section-title" id="orders">PAGAMENTOS / PIX MANUAL</div>
+<section class="panel">
+<div class="row">
+<div>
+<h3>Solicitações de compra</h3>
+<p style="margin:5px 0 0">Confira o comprovante diretamente no banco antes de aprovar qualquer pedido.</p>
+</div>
+<button class="btn secondary" id="refreshOrdersBtn" type="button">↻ ATUALIZAR</button>
+</div>
+
+<div class="filterbar">
+<button class="btn secondary active" data-filter="all" type="button">TODOS</button>
+<button class="btn secondary" data-filter="pending" type="button">PENDENTES</button>
+<button class="btn secondary" data-filter="approved" type="button">APROVADOS</button>
+<button class="btn secondary" data-filter="rejected" type="button">RECUSADOS</button>
+</div>
+
+<div class="orderlist" id="orderList">
+<div class="orderitem">Carregando solicitações...</div>
+</div>
+<div class="status" id="ordersStatus"></div>
+<div class="notice">A aprovação é manual. Verifique o recebimento do Pix na sua conta antes de clicar em APROVAR. A confirmação do cliente não comprova pagamento.</div>
+</section>
+
 <div class="section-title" id="keys">GERENCIAMENTO DE CREDENCIAIS</div>
-
 <section class="grid2">
-
 <div class="panel">
 <h3>Gerar nova API Key</h3>
 <p>Escolha um nome personalizado e defina o saldo inicial de requisições.</p>
-
 <form id="createForm">
-
 <div class="field">
 <label for="keyName">Nome personalizado da API</label>
 <input id="keyName" type="text" maxlength="40" placeholder="Ex: Loki Premium, Kimori API..." required>
 </div>
-
 <div class="field">
 <label for="keyLimit">Limite inicial de requisições</label>
 <input id="keyLimit" type="number" min="1" max="1000000000" value="1000" required>
 </div>
-
 <button class="btn" type="submit">＋ GERAR API KEY</button>
 <div class="status" id="createStatus"></div>
 </form>
@@ -173,20 +199,18 @@ footer span{color:#c4a1ff}
 <p>Links públicos para seus usuários solicitarem acesso ou suporte.</p>
 <a class="btn secondary" href="/solicitar-key.html" style="display:inline-block;text-decoration:none;margin:0 6px 8px 0">SOLICITAR / RECARREGAR KEY</a>
 <a class="btn secondary" href="/docs.html" style="display:inline-block;text-decoration:none;margin-bottom:8px">DOCUMENTAÇÃO</a>
-<div class="notice">As API Keys podem receber nomes personalizados. A identificação da chave é independente do código de autenticação gerado pelo servidor.</div>
+<div class="notice">O nome da API é independente do código secreto gerado pelo servidor.</div>
 </div>
-
 </section>
 
 <section class="panel">
 <div class="row">
 <div>
 <h3>Chaves cadastradas</h3>
-<p style="margin:5px 0 0">Consulte o nome, saldo, recarregue, renomeie ou remova uma credencial.</p>
+<p style="margin:5px 0 0">Consulte, recarregue, renomeie, bloqueie ou remova uma credencial.</p>
 </div>
-<button class="btn secondary" id="refreshBtn">↻ ATUALIZAR</button>
+<button class="btn secondary" id="refreshBtn" type="button">↻ ATUALIZAR</button>
 </div>
-
 <div class="keylist" id="keyList" style="margin-top:16px">
 <div class="keyitem">Faça login para carregar suas chaves.</div>
 </div>
@@ -208,7 +232,6 @@ footer span{color:#c4a1ff}
 <audio id="sixvoidAudio" loop preload="none">
 <source src="/audio/background.mp3" type="audio/mpeg">
 </audio>
-
 <div class="audio-box" id="audioBox">
 <b style="font:700 11px 'Space Grotesk'">SIXVOID SOUND SYSTEM</b>
 <p id="audioStatus">Áudio pausado</p>
@@ -234,6 +257,8 @@ footer span{color:#c4a1ff}
 <script>
 const $=id=>document.getElementById(id);
 let config={};
+let currentFilter='all';
+let cachedOrders=[];
 
 const drawer=$('drawer');
 const backdrop=$('backdrop');
@@ -242,7 +267,6 @@ function menu(open){
 drawer.classList.toggle('open',open);
 backdrop.classList.toggle('open',open);
 }
-
 $('menuBtn').onclick=()=>menu(true);
 $('closeMenu').onclick=()=>menu(false);
 backdrop.onclick=()=>menu(false);
@@ -254,9 +278,9 @@ document.querySelectorAll('[data-page]').forEach(x=>x.classList.remove('active')
 a.classList.add('active');
 $('support').classList.toggle('hidden',a.dataset.page!=='support');
 menu(false);
-
 if(a.dataset.page==='overview')$('overview').scrollIntoView({behavior:'smooth'});
 if(a.dataset.page==='keys')$('keys').scrollIntoView({behavior:'smooth'});
+if(a.dataset.page==='orders')$('orders').scrollIntoView({behavior:'smooth'});
 if(a.dataset.page==='support')$('support').scrollIntoView({behavior:'smooth'});
 });
 });
@@ -265,15 +289,10 @@ async function api(url,options={}){
 const r=await fetch(url,{
 credentials:'same-origin',
 ...options,
-headers:{
-'Content-Type':'application/json',
-...(options.headers||{})
-}
+headers:{'Content-Type':'application/json',...(options.headers||{})}
 });
-
 let data={};
 try{data=await r.json()}catch{}
-
 if(!r.ok)throw new Error(data.message||'Falha na comunicação com o servidor.');
 return data;
 }
@@ -295,34 +314,26 @@ $('requests').textContent=Number(d.stats.requests).toLocaleString('pt-BR');
 async function loadKeys(){
 const d=await api('/api/admin/keys');
 const list=$('keyList');
-
 list.innerHTML='';
-
 if(!d.keys.length){
 list.innerHTML='<div class="keyitem">Nenhuma chave cadastrada.</div>';
 return;
 }
 
 for(const k of d.keys){
-
 const el=document.createElement('div');
 el.className='keyitem';
-
 const info=document.createElement('div');
 info.style.flex='1';
-
 const name=document.createElement('div');
 name.className='keyname';
 name.textContent=k.name||'API sem nome';
-
 const code=document.createElement('div');
 code.className='keyvalue';
 code.textContent=k.apikey;
-
 const meta=document.createElement('div');
 meta.className='keymeta';
 meta.textContent=`${Number(k.request).toLocaleString('pt-BR')} requisições restantes · ${k.blocked?'BLOQUEADA':'ATIVA'}`;
-
 info.append(name,code,meta);
 
 const actions=document.createElement('div');
@@ -332,12 +343,8 @@ const copy=document.createElement('button');
 copy.className='btn secondary';
 copy.textContent='COPIAR';
 copy.onclick=async()=>{
-try{
-await navigator.clipboard.writeText(k.apikey);
-status('keysStatus','API Key copiada.');
-}catch{
-status('keysStatus','Não foi possível copiar a chave.',true);
-}
+try{await navigator.clipboard.writeText(k.apikey);status('keysStatus','API Key copiada.')}
+catch{status('keysStatus','Não foi possível copiar a chave.',true)}
 };
 
 const rename=document.createElement('button');
@@ -346,23 +353,13 @@ rename.textContent='RENOMEAR';
 rename.onclick=async()=>{
 const newName=prompt('Digite o novo nome desta API:',k.name||'');
 if(newName===null)return;
-
 const cleanName=newName.trim();
-if(!cleanName){
-status('keysStatus','O nome não pode ficar vazio.',true);
-return;
-}
-
+if(!cleanName){status('keysStatus','O nome não pode ficar vazio.',true);return}
 try{
-await api(`/api/admin/keys/${encodeURIComponent(k.apikey)}/rename`,{
-method:'POST',
-body:JSON.stringify({name:cleanName})
-});
+await api(`/api/admin/keys/${encodeURIComponent(k.apikey)}/rename`,{method:'POST',body:JSON.stringify({name:cleanName})});
 await refreshAll();
 status('keysStatus','Nome da API atualizado com sucesso.');
-}catch(e){
-status('keysStatus',e.message,true);
-}
+}catch(e){status('keysStatus',e.message,true)}
 };
 
 const recharge=document.createElement('button');
@@ -371,17 +368,11 @@ recharge.textContent='RECARREGAR';
 recharge.onclick=async()=>{
 const amount=prompt('Quantas requisições deseja adicionar?','1000');
 if(amount===null)return;
-
 try{
-await api(`/api/admin/keys/${encodeURIComponent(k.apikey)}/recharge`,{
-method:'POST',
-body:JSON.stringify({amount:Number(amount)})
-});
+await api(`/api/admin/keys/${encodeURIComponent(k.apikey)}/recharge`,{method:'POST',body:JSON.stringify({amount:Number(amount)})});
 await refreshAll();
 status('keysStatus','Chave recarregada com sucesso.');
-}catch(e){
-status('keysStatus',e.message,true);
-}
+}catch(e){status('keysStatus',e.message,true)}
 };
 
 const block=document.createElement('button');
@@ -389,15 +380,10 @@ block.className='btn secondary';
 block.textContent=k.blocked?'DESBLOQUEAR':'BLOQUEAR';
 block.onclick=async()=>{
 try{
-await api(`/api/admin/keys/${encodeURIComponent(k.apikey)}/block`,{
-method:'POST',
-body:JSON.stringify({blocked:!k.blocked})
-});
+await api(`/api/admin/keys/${encodeURIComponent(k.apikey)}/block`,{method:'POST',body:JSON.stringify({blocked:!k.blocked})});
 await refreshAll();
 status('keysStatus',k.blocked?'Chave desbloqueada.':'Chave bloqueada.');
-}catch(e){
-status('keysStatus',e.message,true);
-}
+}catch(e){status('keysStatus',e.message,true)}
 };
 
 const del=document.createElement('button');
@@ -405,16 +391,11 @@ del.className='btn danger';
 del.textContent='EXCLUIR';
 del.onclick=async()=>{
 if(!confirm('Deseja realmente excluir esta API Key?'))return;
-
 try{
-await api(`/api/admin/keys/${encodeURIComponent(k.apikey)}`,{
-method:'DELETE'
-});
+await api(`/api/admin/keys/${encodeURIComponent(k.apikey)}`,{method:'DELETE'});
 await refreshAll();
 status('keysStatus','Chave removida.');
-}catch(e){
-status('keysStatus',e.message,true);
-}
+}catch(e){status('keysStatus',e.message,true)}
 };
 
 actions.append(copy,rename,recharge,block,del);
@@ -423,14 +404,145 @@ list.append(el);
 }
 }
 
+function formatMoney(value){
+return Number(value||0).toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
+}
+
+function formatDate(value){
+if(!value)return 'Data não informada';
+const d=new Date(value);
+if(Number.isNaN(d.getTime()))return 'Data não informada';
+return d.toLocaleString('pt-BR');
+}
+
+function orderStatusLabel(value){
+const s=String(value||'pending').toLowerCase();
+if(s==='approved')return ['APROVADO','approved'];
+if(s==='rejected')return ['RECUSADO','rejected'];
+return ['PENDENTE','pending'];
+}
+
+function renderOrders(){
+const list=$('orderList');
+list.innerHTML='';
+
+const filtered=cachedOrders.filter(o=>{
+const s=String(o.status||'pending').toLowerCase();
+return currentFilter==='all'||s===currentFilter;
+});
+
+if(!filtered.length){
+list.innerHTML='<div class="orderitem">Nenhuma solicitação nesta categoria.</div>';
+return;
+}
+
+for(const order of filtered){
+const el=document.createElement('div');
+el.className='orderitem';
+
+const info=document.createElement('div');
+info.style.flex='1';
+info.style.minWidth='220px';
+
+const name=document.createElement('div');
+name.className='keyname';
+name.textContent=order.customerName||order.name||'Cliente sem nome';
+
+const details=document.createElement('div');
+details.className='orderdetails';
+details.textContent=
+`Pedido: ${order.id||'—'}\n`+
+`E-mail: ${order.email||'—'}\n`+
+`Plano: ${order.planLabel||order.planName||order.planId||'—'}\n`+
+`Requisições: ${Number(order.requests||0).toLocaleString('pt-BR')}\n`+
+`Valor: ${formatMoney(order.price)}\n`+
+`Nome da API: ${order.keyName||'—'}\n`+
+`Criado: ${formatDate(order.createdAt)}`;
+details.style.whiteSpace='pre-line';
+
+const badge=document.createElement('span');
+const [label,css]=orderStatusLabel(order.status);
+badge.className=`order-status ${css}`;
+badge.textContent=label;
+
+info.append(name,details,badge);
+
+if(order.apikey){
+const issued=document.createElement('div');
+issued.className='orderkey';
+issued.textContent=`API KEY: ${order.apikey}`;
+info.append(issued);
+}
+
+const actions=document.createElement('div');
+actions.className='actions';
+
+if(String(order.status||'pending').toLowerCase()==='pending'){
+const approve=document.createElement('button');
+approve.className='btn success';
+approve.textContent='APROVAR';
+approve.onclick=()=>decideOrder(order.id,'approve');
+
+const reject=document.createElement('button');
+reject.className='btn danger';
+reject.textContent='RECUSAR';
+reject.onclick=()=>decideOrder(order.id,'reject');
+
+actions.append(approve,reject);
+}
+
+const copyId=document.createElement('button');
+copyId.className='btn secondary';
+copyId.textContent='COPIAR PEDIDO';
+copyId.onclick=async()=>{
+try{await navigator.clipboard.writeText(String(order.id||''));status('ordersStatus','Código do pedido copiado.')}
+catch{status('ordersStatus','Não foi possível copiar.',true)}
+};
+actions.append(copyId);
+
+el.append(info,actions);
+list.append(el);
+}
+}
+
+async function loadOrders(){
+const d=await api('/api/admin/orders');
+cachedOrders=Array.isArray(d.orders)?d.orders:[];
+renderOrders();
+}
+
+async function decideOrder(id,action){
+const verb=action==='approve'?'aprovar':'recusar';
+if(!confirm(`Tem certeza de que deseja ${verb} o pedido ${id}?`))return;
+
+try{
+status('ordersStatus',action==='approve'?'Aprovando pedido...':'Recusando pedido...');
+await api(`/api/admin/orders/${encodeURIComponent(id)}/${action}`,{
+method:'POST',
+body:JSON.stringify({})
+});
+await Promise.all([loadOrders(),loadStats(),loadKeys()]);
+status('ordersStatus',action==='approve'?'Pedido aprovado. A API Key foi gerada.':'Pedido recusado.');
+}catch(e){
+status('ordersStatus',e.message,true);
+}
+}
+
+document.querySelectorAll('[data-filter]').forEach(button=>{
+button.onclick=()=>{
+currentFilter=button.dataset.filter;
+document.querySelectorAll('[data-filter]').forEach(b=>b.classList.toggle('active',b===button));
+renderOrders();
+};
+});
+
 async function refreshAll(){
-await Promise.all([loadStats(),loadKeys()]);
+await Promise.all([loadStats(),loadKeys(),loadOrders()]);
 }
 
 async function checkSession(){
 try{
 const d=await api('/api/admin/session');
-
 if(d.authenticated){
 $('loginWrap').classList.add('hidden');
 $('logoutBtn').classList.remove('hidden');
@@ -446,44 +558,35 @@ $('loginWrap').classList.remove('hidden');
 $('loginForm').addEventListener('submit',async e=>{
 e.preventDefault();
 status('loginStatus','Verificando...');
-
 try{
-await api('/api/admin/login',{
-method:'POST',
-body:JSON.stringify({password:$('adminPassword').value})
-});
-
+await api('/api/admin/login',{method:'POST',body:JSON.stringify({password:$('adminPassword').value})});
 $('adminPassword').value='';
 $('loginWrap').classList.add('hidden');
 $('logoutBtn').classList.remove('hidden');
 status('loginStatus','');
 await refreshAll();
-
-}catch(err){
-status('loginStatus',err.message,true);
-}
+}catch(err){status('loginStatus',err.message,true)}
 });
 
 $('logoutBtn').onclick=async()=>{
-await api('/api/admin/logout',{method:'POST'});
-location.reload();
+try{await api('/api/admin/logout',{method:'POST'});location.reload()}
+catch(e){alert(e.message)}
 };
 
 $('refreshBtn').onclick=()=>{
 refreshAll().catch(e=>status('keysStatus',e.message,true));
 };
 
+$('refreshOrdersBtn').onclick=()=>{
+loadOrders().then(()=>status('ordersStatus','Pedidos atualizados.')).catch(e=>status('ordersStatus',e.message,true));
+};
+
 $('createForm').addEventListener('submit',async e=>{
 e.preventDefault();
-
 const name=$('keyName').value.trim();
 const limit=Number($('keyLimit').value);
 
-if(!name){
-status('createStatus','Digite um nome para a API.',true);
-return;
-}
-
+if(!name){status('createStatus','Digite um nome para a API.',true);return}
 if(!Number.isInteger(limit)||limit<1||limit>1000000000){
 status('createStatus','Informe um limite válido de requisições.',true);
 return;
@@ -491,42 +594,28 @@ return;
 
 const submit=e.submitter;
 if(submit)submit.disabled=true;
-
 status('createStatus','Gerando API Key...');
 
 try{
-const d=await api('/api/admin/keys',{
-method:'POST',
-body:JSON.stringify({name,limit})
-});
-
+const d=await api('/api/admin/keys',{method:'POST',body:JSON.stringify({name,limit})});
 status('createStatus',`API "${d.key.name||name}" criada! Chave: ${d.key.apikey}`);
-
 $('keyName').value='';
 $('keyLimit').value='1000';
-
 await refreshAll();
-
-}catch(err){
-status('createStatus',err.message,true);
-}finally{
-if(submit)submit.disabled=false;
-}
+}catch(err){status('createStatus',err.message,true)}
+finally{if(submit)submit.disabled=false}
 });
 
 const audio=$('sixvoidAudio');
 const audioBox=$('audioBox');
-
 audio.volume=Number(localStorage.getItem('sixvoidVolume')??0.35);
 $('audioVolume').value=audio.volume;
-
 $('audioToggle').onclick=()=>audioBox.classList.toggle('open');
 
 $('audioPlay').onclick=async()=>{
 try{
 if(audio.paused)await audio.play();
 else audio.pause();
-
 $('audioStatus').textContent=audio.paused?'Áudio pausado':'Reproduzindo agora';
 }catch{
 $('audioStatus').textContent='Adicione public/audio/background.mp3 para ativar o player';
@@ -545,7 +634,6 @@ localStorage.setItem('sixvoidVolume',audio.volume);
 (async()=>{
 try{
 config=await api('/api/public/config');
-
 if(config.instagramUrl){
 $('instagramLink').href=config.instagramUrl;
 }else{
@@ -555,7 +643,6 @@ alert('Instagram ainda não foi configurado pelo proprietário.');
 };
 }
 }catch{}
-
 await checkSession();
 })();
 </script>
