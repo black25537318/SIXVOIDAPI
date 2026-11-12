@@ -1575,75 +1575,34 @@ app.get('/api/noticias/estadao', async (req, res, next) => {
     .catch(e => res.json({ msg: 'Erro no Servidor Interno' }));
 });
 
-// ==========================================
-// INICIAR SERVIDOR
-// ==========================================
-
-/* =========================================
-   SIXVOID APIS — PLAYLIST AUTOMÁTICA
-========================================= */
-
-const MUSIC_DIR = path.join(ROOT, "public", "audio");
-
 app.get("/api/music", async (req, res) => {
   try {
+    const MUSIC_DIR = path.join(ROOT, "public", "audio");
+
     await fs.promises.mkdir(MUSIC_DIR, { recursive: true });
 
-    const files = await fs.promises.readdir(MUSIC_DIR, {
-      withFileTypes: true
-    });
+    const files = await fs.promises.readdir(MUSIC_DIR);
 
     const extensions = [
-      ".mp3", ".wav", ".ogg", ".m4a", ".aac", ".flac"
+      ".mp3",
+      ".wav",
+      ".ogg",
+      ".m4a",
+      ".aac",
+      ".flac"
     ];
 
-    const music = await Promise.all(
-      files
-        .filter(file =>
-          file.isFile() &&
-          extensions.includes(path.extname(file.name).toLowerCase())
-        )
-        .map(async file => {
-          const extension = path.extname(file.name);
-          const title = path.basename(file.name, extension);
-
-          let cover = null;
-          let artist = "SIXVOID SOUND SYSTEM";
-
-          try {
-            const metadata = await musicMetadata.parseFile(
-              path.join(MUSIC_DIR, file.name)
-            );
-
-            artist =
-              metadata.common.artist ||
-              metadata.common.albumartist ||
-              artist;
-
-            const picture = metadata.common.picture?.[0];
-
-            if (picture) {
-              cover =
-                "data:" + picture.format +
-                ";base64," +
-                picture.data.toString("base64");
-            }
-          } catch (error) {
-            console.log("[MUSIC METADATA]", file.name, error.message);
-          }
-
-          return {
-            title,
-            artist,
-            src: "/audio/" + encodeURIComponent(file.name),
-            cover
-          };
-        })
-    );
-
-    music.sort((a, b) =>
-      a.title.localeCompare(b.title, "pt-BR")
-    );
+    const music = files
+      .filter(file =>
+        extensions.includes(path.extname(file).toLowerCase())
+      )
+      .map(file => ({
+        title: path.basename(file, path.extname(file)),
+        artist: "SIXVOID MUSIC",
+        src: "/audio/" + encodeURIComponent(file),
+        cover: ""
+      }))
+      .sort((a, b) => a.title.localeCompare(b.title));
 
     return res.json({
       status: true,
@@ -1656,11 +1615,14 @@ app.get("/api/music", async (req, res) => {
 
     return res.status(500).json({
       status: false,
-      message: "Não foi possível carregar a playlist."
+      message: "Erro ao carregar playlist."
     });
   }
 });
 
+// ==========================================
+// INICIAR SERVIDOR
+// ==========================================
 
 app.listen(PORT, HOST, () => {
   console.log(`SIXVOID APIS online em http://${HOST}:${PORT}`);
