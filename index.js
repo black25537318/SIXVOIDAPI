@@ -1579,6 +1579,60 @@ app.get('/api/noticias/estadao', async (req, res, next) => {
 // INICIAR SERVIDOR
 // ==========================================
 
+/* =========================================
+   SIXVOID APIS — PLAYLIST AUTOMÁTICA
+========================================= */
+
+const MUSIC_DIR = path.join(ROOT, "public", "audio");
+
+app.get("/api/music", async (req, res) => {
+  try {
+    // Cria a pasta caso ainda não exista
+    await fs.promises.mkdir(MUSIC_DIR, { recursive: true });
+
+    // Lê os arquivos da pasta
+    const files = await fs.promises.readdir(MUSIC_DIR, {
+      withFileTypes: true
+    });
+
+    // Formatos de áudio aceitos
+    const extensions = [".mp3", ".wav", ".ogg", ".m4a", ".aac", ".flac"];
+
+    // Filtra somente arquivos de áudio
+    const music = files
+      .filter(file => {
+        return file.isFile() &&
+          extensions.includes(path.extname(file.name).toLowerCase());
+      })
+      .map(file => {
+        const extension = path.extname(file.name);
+        const title = path.basename(file.name, extension);
+
+        return {
+          title: title,
+          artist: "SIXVOID SOUND SYSTEM",
+          src: "/audio/" + encodeURIComponent(file.name),
+          cover: ""
+        };
+      })
+      .sort((a, b) => a.title.localeCompare(b.title, "pt-BR"));
+
+    return res.json({
+      status: true,
+      total: music.length,
+      music
+    });
+
+  } catch (error) {
+    console.error("[SIXVOID MUSIC]", error);
+
+    return res.status(500).json({
+      status: false,
+      message: "Não foi possível carregar a playlist."
+    });
+  }
+});
+
 app.listen(PORT, HOST, () => {
   console.log(`SIXVOID APIS online em http://${HOST}:${PORT}`);
 
