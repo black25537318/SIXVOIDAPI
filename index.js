@@ -1583,9 +1583,6 @@ app.get('/api/noticias/estadao', async (req, res, next) => {
    SIXVOID APIS — PLAYLIST AUTOMÁTICA
 ========================================= */
 
-
-const musicMetadata = require("music-metadata");
-
 const MUSIC_DIR = path.join(ROOT, "public", "audio");
 
 app.get("/api/music", async (req, res) => {

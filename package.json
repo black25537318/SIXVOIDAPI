@@ -17,7 +17,6 @@
     "fs-extra": "10.1.0",
     "jsdom": "19.0.0",
     "linkifyjs": "3.0.5",
-    "music-metadata": "^7.14.0",
     "node-fetch": "2.6.11",
     "qs": "6.11.2",
     "request": "2.88.2"
