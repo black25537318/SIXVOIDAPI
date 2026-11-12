@@ -28,9 +28,6 @@ const USERS_FILE = path.join(SECRET_DIR, 'usuarios.json');
 const METRICS_FILE = path.join(SECRET_DIR, 'metrics.json');
 const ORDERS_FILE = path.join(SECRET_DIR, 'orders.json');
 
-const PIX_KEY = process.env.PIX_KEY || 'fellipycaua26@gmail.com';
-const PIX_NAME = process.env.PIX_NAME || 'Cauã Fellipy Carvalho dos Santos';
-
 app.set('trust proxy', 1);
 app.use(express.json({ limit: '32kb' }));
 app.use(express.urlencoded({ extended: false, limit: '32kb' }));
