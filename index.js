@@ -247,27 +247,28 @@ app.get('/api/plans', (req, res) => {
 // PIX MANUAL - CONFIGURAÇÃO PÚBLICA
 // ==========================================
 
-app.get('/api/payments/plans', (req, res) => {
-  const plans = PLAN_DEFINITIONS
-    .filter(plan => Number.isFinite(Number(plan.price)) && Number(plan.price) > 0)
-    .map(plan => ({
-      id: plan.id,
-      label: plan.label,
-      requests: plan.amount,
-      amount: plan.amount,
-      price: Number(plan.price)
-    }));
 
+const PIX_KEY = 'fellipycaua26@gmail.com';
+const PIX_NAME = 'Cauã Fellipy Carvalho dos Santos';
+
+app.get('/api/payments/plans', (req, res) => {
   res.json({
     success: true,
     enabled: true,
     pix: {
       key: PIX_KEY,
-      name: PIX_NAME
+      name: PIX_NAME,
+      type: 'E-mail'
     },
-    plans
+    plans: PLAN_DEFINITIONS.map(plan => ({
+      id: plan.id,
+      label: plan.label,
+      requests: plan.amount,
+      price: Number(plan.price)
+    }))
   });
 });
+
 
 // ==========================================
 // CRIAR PEDIDO DE COMPRA
