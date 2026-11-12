@@ -1,5 +1,241 @@
-<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#080610"><title>SIXVOID APIS</title><link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet"><style>
-:root{--bg:#080610;--line:#a77aff30;--muted:#a79bb9;--purple:#9860ff}*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 10% 0%,#55228c55,transparent 40%),radial-gradient(ellipse at 90% 20%,#582b8b30,transparent 35%),var(--bg);color:#f7f2ff;font-family:'DM Sans',sans-serif}.top{height:76px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 max(18px,calc((100vw - 1050px)/2));position:sticky;top:0;background:#090711ed;backdrop-filter:blur(18px);z-index:10}.brand{display:flex;align-items:center;gap:12px;color:white;text-decoration:none;font:700 15px 'Space Grotesk';letter-spacing:2px}.mark{width:42px;height:42px;border-radius:13px;display:grid;place-items:center;background:linear-gradient(135deg,#a16aff,#481477);box-shadow:0 0 25px #9655ff55}.brand small{display:block;color:var(--muted);font:500 9px 'DM Sans';letter-spacing:3px;margin-top:3px}.menu{width:44px;height:44px;border:1px solid var(--line);background:#171124;color:white;border-radius:12px;font-size:22px}.wrap{width:min(1050px,calc(100% - 30px));margin:45px auto 70px}.hero{padding:35px 0 28px}.tag{font-size:10px;letter-spacing:3px;color:#c6a7ff;font-weight:700}.hero h1{font:700 clamp(36px,8vw,65px) 'Space Grotesk';line-height:1.03;margin:14px 0}.hero h1 span{color:#b88bff}.hero p{max-width:600px;color:var(--muted);font-size:14px;line-height:1.8}.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}.btn{display:inline-block;padding:13px 17px;border-radius:10px;background:linear-gradient(110deg,#8958e9,#b36bdf);color:white;text-decoration:none;font-size:11px;font-weight:700;letter-spacing:.7px}.btn.alt{background:#1a1427;border:1px solid var(--line)}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:25px}.card{border:1px solid var(--line);border-radius:17px;padding:20px;background:linear-gradient(145deg,#191426,#100e1b)}.card .ico{font-size:21px;margin-bottom:13px}.card h3{font:600 16px 'Space Grotesk';margin:0 0 7px}.card p{font-size:12px;color:var(--muted);line-height:1.7;margin:0 0 15px}.card a{color:#c9adff;text-decoration:none;font-size:11px;font-weight:700}.verify{margin-top:20px}.verify input{width:100%;padding:14px;background:#0b0912;border:1px solid #44365e;border-radius:10px;color:white;margin:8px 0 12px}.verify button{border:0;border-radius:10px;padding:13px 17px;background:linear-gradient(110deg,#8958e9,#b36bdf);color:white;font-weight:700}.result{font-size:12px;color:#cdb8f2;margin-top:12px;overflow-wrap:anywhere}.drawerbg{position:fixed;inset:0;background:#0009;z-index:19;opacity:0;pointer-events:none;transition:.25s}.drawer{position:fixed;z-index:20;left:0;top:0;width:min(300px,85vw);height:100dvh;background:linear-gradient(160deg,#1a1228,#090711);border-right:1px solid var(--line);padding:22px 17px;transform:translateX(-105%);transition:.28s}.drawer.open{transform:translateX(0)}.drawerbg.open{opacity:1;pointer-events:auto}.dhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:25px}.dlink{display:block;padding:14px 12px;border-radius:10px;color:#eee4ff;text-decoration:none;font-size:13px}.dlink:hover{background:#8d52e51c}.dlabel{font-size:9px;letter-spacing:2px;color:#9184a2;margin:20px 8px 8px}footer{text-align:center;border-top:1px solid var(--line);padding:24px;color:#81768f;font-size:10px}footer span{color:#bd91ff}.audio-fab{position:fixed;right:18px;bottom:18px;z-index:25;width:50px;height:50px;border:1px solid #bd94ff66;border-radius:50%;background:linear-gradient(135deg,#9659ff,#5d269e);color:white;font-size:21px;box-shadow:0 0 25px #9455ff66;cursor:pointer}.audio-box{position:fixed;right:18px;bottom:78px;z-index:25;width:230px;padding:15px;border:1px solid #a77aff55;border-radius:15px;background:linear-gradient(145deg,#201832,#0e0b17);display:none}.audio-box.open{display:block}.audio-box p{font-size:10px;color:var(--muted);margin:6px 0}.audio-box input{width:100%;accent-color:#a16aff}@media(max-width:700px){.grid{grid-template-columns:1fr}.wrap{margin-top:28px}.hero{padding-top:20px}}
-</style></head><body><header class="top"><a class="brand" href="/"><span class="mark">SV</span><span>SIXVOID APIS<small>APPLICATION PROGRAMMING INTERFACE</small></span></a><button class="menu" id="menuBtn" aria-label="Abrir menu">☰</button></header><div class="drawerbg" id="bg"></div><aside class="drawer" id="drawer"><div class="dhead"><b style="font:700 14px 'Space Grotesk'">SIXVOID MENU</b><button class="menu" id="close">×</button></div><div class="dlabel">NAVEGAÇÃO</div><a class="dlink" href="/">⌂ &nbsp; Início</a><a class="dlink" href="/docs.html">▤ &nbsp; Documentação</a><a class="dlink" href="/admin.html">⌘ &nbsp; Painel administrativo</a><div class="dlabel">ACESSO E SUPORTE</div><a class="dlink" href="/solicitar-key.html">＋ &nbsp; Criar / recarregar Key</a><a class="dlink" id="supportLink" href="/solicitar-key.html">◈ &nbsp; Suporte</a><a class="dlink" id="instagramLink" href="#" target="_blank" rel="noopener">◎ &nbsp; Instagram</a></aside><main class="wrap"><section class="hero"><div class="tag">NEXT GENERATION API PLATFORM</div><h1>THE VOID<br><span>OF POSSIBILITIES.</span></h1><p>Uma central de APIs para integrar recursos, automatizar projetos e expandir suas possibilidades. Explore a documentação ou solicite sua credencial de acesso.</p><div class="actions"><a class="btn" href="/docs.html">EXPLORAR DOCUMENTAÇÃO ↗</a><a class="btn alt" href="/solicitar-key.html">SOLICITAR API KEY</a></div></section><section class="grid"><article class="card"><div class="ico">⌘</div><h3>Documentação</h3><p>Consulte os endpoints disponíveis, parâmetros e exemplos de integração.</p><a href="/docs.html">ACESSAR DOCUMENTAÇÃO ↗</a></article><article class="card"><div class="ico">⌁</div><h3>Solicitar API Key</h3><p>Peça uma nova credencial ou solicite a recarga da sua chave diretamente ao proprietário.</p><a href="/solicitar-key.html">FAZER SOLICITAÇÃO ↗</a></article><article class="card"><div class="ico">◈</div><h3>Suporte</h3><p>Entre em contato com a equipe SIXVOID para dúvidas e suporte técnico.</p><a href="/solicitar-key.html">CENTRAL DE SUPORTE ↗</a></article></section><section class="card verify"><h3>Verificar API Key</h3><p>Consulte a validade e o saldo de requisições da sua credencial.</p><form id="verifyForm"><input name="apikey" placeholder="Digite sua API Key" required><button type="submit">VERIFICAR CHAVE</button></form><div class="result" id="result"></div></section></main><footer>© 2026 <span>SIXVOID APIS</span> · DEVELOPED BY <span>VOID</span></footer><audio id="sixvoidAudio" loop preload="none"><source src="/audio/background.mp3" type="audio/mpeg"></audio><div class="audio-box" id="audioBox"><b style="font:700 11px 'Space Grotesk'">SIXVOID SOUND SYSTEM</b><p id="audioStatus">Áudio pausado</p><button class="btn" id="audioPlay" type="button">▶ PLAY / PAUSE</button><input id="audioVolume" type="range" min="0" max="1" step="0.01" value="0.35"></div><button class="audio-fab" id="audioToggle" aria-label="Player de música">♫</button><script>
-const audio=document.getElementById('sixvoidAudio'),audioBox=document.getElementById('audioBox');audio.volume=Number(localStorage.getItem('sixvoidVolume')??0.35);document.getElementById('audioVolume').value=audio.volume;document.getElementById('audioToggle').onclick=()=>audioBox.classList.toggle('open');document.getElementById('audioPlay').onclick=async()=>{try{if(audio.paused)await audio.play();else audio.pause();document.getElementById('audioStatus').textContent=audio.paused?'Áudio pausado':'Reproduzindo agora'}catch{document.getElementById('audioStatus').textContent='Adicione public/audio/background.mp3 para ativar o player'}};audio.addEventListener('error',()=>document.getElementById('audioStatus').textContent='Arquivo de música não encontrado');document.getElementById('audioVolume').oninput=e=>{audio.volume=Number(e.target.value);localStorage.setItem('sixvoidVolume',audio.volume)};const drawer=document.getElementById('drawer'),bg=document.getElementById('bg');function toggle(v){drawer.classList.toggle('open',v);bg.classList.toggle('open',v)}document.getElementById('menuBtn').onclick=()=>toggle(true);document.getElementById('close').onclick=()=>toggle(false);bg.onclick=()=>toggle(false);fetch('/api/public/config').then(r=>r.json()).then(c=>{if(c.instagramUrl)document.getElementById('instagramLink').href=c.instagramUrl;else document.getElementById('instagramLink').onclick=e=>{e.preventDefault();alert('Instagram ainda não configurado.')}}).catch(()=>{});document.getElementById('verifyForm').addEventListener('submit',async e=>{e.preventDefault();const key=e.target.apikey.value.trim();const out=document.getElementById('result');out.textContent='Consultando...';try{const r=await fetch('/api/keyerrada?apikey='+encodeURIComponent(key));const d=await r.json();out.textContent=d.key||d.resultado||d.message||'Resposta recebida.'}catch{out.textContent='Não foi possível consultar a chave.'}});
-</script></body></html>
+
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#080610">
+<title>SIXVOID APIS</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root{--bg:#080610;--line:#a77aff30;--muted:#a79bb9;--purple:#9860ff}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(ellipse at 10% 0%,#55228c55,transparent 40%),radial-gradient(ellipse at 90% 20%,#582b8b30,transparent 35%),var(--bg);color:#f7f2ff;font-family:'DM Sans',sans-serif}
+.top{height:76px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 max(18px,calc((100vw - 1050px)/2));position:sticky;top:0;background:#090711ed;backdrop-filter:blur(18px);z-index:10}
+.brand{display:flex;align-items:center;gap:12px;color:white;text-decoration:none;font:700 15px 'Space Grotesk';letter-spacing:2px}
+.mark{width:42px;height:42px;border-radius:13px;display:grid;place-items:center;background:linear-gradient(135deg,#a16aff,#481477);box-shadow:0 0 25px #9655ff55}
+.brand small{display:block;color:var(--muted);font:500 9px 'DM Sans';letter-spacing:3px;margin-top:3px}
+.menu{width:44px;height:44px;border:1px solid var(--line);background:#171124;color:white;border-radius:12px;font-size:22px}
+.wrap{width:min(1050px,calc(100% - 30px));margin:45px auto 70px}
+.hero{padding:35px 0 28px}
+.tag{font-size:10px;letter-spacing:3px;color:#c6a7ff;font-weight:700}
+.hero h1{font:700 clamp(36px,8vw,65px) 'Space Grotesk';line-height:1.03;margin:14px 0}
+.hero h1 span{color:#b88bff}
+.hero p{max-width:600px;color:var(--muted);font-size:14px;line-height:1.8}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}
+.btn{display:inline-block;padding:13px 17px;border-radius:10px;background:linear-gradient(110deg,#8958e9,#b36bdf);color:white;text-decoration:none;font-size:11px;font-weight:700;letter-spacing:.7px}
+.btn.alt{background:#1a1427;border:1px solid var(--line)}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:25px}
+.card{border:1px solid var(--line);border-radius:17px;padding:20px;background:linear-gradient(145deg,#191426,#100e1b)}
+.card .ico{font-size:21px;margin-bottom:13px}
+.card h3{font:600 16px 'Space Grotesk';margin:0 0 7px}
+.card p{font-size:12px;color:var(--muted);line-height:1.7;margin:0 0 15px}
+.card a{color:#c9adff;text-decoration:none;font-size:11px;font-weight:700}
+.verify{margin-top:20px}
+.verify input{width:100%;padding:14px;background:#0b0912;border:1px solid #44365e;border-radius:10px;color:white;margin:8px 0 12px}
+.verify button{border:0;border-radius:10px;padding:13px 17px;background:linear-gradient(110deg,#8958e9,#b36bdf);color:white;font-weight:700}
+.result{font-size:12px;color:#cdb8f2;margin-top:12px;overflow-wrap:anywhere}
+.drawerbg{position:fixed;inset:0;background:#0009;z-index:19;opacity:0;pointer-events:none;transition:.25s}
+.drawer{position:fixed;z-index:20;left:0;top:0;width:min(300px,85vw);height:100dvh;background:linear-gradient(160deg,#1a1228,#090711);border-right:1px solid var(--line);padding:22px 17px;transform:translateX(-105%);transition:.28s}
+.drawer.open{transform:translateX(0)}
+.drawerbg.open{opacity:1;pointer-events:auto}
+.dhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:25px}
+.dlink{display:block;padding:14px 12px;border-radius:10px;color:#eee4ff;text-decoration:none;font-size:13px}
+.dlink:hover{background:#8d52e51c}
+.dlabel{font-size:9px;letter-spacing:2px;color:#9184a2;margin:20px 8px 8px}
+footer{text-align:center;border-top:1px solid var(--line);padding:24px;color:#81768f;font-size:10px}
+footer span{color:#bd91ff}
+.audio-fab{position:fixed;right:18px;bottom:18px;z-index:25;width:50px;height:50px;border:1px solid #bd94ff66;border-radius:50%;background:linear-gradient(135deg,#9659ff,#5d269e);color:white;font-size:21px;box-shadow:0 0 25px #9455ff66;cursor:pointer}
+.audio-box{position:fixed;right:18px;bottom:78px;z-index:25;width:230px;padding:15px;border:1px solid #a77aff55;border-radius:15px;background:linear-gradient(145deg,#201832,#0e0b17);display:none}
+.audio-box.open{display:block}
+.audio-box p{font-size:10px;color:var(--muted);margin:6px 0}
+.audio-box input{width:100%;accent-color:#a16aff}
+@media(max-width:700px){.grid{grid-template-columns:1fr}.wrap{margin-top:28px}.hero{padding-top:20px}}
+</style>
+</head>
+
+<body>
+
+<header class="top">
+<a class="brand" href="/">
+<span class="mark">SV</span>
+<span>SIXVOID APIS<small>APPLICATION PROGRAMMING INTERFACE</small></span>
+</a>
+<button class="menu" id="menuBtn" aria-label="Abrir menu">☰</button>
+</header>
+
+<div class="drawerbg" id="bg"></div>
+
+<aside class="drawer" id="drawer">
+<div class="dhead">
+<b style="font:700 14px 'Space Grotesk'">SIXVOID MENU</b>
+<button class="menu" id="close">×</button>
+</div>
+
+<div class="dlabel">NAVEGAÇÃO</div>
+<a class="dlink" href="/">⌂ &nbsp; Início</a>
+<a class="dlink" href="/docs.html">▤ &nbsp; Documentação</a>
+<a class="dlink" href="/admin.html">⌘ &nbsp; Painel administrativo</a>
+
+<div class="dlabel">ACESSO E SUPORTE</div>
+<a class="dlink" href="/solicitar-key.html">＋ &nbsp; Criar / recarregar Key</a>
+<a class="dlink" id="supportLink" href="/solicitar-key.html">◈ &nbsp; Suporte</a>
+<a class="dlink" id="instagramLink" href="#" target="_blank" rel="noopener">◎ &nbsp; Instagram</a>
+</aside>
+
+<main class="wrap">
+
+<section class="hero">
+<div class="tag">NEXT GENERATION API PLATFORM</div>
+<h1>THE VOID<br><span>OF POSSIBILITIES.</span></h1>
+<p>
+Uma central de APIs para integrar recursos, automatizar projetos e expandir suas possibilidades. Explore a documentação ou solicite sua credencial de acesso.
+</p>
+
+<div class="actions">
+<a class="btn" href="/docs.html">EXPLORAR DOCUMENTAÇÃO ↗</a>
+<a class="btn alt" href="/solicitar-key.html">SOLICITAR API KEY</a>
+</div>
+</section>
+
+<section class="grid">
+
+<article class="card">
+<div class="ico">⌘</div>
+<h3>Documentação</h3>
+<p>Consulte os endpoints disponíveis, parâmetros e exemplos de integração.</p>
+<a href="/docs.html">ACESSAR DOCUMENTAÇÃO ↗</a>
+</article>
+
+<article class="card">
+<div class="ico">⌁</div>
+<h3>Solicitar API Key</h3>
+<p>Peça uma nova credencial ou solicite a recarga da sua chave diretamente ao proprietário.</p>
+<a href="/solicitar-key.html">FAZER SOLICITAÇÃO ↗</a>
+</article>
+
+<article class="card">
+<div class="ico">◈</div>
+<h3>Suporte</h3>
+<p>Entre em contato com a equipe SIXVOID para dúvidas e suporte técnico.</p>
+<a href="/solicitar-key.html">CENTRAL DE SUPORTE ↗</a>
+</article>
+
+</section>
+
+<section class="card verify">
+<h3>Verificar API Key</h3>
+<p>Consulte a validade e o saldo de requisições da sua credencial.</p>
+
+<form id="verifyForm">
+<input name="apikey" placeholder="Digite sua API Key" required>
+<button type="submit">VERIFICAR CHAVE</button>
+</form>
+
+<div class="result" id="result"></div>
+</section>
+
+</main>
+
+<footer>
+© 2026 <span>SIXVOID APIS</span> · DEVELOPED BY <span>VOID</span>
+</footer>
+
+<audio id="sixvoidAudio" loop preload="none">
+<source src="/audio/background.mp3" type="audio/mpeg">
+</audio>
+
+<div class="audio-box" id="audioBox">
+<b style="font:700 11px 'Space Grotesk'">SIXVOID SOUND SYSTEM</b>
+<p id="audioStatus">Áudio pausado</p>
+<button class="btn" id="audioPlay" type="button">▶ PLAY / PAUSE</button>
+<input id="audioVolume" type="range" min="0" max="1" step="0.01" value="0.35">
+</div>
+
+<button class="audio-fab" id="audioToggle" aria-label="Player de música">♫</button>
+
+<script>
+const audio=document.getElementById('sixvoidAudio');
+const audioBox=document.getElementById('audioBox');
+
+audio.volume=Number(localStorage.getItem('sixvoidVolume')??0.35);
+document.getElementById('audioVolume').value=audio.volume;
+
+document.getElementById('audioToggle').onclick=()=>{
+audioBox.classList.toggle('open');
+};
+
+document.getElementById('audioPlay').onclick=async()=>{
+try{
+if(audio.paused)await audio.play();
+else audio.pause();
+
+document.getElementById('audioStatus').textContent=
+audio.paused?'Áudio pausado':'Reproduzindo agora';
+
+}catch{
+document.getElementById('audioStatus').textContent=
+'Adicione public/audio/background.mp3 para ativar o player';
+}
+};
+
+audio.addEventListener('error',()=>{
+document.getElementById('audioStatus').textContent='Arquivo de música não encontrado';
+});
+
+document.getElementById('audioVolume').oninput=e=>{
+audio.volume=Number(e.target.value);
+localStorage.setItem('sixvoidVolume',audio.volume);
+};
+
+const drawer=document.getElementById('drawer');
+const bg=document.getElementById('bg');
+
+function toggle(v){
+drawer.classList.toggle('open',v);
+bg.classList.toggle('open',v);
+}
+
+document.getElementById('menuBtn').onclick=()=>toggle(true);
+document.getElementById('close').onclick=()=>toggle(false);
+bg.onclick=()=>toggle(false);
+
+fetch('/api/public/config')
+.then(r=>r.json())
+.then(c=>{
+if(c.instagramUrl){
+document.getElementById('instagramLink').href=c.instagramUrl;
+}else{
+document.getElementById('instagramLink').onclick=e=>{
+e.preventDefault();
+alert('Instagram ainda não configurado.');
+};
+}
+})
+.catch(()=>{});
+
+document.getElementById('verifyForm').addEventListener('submit',async e=>{
+e.preventDefault();
+
+const key=e.target.apikey.value.trim();
+const out=document.getElementById('result');
+
+out.textContent='Consultando...';
+
+try{
+const r=await fetch('/api/keyerrada?apikey='+encodeURIComponent(key));
+const d=await r.json();
+
+out.textContent=d.key||d.resultado||d.message||'Resposta recebida.';
+}catch{
+out.textContent='Não foi possível consultar a chave.';
+}
+});
+</script>
+
+<!-- SISTEMA DE CONTA SIXVOID -->
+<script src="/account-ui.js"></script>
+
+</body>
+</html>

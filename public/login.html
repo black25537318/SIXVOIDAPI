@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#080610">
+<title>SIXVOID — Acesso</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#080610;--panel:#120d1d;--line:#a77aff35;--muted:#a79bb9;--purple:#9860ff}*{box-sizing:border-box}body{margin:0;min-height:100vh;display:grid;place-items:center;padding:22px;background:radial-gradient(ellipse at 10% 0%,#55228c55,transparent 40%),radial-gradient(ellipse at 90% 100%,#582b8b35,transparent 40%),var(--bg);color:#f7f2ff;font-family:'DM Sans',sans-serif}.shell{width:min(430px,100%);padding:30px;border:1px solid var(--line);border-radius:22px;background:linear-gradient(145deg,#191426f5,#100c19f5);box-shadow:0 25px 90px #0008}.brand{text-align:center;font:700 20px 'Space Grotesk';letter-spacing:2px}.brand span{color:#b88bff}.sub{text-align:center;color:var(--muted);font-size:11px;letter-spacing:2px;margin:7px 0 25px}.tabs{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:5px;background:#090711;border-radius:11px;margin-bottom:22px}.tab{border:0;padding:11px;border-radius:8px;background:transparent;color:#a79bb9;font-weight:700;cursor:pointer}.tab.active{background:linear-gradient(110deg,#8958e9,#a85bda);color:white}.field{margin:14px 0}.field label{display:block;color:#cfc3e0;font-size:11px;margin-bottom:7px}.field input{width:100%;padding:14px;border:1px solid #44365e;border-radius:10px;background:#0b0912;color:white;outline:none}.field input:focus{border-color:#9860ff;box-shadow:0 0 0 3px #9860ff20}.submit{width:100%;border:0;border-radius:10px;padding:14px;background:linear-gradient(110deg,#8958e9,#b36bdf);color:white;font-weight:700;letter-spacing:.7px;cursor:pointer;margin-top:8px}.submit:disabled{opacity:.6;cursor:wait}.message{min-height:20px;margin-top:14px;text-align:center;font-size:12px;color:#d3baff;line-height:1.5}.back{display:block;text-align:center;color:#ad99c8;font-size:11px;text-decoration:none;margin-top:20px}.hint{color:#897e98;text-align:center;font-size:10px;margin-top:12px;line-height:1.6}
+</style>
+</head>
+<body>
+<main class="shell">
+  <div class="brand">SIX<span>VOID</span> APIS</div>
+  <div class="sub">MEMBER ACCESS SYSTEM</div>
+  <div class="tabs"><button class="tab active" id="loginTab" type="button">ENTRAR</button><button class="tab" id="registerTab" type="button">CRIAR CONTA</button></div>
+  <form id="authForm">
+    <div class="field" id="nameField" hidden><label for="name">Nome</label><input id="name" name="name" autocomplete="name" maxlength="60" placeholder="Como devemos chamar você?"></div>
+    <div class="field"><label for="email">E-mail</label><input id="email" name="email" type="email" autocomplete="email" required maxlength="180" placeholder="seu@email.com"></div>
+    <div class="field"><label for="password">Senha</label><input id="password" name="password" type="password" required minlength="8" maxlength="128" autocomplete="current-password" placeholder="Mínimo de 8 caracteres"></div>
+    <button class="submit" id="submitBtn" type="submit">ENTRAR NA SIXVOID</button>
+  </form>
+  <div class="message" id="message" role="status"></div>
+  <div class="hint">Cadastro aberto. Sua senha é armazenada usando hash criptográfico.</div>
+  <a class="back" href="/solicitar-key.html">Só quero solicitar uma API Key →</a>
+</main>
+<script>
+const form=document.getElementById('authForm');
+const loginTab=document.getElementById('loginTab');
+const registerTab=document.getElementById('registerTab');
+const nameField=document.getElementById('nameField');
+const password=document.getElementById('password');
+const submitBtn=document.getElementById('submitBtn');
+const message=document.getElementById('message');
+let mode='login';
+function setMode(next){mode=next;loginTab.classList.toggle('active',mode==='login');registerTab.classList.toggle('active',mode==='register');nameField.hidden=mode!=='register';password.autocomplete=mode==='login'?'current-password':'new-password';submitBtn.textContent=mode==='login'?'ENTRAR NA SIXVOID':'CRIAR MINHA CONTA';message.textContent='';}
+loginTab.addEventListener('click',()=>setMode('login'));
+registerTab.addEventListener('click',()=>setMode('register'));
+function destination(){const value=new URLSearchParams(location.search).get('next')||'/';return value.startsWith('/')&&!value.startsWith('//')?value:'/';}
+form.addEventListener('submit',async event=>{event.preventDefault();submitBtn.disabled=true;message.textContent='Aguarde...';const payload={email:document.getElementById('email').value.trim(),password:password.value};if(mode==='register')payload.name=document.getElementById('name').value.trim();try{const response=await fetch('/api/auth/'+(mode==='login'?'login':'register'),{method:'POST',headers:{'Content-Type':'application/json'},credentials:'same-origin',body:JSON.stringify(payload)});const data=await response.json();if(!response.ok||!data.success)throw new Error(data.message||'Não foi possível concluir.');message.textContent=data.message||'Acesso autorizado.';location.replace(destination());}catch(error){message.textContent=error.message||'Erro de conexão.';}finally{submitBtn.disabled=false;}});
+fetch('/api/auth/me',{credentials:'same-origin'}).then(r=>r.ok?r.json():null).then(data=>{if(data?.authenticated)location.replace(destination());}).catch(()=>{});
+</script>
+</body>
+</html>
