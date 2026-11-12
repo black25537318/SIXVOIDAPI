@@ -184,14 +184,9 @@ width:100%;
 transition:.2s;
 }
 
-.btn:hover:not(:disabled){
+.btn:hover{
 transform:translateY(-2px);
 box-shadow:0 8px 25px #9860ff40;
-}
-
-.btn:disabled{
-opacity:.5;
-cursor:not-allowed;
 }
 
 .hint{
@@ -215,7 +210,6 @@ line-height:1.6;
 }
 
 .status.success{color:#9effc2}
-.status.loading{color:#c7a9ff}
 
 .plan-info{
 margin-top:12px;
@@ -308,7 +302,9 @@ placeholder="Cole sua API Key"
 <label for="plan">Selecione seu plano</label>
 
 <select id="plan" required>
-<option value="">Carregando planos...</option>
+<option value="">Selecione um plano</option>
+<option value="1000">1.000 requisições — R$ 1,00</option>
+<option value="20000">20.000 requisições — R$ 4,00</option>
 </select>
 
 <div class="plan-info" id="planInfo">
@@ -328,7 +324,7 @@ placeholder="Escreva uma observação para o proprietário..."
 ></textarea>
 </div>
 
-<button class="btn" id="sendBtn" type="submit" disabled>
+<button class="btn" type="submit">
 CONTINUAR PELO WHATSAPP
 </button>
 
@@ -338,7 +334,7 @@ CONTINUAR PELO WHATSAPP
 
 <div class="hint">
 A SIXVOID não gera nem recarrega chaves automaticamente por esta página.
-O proprietário confirma a solicitação e libera a chave após a aprovação.
+O proprietário confirma a solicitação e libera a chave após a aprovação do pagamento.
 </div>
 
 </section>
@@ -351,234 +347,136 @@ O proprietário confirma a solicitação e libera a chave após a aprovação.
 <script>
 const $ = id => document.getElementById(id);
 
-let whatsapp = '';
-let planos = [];
-let dadosCarregados = false;
+// WHATSAPP DO PROPRIETÁRIO
+const whatsapp = '351961491952';
+
+// PLANOS DEFINIDOS DIRETAMENTE NA PÁGINA
+const planos = [
+  {
+    id: '1000',
+    requests: 1000,
+    price: 1.00
+  },
+  {
+    id: '20000',
+    requests: 20000,
+    price: 4.00
+  }
+];
 
 function formatarNumero(valor){
-return Number(valor).toLocaleString('pt-BR');
+  return Number(valor).toLocaleString('pt-BR');
 }
 
 function formatarPreco(valor){
-return Number(valor).toLocaleString('pt-BR',{
-style:'currency',
-currency:'BRL'
-});
-}
-
-function atualizarBotao(){
-$('sendBtn').disabled = !(
-dadosCarregados &&
-whatsapp &&
-planos.length > 0
-);
+  return Number(valor).toLocaleString('pt-BR',{
+    style:'currency',
+    currency:'BRL'
+  });
 }
 
 function mostrarStatus(mensagem,tipo=''){
-$('status').textContent = mensagem;
-$('status').className = 'status ' + tipo;
+  $('status').textContent = mensagem;
+  $('status').className = 'status ' + tipo;
 }
 
 // MOSTRAR / OCULTAR CAMPO DE API KEY
 $('kind').addEventListener('change', () => {
 
-const recarga = $('kind').value === 'Recarga de API Key';
+  const recarga = $('kind').value === 'Recarga de API Key';
 
-$('keyField').classList.toggle('hidden',!recarga);
-$('key').required = recarga;
-
-});
-
-// CARREGAR PLANOS E CONTATO DO SERVIDOR
-async function carregarDados(){
-
-const select = $('plan');
-
-mostrarStatus('Carregando informações da SIXVOID...','loading');
-
-try{
-
-const response = await fetch('/api/public/config',{
-method:'GET',
-headers:{
-'Accept':'application/json'
-},
-cache:'no-store'
-});
-
-if(!response.ok){
-throw new Error('Erro HTTP ' + response.status);
-}
-
-const config = await response.json();
-
-if(!config || typeof config !== 'object'){
-throw new Error('Resposta inválida do servidor.');
-}
-
-// CONTATO DO PROPRIETÁRIO
-whatsapp = String(config.supportWhatsapp || '').replace(/\D/g,'');
-
-// PLANOS RETORNADOS PELO INDEX.JS
-if(!Array.isArray(config.plans)){
-throw new Error('O servidor não retornou a lista de planos.');
-}
-
-planos = config.plans.map(plano => ({
-id:String(plano.id),
-label:plano.label,
-requests:Number(plano.amount),
-price:Number(plano.price)
-})).filter(plano =>
-plano.id &&
-plano.requests > 0 &&
-Number.isFinite(plano.price) &&
-plano.price > 0
-);
-
-if(!planos.length){
-throw new Error('Nenhum plano com preço válido foi encontrado.');
-}
-
-select.innerHTML = '<option value="">Selecione um plano</option>';
-
-planos.forEach(plano => {
-
-const option = document.createElement('option');
-
-option.value = plano.id;
-
-option.textContent =
-(plano.label || formatarNumero(plano.requests)+' requisições') +
-' — ' + formatarPreco(plano.price);
-
-select.appendChild(option);
+  $('keyField').classList.toggle('hidden',!recarga);
+  $('key').required = recarga;
 
 });
 
-dadosCarregados = true;
-
-if(!whatsapp){
-mostrarStatus('Os planos foram carregados, mas o WhatsApp do proprietário não está configurado.');
-}else{
-mostrarStatus('Planos carregados com sucesso.','success');
-}
-
-}catch(error){
-
-console.error('Erro ao carregar dados:',error);
-
-planos = [];
-dadosCarregados = false;
-
-select.innerHTML = '<option value="">Planos indisponíveis</option>';
-
-$('planInfo').style.display = 'none';
-
-mostrarStatus(
-'Não foi possível carregar os planos. Verifique a configuração pública do servidor.'
-);
-
-}
-
-atualizarBotao();
-
-}
-
-// MOSTRAR PREÇO DO PLANO SELECIONADO
+// MOSTRAR PREÇO DO PLANO
 $('plan').addEventListener('change', () => {
 
-const plano = planos.find(p => p.id === $('plan').value);
+  const plano = planos.find(p => p.id === $('plan').value);
 
-if(!plano){
+  if(!plano){
+    $('planInfo').style.display = 'none';
+    return;
+  }
 
-$('planInfo').style.display = 'none';
-return;
+  $('planPrice').textContent = formatarPreco(plano.price);
 
-}
+  $('planRequests').textContent =
+    formatarNumero(plano.requests) + ' requisições disponíveis';
 
-$('planPrice').textContent = formatarPreco(plano.price);
-
-$('planRequests').textContent =
-formatarNumero(plano.requests) + ' requisições disponíveis';
-
-$('planInfo').style.display = 'block';
+  $('planInfo').style.display = 'block';
 
 });
 
 // ENVIAR SOLICITAÇÃO PELO WHATSAPP
 $('requestForm').addEventListener('submit',event => {
 
-event.preventDefault();
+  event.preventDefault();
 
-if(!whatsapp){
-mostrarStatus('WhatsApp do proprietário não configurado.');
-return;
-}
+  const tipo = $('kind').value;
 
-const tipo = $('kind').value;
+  const plano = planos.find(p => p.id === $('plan').value);
 
-const plano = planos.find(p => p.id === $('plan').value);
+  const nome = $('name').value.trim();
+  const chave = $('key').value.trim();
+  const detalhes = $('details').value.trim();
 
-if(!plano){
-mostrarStatus('Selecione um plano válido.');
-return;
-}
+  if(!nome){
+    mostrarStatus('Informe seu nome ou identificação.');
+    $('name').focus();
+    return;
+  }
 
-const nome = $('name').value.trim();
-const chave = $('key').value.trim();
-const detalhes = $('details').value.trim();
+  if(!plano){
+    mostrarStatus('Selecione um plano válido.');
+    $('plan').focus();
+    return;
+  }
 
-if(!nome){
-mostrarStatus('Informe seu nome ou identificação.');
-return;
-}
+  if(tipo === 'Recarga de API Key' && !chave){
+    mostrarStatus('Informe a API Key que deseja recarregar.');
+    $('key').focus();
+    return;
+  }
 
-if(tipo === 'Recarga de API Key' && !chave){
-mostrarStatus('Informe a API Key que deseja recarregar.');
-return;
-}
+  const linhas = [
+    'Olá! Vim pelo site da SIXVOID APIS.',
+    '',
+    'SOLICITAÇÃO DE ACESSO',
+    '',
+    'Tipo: ' + tipo,
+    'Nome: ' + nome,
+    'Plano: ' + formatarNumero(plano.requests) + ' requisições',
+    'Valor: ' + formatarPreco(plano.price)
+  ];
 
-const linhas = [
+  if(chave){
+    linhas.push('API Key: ' + chave);
+  }
 
-'Olá, VOID! Vim pela SIXVOID APIS.',
+  if(detalhes){
+    linhas.push('Detalhes: ' + detalhes);
+  }
 
-'',
+  linhas.push('');
+  linhas.push('Aguardo as instruções para pagamento e liberação.');
 
-'SOLICITAÇÃO DE ACESSO',
+  const mensagem = encodeURIComponent(linhas.join('\n'));
 
-'Tipo: ' + tipo,
+  const url = 'https://wa.me/' + whatsapp + '?text=' + mensagem;
 
-'Nome: ' + nome,
-
-'Plano: ' + formatarNumero(plano.requests) + ' requisições',
-
-'Valor: ' + formatarPreco(plano.price)
-
-];
-
-if(chave){
-linhas.push('API Key: ' + chave);
-}
-
-if(detalhes){
-linhas.push('Detalhes: ' + detalhes);
-}
-
-const mensagem = encodeURIComponent(linhas.join('\n'));
-
-const url =
-'https://wa.me/' + whatsapp + '?text=' + mensagem;
-
-window.open(url,'_blank','noopener');
+  window.open(url,'_blank','noopener,noreferrer');
 
 });
 
 // ANO AUTOMÁTICO
 $('year').textContent = new Date().getFullYear();
 
-// INICIALIZAÇÃO
-carregarDados();
+mostrarStatus(
+  'Planos disponíveis. Preencha os dados para solicitar pelo WhatsApp.',
+  'success'
+);
 
 </script>
 
