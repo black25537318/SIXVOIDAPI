@@ -1583,39 +1583,70 @@ app.get('/api/noticias/estadao', async (req, res, next) => {
    SIXVOID APIS — PLAYLIST AUTOMÁTICA
 ========================================= */
 
+
+const musicMetadata = require("music-metadata");
+
 const MUSIC_DIR = path.join(ROOT, "public", "audio");
 
 app.get("/api/music", async (req, res) => {
   try {
-    // Cria a pasta caso ainda não exista
     await fs.promises.mkdir(MUSIC_DIR, { recursive: true });
 
-    // Lê os arquivos da pasta
     const files = await fs.promises.readdir(MUSIC_DIR, {
       withFileTypes: true
     });
 
-    // Formatos de áudio aceitos
-    const extensions = [".mp3", ".wav", ".ogg", ".m4a", ".aac", ".flac"];
+    const extensions = [
+      ".mp3", ".wav", ".ogg", ".m4a", ".aac", ".flac"
+    ];
 
-    // Filtra somente arquivos de áudio
-    const music = files
-      .filter(file => {
-        return file.isFile() &&
-          extensions.includes(path.extname(file.name).toLowerCase());
-      })
-      .map(file => {
-        const extension = path.extname(file.name);
-        const title = path.basename(file.name, extension);
+    const music = await Promise.all(
+      files
+        .filter(file =>
+          file.isFile() &&
+          extensions.includes(path.extname(file.name).toLowerCase())
+        )
+        .map(async file => {
+          const extension = path.extname(file.name);
+          const title = path.basename(file.name, extension);
 
-        return {
-          title: title,
-          artist: "SIXVOID SOUND SYSTEM",
-          src: "/audio/" + encodeURIComponent(file.name),
-          cover: ""
-        };
-      })
-      .sort((a, b) => a.title.localeCompare(b.title, "pt-BR"));
+          let cover = null;
+          let artist = "SIXVOID SOUND SYSTEM";
+
+          try {
+            const metadata = await musicMetadata.parseFile(
+              path.join(MUSIC_DIR, file.name)
+            );
+
+            artist =
+              metadata.common.artist ||
+              metadata.common.albumartist ||
+              artist;
+
+            const picture = metadata.common.picture?.[0];
+
+            if (picture) {
+              cover =
+                "data:" + picture.format +
+                ";base64," +
+                picture.data.toString("base64");
+            }
+          } catch (error) {
+            console.log("[MUSIC METADATA]", file.name, error.message);
+          }
+
+          return {
+            title,
+            artist,
+            src: "/audio/" + encodeURIComponent(file.name),
+            cover
+          };
+        })
+    );
+
+    music.sort((a, b) =>
+      a.title.localeCompare(b.title, "pt-BR")
+    );
 
     return res.json({
       status: true,
@@ -1632,6 +1663,7 @@ app.get("/api/music", async (req, res) => {
     });
   }
 });
+
 
 app.listen(PORT, HOST, () => {
   console.log(`SIXVOID APIS online em http://${HOST}:${PORT}`);
