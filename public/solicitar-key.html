@@ -1,482 +1,672 @@
 
-<!doctype html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#080610">
+
 <title>SIXVOID | Solicitar API Key</title>
 
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
-:root{
---bg:#080610;
---panel:#151020;
---line:#a77aff35;
---text:#f7f2ff;
---muted:#a79bb9;
---purple:#9860ff;
---pink:#c45cff;
+:root {
+    --bg: #080610;
+    --panel: #100c1b;
+    --panel2: #171025;
+    --purple: #9860ff;
+    --purple2: #c45cff;
+    --text: #f7f3ff;
+    --muted: #9990aa;
+    --border: rgba(168, 111, 255, .17);
+    --green: #25d366;
 }
 
-*{box-sizing:border-box}
-
-body{
-margin:0;
-min-height:100vh;
-background:
-radial-gradient(ellipse at 15% 0%,#54248855,transparent 42%),
-radial-gradient(ellipse at 90% 80%,#7026a522,transparent 40%),
-var(--bg);
-color:var(--text);
-font-family:'DM Sans',sans-serif;
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-.top{
-height:72px;
-border-bottom:1px solid var(--line);
-display:flex;
-align-items:center;
-justify-content:space-between;
-padding:0 max(18px,calc((100vw - 950px)/2));
-background:#090711dd;
-backdrop-filter:blur(15px);
-position:sticky;
-top:0;
-z-index:10;
+body {
+    min-height: 100vh;
+    background:
+        radial-gradient(ellipse at 50% -15%, rgba(139,77,255,.20), transparent 55%),
+        radial-gradient(ellipse at 100% 100%, rgba(196,92,255,.08), transparent 45%),
+        var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    padding: 35px 16px;
 }
 
-.brand{
-display:flex;
-align-items:center;
-font:700 15px 'Space Grotesk';
-letter-spacing:2px;
-color:white;
-text-decoration:none;
+.container {
+    width: 100%;
+    max-width: 570px;
+    margin: auto;
 }
 
-.brand span{
-display:inline-grid;
-place-items:center;
-width:39px;
-height:39px;
-margin-right:9px;
-border-radius:12px;
-background:linear-gradient(135deg,#ad76ff,#4c187f);
-box-shadow:0 0 25px #9860ff55;
+.header {
+    text-align: center;
+    margin-bottom: 30px;
 }
 
-.top>a:last-child{
-color:#c9b4ee;
-text-decoration:none;
-font-size:12px;
-transition:.2s;
+.logo {
+    width: 68px;
+    height: 68px;
+    border-radius: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 17px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 27px;
+    font-weight: 800;
+    background: linear-gradient(135deg, #9860ff, #c45cff);
+    color: white;
+    box-shadow: 0 0 35px rgba(152,96,255,.30);
 }
 
-.top>a:last-child:hover{color:white}
-
-.wrap{
-width:min(950px,calc(100% - 30px));
-margin:48px auto;
-animation:entrar .7s ease both;
+.brand {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 27px;
+    font-weight: 800;
+    letter-spacing: 2px;
 }
 
-@keyframes entrar{
-from{opacity:0;transform:translateY(20px)}
-to{opacity:1;transform:translateY(0)}
+.brand span {
+    color: var(--purple2);
 }
 
-.box{
-max-width:650px;
-margin:auto;
-padding:clamp(20px,5vw,34px);
-border:1px solid var(--line);
-border-radius:20px;
-background:linear-gradient(145deg,#1b1429,#100d18);
-box-shadow:0 20px 65px #0005;
-position:relative;
-overflow:hidden;
+.subtitle {
+    color: var(--muted);
+    font-size: 13px;
+    margin-top: 8px;
 }
 
-.box:before{
-content:"";
-position:absolute;
-width:220px;
-height:220px;
-right:-110px;
-top:-130px;
-background:#9860ff22;
-filter:blur(45px);
-border-radius:50%;
-pointer-events:none;
+.card {
+    background: linear-gradient(145deg, rgba(22,16,35,.97), rgba(12,9,20,.98));
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 25px;
+    box-shadow: 0 15px 60px rgba(0,0,0,.25);
 }
 
-.eyebrow{
-font-size:10px;
-letter-spacing:2px;
-color:#c7a9ff;
-font-weight:700;
+.card-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 19px;
+    font-weight: 700;
+    margin-bottom: 7px;
 }
 
-.box h1{
-font:700 clamp(26px,5vw,36px) 'Space Grotesk';
-margin:10px 0;
+.card-description {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.6;
+    margin-bottom: 23px;
 }
 
-.box p{
-font-size:13px;
-line-height:1.7;
-color:var(--muted);
+.field {
+    margin-bottom: 18px;
 }
 
-.field{margin:17px 0}
-
-.field label{
-display:block;
-font-size:11px;
-color:#d3c0f5;
-margin-bottom:8px;
+label {
+    display: block;
+    font-size: 12px;
+    font-weight: 700;
+    margin-bottom: 9px;
+    color: #ded5ed;
 }
 
-.field input,
-.field select,
-.field textarea{
-width:100%;
-padding:14px;
-background:#0b0912;
-border:1px solid #51416c;
-border-radius:11px;
-color:white;
-outline:none;
-font:13px 'DM Sans';
-transition:.2s;
+input, select, textarea {
+    width: 100%;
+    background: #0b0812;
+    border: 1px solid var(--border);
+    border-radius: 11px;
+    padding: 14px;
+    color: white;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    outline: none;
+    transition: .2s;
 }
 
-.field select option{
-background:#151020;
-color:white;
+input:focus, select:focus, textarea:focus {
+    border-color: var(--purple);
+    box-shadow: 0 0 0 3px rgba(152,96,255,.10);
 }
 
-.field textarea{
-min-height:90px;
-resize:vertical;
+input::placeholder, textarea::placeholder {
+    color: #71697e;
 }
 
-.field input:focus,
-.field select:focus,
-.field textarea:focus{
-border-color:var(--purple);
-box-shadow:0 0 0 3px #9860ff18;
+select {
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' fill='none' stroke='%23c45cff' stroke-width='2' viewBox='0 0 24 24'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 15px center;
+    padding-right: 40px;
 }
 
-.btn{
-border:0;
-border-radius:11px;
-padding:15px 18px;
-background:linear-gradient(110deg,#8653e8,#b56ae0);
-color:white;
-font-weight:700;
-font-size:11px;
-letter-spacing:1px;
-cursor:pointer;
-width:100%;
-transition:.2s;
+select option {
+    background: #100c1b;
+    color: white;
 }
 
-.btn:hover{
-transform:translateY(-2px);
-box-shadow:0 8px 25px #9860ff40;
+textarea {
+    resize: vertical;
+    min-height: 90px;
 }
 
-.hint{
-padding:13px;
-border:1px solid var(--line);
-background:#8c4dff12;
-border-radius:11px;
-color:#cbb6f5;
-font-size:11px;
-line-height:1.6;
-margin:16px 0 0;
+.type-options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
 }
 
-.hidden{display:none!important}
-
-.status{
-font-size:12px;
-color:#ff9dbb;
-margin-top:12px;
-line-height:1.6;
+.type-option {
+    position: relative;
 }
 
-.status.success{color:#9effc2}
-
-.plan-info{
-margin-top:12px;
-padding:14px;
-border:1px solid var(--line);
-background:#8c4dff12;
-border-radius:11px;
-display:none;
-animation:entrar .25s ease;
+.type-option input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
 }
 
-.plan-info strong{
-display:block;
-font:700 22px 'Space Grotesk';
-color:#c7a9ff;
-margin-top:5px;
+.type-option label {
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 15px 10px;
+    text-align: center;
+    cursor: pointer;
+    background: #0b0812;
+    transition: .2s;
+    margin: 0;
 }
 
-.plan-info small{
-color:var(--muted);
-font-size:11px;
+.type-option label strong {
+    display: block;
+    font-size: 13px;
+    margin-bottom: 5px;
 }
 
-footer{
-text-align:center;
-padding:24px;
-color:#81768f;
-font-size:10px;
+.type-option label small {
+    font-size: 10px;
+    color: var(--muted);
+    font-weight: 400;
 }
 
-@media(min-width:700px){
-.wrap{margin-top:65px}
+.type-option input:checked + label {
+    border-color: var(--purple);
+    background: rgba(152,96,255,.12);
+    box-shadow: 0 0 18px rgba(152,96,255,.09);
+}
+
+.plan-info {
+    margin-top: 11px;
+    padding: 14px;
+    border-radius: 12px;
+    background: rgba(152,96,255,.08);
+    border: 1px solid rgba(152,96,255,.15);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.plan-info small {
+    display: block;
+    color: var(--muted);
+    font-size: 10px;
+    margin-bottom: 5px;
+}
+
+.plan-requests {
+    font-size: 14px;
+    font-weight: 800;
+}
+
+.plan-price {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 21px;
+    font-weight: 800;
+    color: #c994ff;
+}
+
+.plan-price small {
+    text-align: right;
+}
+
+.notice {
+    background: rgba(37,211,102,.06);
+    border: 1px solid rgba(37,211,102,.15);
+    color: #b8e9c9;
+    border-radius: 11px;
+    padding: 13px;
+    font-size: 11px;
+    line-height: 1.6;
+    margin: 19px 0;
+}
+
+.submit-btn {
+    width: 100%;
+    padding: 16px;
+    border: none;
+    border-radius: 12px;
+    background: linear-gradient(110deg, #9860ff, #c45cff);
+    color: white;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 800;
+    font-size: 13px;
+    letter-spacing: .6px;
+    cursor: pointer;
+    transition: .2s;
+    box-shadow: 0 8px 25px rgba(152,96,255,.20);
+}
+
+.submit-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(152,96,255,.35);
+}
+
+.submit-btn:active {
+    transform: scale(.98);
+}
+
+.footer {
+    text-align: center;
+    color: #71697e;
+    font-size: 11px;
+    margin-top: 23px;
+    line-height: 1.8;
+}
+
+.footer strong {
+    color: #b78aff;
+}
+
+.hidden {
+    display: none;
+}
+
+@media(max-width: 450px) {
+    body {
+        padding: 25px 12px;
+    }
+
+    .card {
+        padding: 20px 16px;
+    }
+
+    .brand {
+        font-size: 24px;
+    }
 }
 </style>
 </head>
 
 <body>
 
-<header class="top">
-<a class="brand" href="/">
-<span>SV</span>SIXVOID APIS
-</a>
+<div class="container">
 
-<a href="/docs.html">Documentação ↗</a>
-</header>
+    <header class="header">
+        <div class="logo">SV</div>
 
-<main class="wrap">
-<section class="box">
+        <h1 class="brand">
+            SIXVOID <span>APIS</span>
+        </h1>
 
-<div class="eyebrow">ACCESS REQUEST / SIXVOID</div>
+        <p class="subtitle">
+            Solicite sua API Key ou recarregue seu saldo.
+        </p>
+    </header>
 
-<h1>Solicitar acesso.</h1>
+    <main class="card">
 
-<p>
-Peça uma nova API Key ou solicite a recarga de uma chave existente.
-Escolha um dos planos disponíveis e envie sua solicitação diretamente ao proprietário.
-</p>
+        <h2 class="card-title">Solicitar API Key</h2>
 
-<form id="requestForm">
+        <p class="card-description">
+            Escolha o serviço desejado, selecione seu plano e envie sua solicitação para nossa equipe.
+        </p>
 
-<div class="field">
-<label for="kind">O que você deseja?</label>
+        <form id="requestForm">
 
-<select id="kind">
-<option value="Nova API Key">Criar uma nova API Key</option>
-<option value="Recarga de API Key">Recarregar uma API Key</option>
-</select>
+            <div class="field">
+                <label>TIPO DE SOLICITAÇÃO</label>
+
+                <div class="type-options">
+
+                    <div class="type-option">
+                        <input
+                            type="radio"
+                            name="requestType"
+                            id="newKey"
+                            value="Nova API Key"
+                            checked
+                        >
+
+                        <label for="newKey">
+                            <strong>Nova API Key</strong>
+                            <small>Quero uma chave nova</small>
+                        </label>
+                    </div>
+
+                    <div class="type-option">
+                        <input
+                            type="radio"
+                            name="requestType"
+                            id="recharge"
+                            value="Recarga de API Key"
+                        >
+
+                        <label for="recharge">
+                            <strong>Recarga</strong>
+                            <small>Já possuo uma chave</small>
+                        </label>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="field">
+                <label for="name">SEU NOME</label>
+
+                <input
+                    type="text"
+                    id="name"
+                    placeholder="Digite seu nome"
+                    required
+                >
+            </div>
+
+            <div class="field hidden" id="keyField">
+                <label for="apiKey">SUA API KEY</label>
+
+                <input
+                    type="text"
+                    id="apiKey"
+                    placeholder="Cole sua API Key"
+                >
+            </div>
+
+            <div class="field">
+                <label for="plan">ESCOLHA SEU PLANO</label>
+
+                <select id="plan" required>
+                    <option value="">Carregando planos...</option>
+                </select>
+
+                <div class="plan-info">
+                    <div>
+                        <small>QUANTIDADE DE REQUISIÇÕES</small>
+                        <div class="plan-requests" id="requestAmount">
+                            Selecione um plano
+                        </div>
+                    </div>
+
+                    <div style="text-align:right">
+                        <small>VALOR DO PLANO</small>
+                        <div class="plan-price" id="planPrice">
+                            R$ 0,00
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="field">
+                <label for="details">INFORMAÇÕES ADICIONAIS</label>
+
+                <textarea
+                    id="details"
+                    placeholder="Deseja informar alguma coisa? (opcional)"
+                ></textarea>
+            </div>
+
+            <div class="notice">
+                Sua solicitação será encaminhada para o WhatsApp da SIXVOID APIS.
+                Nossa equipe dará continuidade ao atendimento por lá.
+            </div>
+
+            <button type="submit" class="submit-btn">
+                CONTINUAR PELO WHATSAPP
+            </button>
+
+        </form>
+
+    </main>
+
+    <footer class="footer">
+        <strong>SIXVOID APIS</strong><br>
+        Tecnologia, desempenho e inovação.<br>
+        © <span id="year"></span> SIXVOID. Todos os direitos reservados.
+    </footer>
+
 </div>
-
-<div class="field">
-<label for="name">Seu nome / identificação</label>
-<input
-id="name"
-maxlength="70"
-placeholder="Como podemos te chamar?"
-required
->
-</div>
-
-<div class="field hidden" id="keyField">
-<label for="key">API Key que deseja recarregar</label>
-<input
-id="key"
-maxlength="150"
-placeholder="Cole sua API Key"
->
-</div>
-
-<div class="field">
-<label for="plan">Selecione seu plano</label>
-
-<select id="plan" required>
-<option value="">Selecione um plano</option>
-<option value="1000">1.000 requisições — R$ 1,00</option>
-<option value="20000">20.000 requisições — R$ 4,00</option>
-</select>
-
-<div class="plan-info" id="planInfo">
-<small>VALOR DO PLANO</small>
-<strong id="planPrice">R$ 0,00</strong>
-<small id="planRequests"></small>
-</div>
-</div>
-
-<div class="field">
-<label for="details">Detalhes adicionais (opcional)</label>
-
-<textarea
-id="details"
-maxlength="500"
-placeholder="Escreva uma observação para o proprietário..."
-></textarea>
-</div>
-
-<button class="btn" type="submit">
-CONTINUAR PELO WHATSAPP
-</button>
-
-<div class="status" id="status"></div>
-
-</form>
-
-<div class="hint">
-A SIXVOID não gera nem recarrega chaves automaticamente por esta página.
-O proprietário confirma a solicitação e libera a chave após a aprovação do pagamento.
-</div>
-
-</section>
-</main>
-
-<footer>
-© <span id="year"></span> SIXVOID APIS · DEVELOPED BY VOID
-</footer>
 
 <script>
-const $ = id => document.getElementById(id);
+/* ==========================================
+   CONFIGURAÇÕES
+========================================== */
 
-// WHATSAPP DO PROPRIETÁRIO
 const whatsapp = '351961491952';
 
-// PLANOS DEFINIDOS DIRETAMENTE NA PÁGINA
-const planos = [
-  {
-    id: '1000',
-    requests: 1000,
-    price: 1.00
-  },
-  {
-    id: '20000',
-    requests: 20000,
-    price: 4.00
-  }
+/* ==========================================
+   PLANOS DISPONÍVEIS
+========================================== */
+
+const plans = [
+    { requests: 1000, price: 1.00 },
+    { requests: 5000, price: 2.00 },
+    { requests: 10000, price: 3.00 },
+    { requests: 20000, price: 4.00 },
+    { requests: 30000, price: 5.00 },
+    { requests: 40000, price: 6.00 },
+    { requests: 50000, price: 8.00 },
+    { requests: 75000, price: 11.00 },
+    { requests: 100000, price: 15.00 },
+    { requests: 150000, price: 22.00 },
+    { requests: 200000, price: 27.00 },
+    { requests: 250000, price: 30.00 },
+    { requests: 300000, price: 36.00 },
+    { requests: 400000, price: 44.00 },
+    { requests: 500000, price: 50.00 },
+    { requests: 600000, price: 58.00 },
+    { requests: 700000, price: 65.00 },
+    { requests: 800000, price: 70.00 },
+    { requests: 900000, price: 75.00 },
+    { requests: 1000000, price: 80.00 }
 ];
 
-function formatarNumero(valor){
-  return Number(valor).toLocaleString('pt-BR');
+/* ==========================================
+   ELEMENTOS
+========================================== */
+
+const form = document.getElementById('requestForm');
+const planSelect = document.getElementById('plan');
+
+const requestAmount = document.getElementById('requestAmount');
+const planPrice = document.getElementById('planPrice');
+
+const keyField = document.getElementById('keyField');
+const apiKeyInput = document.getElementById('apiKey');
+
+const nameInput = document.getElementById('name');
+const detailsInput = document.getElementById('details');
+
+/* ==========================================
+   FORMATADORES
+========================================== */
+
+function formatRequests(value) {
+    return Number(value).toLocaleString('pt-BR');
 }
 
-function formatarPreco(valor){
-  return Number(valor).toLocaleString('pt-BR',{
-    style:'currency',
-    currency:'BRL'
-  });
+function formatPrice(value) {
+    return Number(value).toLocaleString('pt-BR', {
+        style: 'currency',
+        currency: 'BRL'
+    });
 }
 
-function mostrarStatus(mensagem,tipo=''){
-  $('status').textContent = mensagem;
-  $('status').className = 'status ' + tipo;
+/* ==========================================
+   CARREGAR OS 20 PLANOS
+========================================== */
+
+function loadPlans() {
+    planSelect.innerHTML = '<option value="">Selecione um plano</option>';
+
+    plans.forEach((plan, index) => {
+        const option = document.createElement('option');
+
+        option.value = index;
+
+        option.textContent =
+            `${formatRequests(plan.requests)} requisições — ${formatPrice(plan.price)}`;
+
+        planSelect.appendChild(option);
+    });
 }
 
-// MOSTRAR / OCULTAR CAMPO DE API KEY
-$('kind').addEventListener('change', () => {
+/* ==========================================
+   ATUALIZAR INFORMAÇÕES DO PLANO
+========================================== */
 
-  const recarga = $('kind').value === 'Recarga de API Key';
+function updatePlan() {
+    const selectedIndex = planSelect.value;
 
-  $('keyField').classList.toggle('hidden',!recarga);
-  $('key').required = recarga;
+    if (selectedIndex === '') {
+        requestAmount.textContent = 'Selecione um plano';
+        planPrice.textContent = 'R$ 0,00';
+        return;
+    }
 
+    const plan = plans[Number(selectedIndex)];
+
+    if (!plan) return;
+
+    requestAmount.textContent =
+        formatRequests(plan.requests) + ' requisições';
+
+    planPrice.textContent = formatPrice(plan.price);
+}
+
+/* ==========================================
+   ALTERNAR NOVA KEY / RECARGA
+========================================== */
+
+function updateRequestType() {
+    const selected = document.querySelector(
+        'input[name="requestType"]:checked'
+    );
+
+    const isRecharge = selected?.value === 'Recarga de API Key';
+
+    keyField.classList.toggle('hidden', !isRecharge);
+
+    apiKeyInput.required = isRecharge;
+
+    if (!isRecharge) {
+        apiKeyInput.value = '';
+    }
+}
+
+document.querySelectorAll('input[name="requestType"]').forEach(input => {
+    input.addEventListener('change', updateRequestType);
 });
 
-// MOSTRAR PREÇO DO PLANO
-$('plan').addEventListener('change', () => {
+/* ==========================================
+   ENVIAR SOLICITAÇÃO PELO WHATSAPP
+========================================== */
 
-  const plano = planos.find(p => p.id === $('plan').value);
+form.addEventListener('submit', function(event) {
+    event.preventDefault();
 
-  if(!plano){
-    $('planInfo').style.display = 'none';
-    return;
-  }
+    const name = nameInput.value.trim();
+    const apiKey = apiKeyInput.value.trim();
+    const details = detailsInput.value.trim();
 
-  $('planPrice').textContent = formatarPreco(plano.price);
+    const selectedType = document.querySelector(
+        'input[name="requestType"]:checked'
+    )?.value;
 
-  $('planRequests').textContent =
-    formatarNumero(plano.requests) + ' requisições disponíveis';
+    const selectedIndex = planSelect.value;
 
-  $('planInfo').style.display = 'block';
+    if (!name) {
+        alert('Digite seu nome.');
+        nameInput.focus();
+        return;
+    }
 
+    if (!selectedType) {
+        alert('Selecione o tipo de solicitação.');
+        return;
+    }
+
+    if (selectedType === 'Recarga de API Key' && !apiKey) {
+        alert('Informe sua API Key para continuar.');
+        apiKeyInput.focus();
+        return;
+    }
+
+    if (selectedIndex === '') {
+        alert('Selecione um plano.');
+        planSelect.focus();
+        return;
+    }
+
+    const plan = plans[Number(selectedIndex)];
+
+    if (!plan) {
+        alert('Plano inválido. Selecione novamente.');
+        return;
+    }
+
+    const message = [
+        '*SIXVOID APIS — NOVA SOLICITAÇÃO*',
+        '',
+        '*Tipo:* ' + selectedType,
+        '*Nome:* ' + name,
+        '',
+        '*PLANO ESCOLHIDO*',
+        '*Requisições:* ' + formatRequests(plan.requests),
+        '*Valor:* ' + formatPrice(plan.price),
+        '',
+        selectedType === 'Recarga de API Key'
+            ? '*API Key:* ' + apiKey
+            : '*API Key:* Solicitação de nova chave',
+        '',
+        '*Informações adicionais:*',
+        details || 'Nenhuma informação adicional.',
+        '',
+        'Solicitação enviada pelo site SIXVOID APIS.'
+    ].join('\n');
+
+    const url =
+        'https://wa.me/' +
+        whatsapp +
+        '?text=' +
+        encodeURIComponent(message);
+
+    window.open(url, '_blank', 'noopener,noreferrer');
 });
 
-// ENVIAR SOLICITAÇÃO PELO WHATSAPP
-$('requestForm').addEventListener('submit',event => {
+/* ==========================================
+   INICIALIZAÇÃO
+========================================== */
 
-  event.preventDefault();
+loadPlans();
+updatePlan();
+updateRequestType();
 
-  const tipo = $('kind').value;
+planSelect.addEventListener('change', updatePlan);
 
-  const plano = planos.find(p => p.id === $('plan').value);
-
-  const nome = $('name').value.trim();
-  const chave = $('key').value.trim();
-  const detalhes = $('details').value.trim();
-
-  if(!nome){
-    mostrarStatus('Informe seu nome ou identificação.');
-    $('name').focus();
-    return;
-  }
-
-  if(!plano){
-    mostrarStatus('Selecione um plano válido.');
-    $('plan').focus();
-    return;
-  }
-
-  if(tipo === 'Recarga de API Key' && !chave){
-    mostrarStatus('Informe a API Key que deseja recarregar.');
-    $('key').focus();
-    return;
-  }
-
-  const linhas = [
-    'Olá! Vim pelo site da SIXVOID APIS.',
-    '',
-    'SOLICITAÇÃO DE ACESSO',
-    '',
-    'Tipo: ' + tipo,
-    'Nome: ' + nome,
-    'Plano: ' + formatarNumero(plano.requests) + ' requisições',
-    'Valor: ' + formatarPreco(plano.price)
-  ];
-
-  if(chave){
-    linhas.push('API Key: ' + chave);
-  }
-
-  if(detalhes){
-    linhas.push('Detalhes: ' + detalhes);
-  }
-
-  linhas.push('');
-  linhas.push('Aguardo as instruções para pagamento e liberação.');
-
-  const mensagem = encodeURIComponent(linhas.join('\n'));
-
-  const url = 'https://wa.me/' + whatsapp + '?text=' + mensagem;
-
-  window.open(url,'_blank','noopener,noreferrer');
-
-});
-
-// ANO AUTOMÁTICO
-$('year').textContent = new Date().getFullYear();
-
-mostrarStatus(
-  'Planos disponíveis. Preencha os dados para solicitar pelo WhatsApp.',
-  'success'
-);
+document.getElementById('year').textContent =
+    new Date().getFullYear();
 
 </script>
 
