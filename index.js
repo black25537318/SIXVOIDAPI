@@ -27,10 +27,187 @@ const KEYS_FILE = path.join(SECRET_DIR, 'keys.json');
 const USERS_FILE = path.join(SECRET_DIR, 'usuarios.json');
 const METRICS_FILE = path.join(SECRET_DIR, 'metrics.json');
 const ORDERS_FILE = path.join(SECRET_DIR, 'orders.json');
+const ACCOUNTS_FILE = path.join(SECRET_DIR, 'contas.json');
+const USER_SESSIONS_FILE = path.join(SECRET_DIR, 'sessoes-site.json');
 
 app.set('trust proxy', 1);
 app.use(express.json({ limit: '32kb' }));
 app.use(express.urlencoded({ extended: false, limit: '32kb' }));
+
+// ==========================================
+// CONTAS DO SITE SIXVOID (CADASTRO ABERTO)
+// ==========================================
+
+const USER_SESSION_TTL = 30 * 24 * 60 * 60 * 1000;
+let siteAccounts = readJson(ACCOUNTS_FILE, []);
+if (!Array.isArray(siteAccounts)) siteAccounts = [];
+let userSessions = readJson(USER_SESSIONS_FILE, {});
+if (!userSessions || typeof userSessions !== 'object' || Array.isArray(userSessions)) userSessions = {};
+const userLoginAttempts = new Map();
+
+function saveSiteAccounts() {
+  writeJson(ACCOUNTS_FILE, siteAccounts);
+}
+
+function saveUserSessions() {
+  writeJson(USER_SESSIONS_FILE, userSessions);
+}
+
+function cleanExpiredUserSessions() {
+  let changed = false;
+  for (const [token, session] of Object.entries(userSessions)) {
+    if (!session || Number(session.expiresAt) <= Date.now()) {
+      delete userSessions[token];
+      changed = true;
+    }
+  }
+  if (changed) saveUserSessions();
+}
+cleanExpiredUserSessions();
+
+function getSiteSession(req) {
+  const token = parseCookies(req).sixvoid_user;
+  if (!token) return null;
+  const session = userSessions[hashToken(token)];
+  if (!session || Number(session.expiresAt) <= Date.now()) {
+    if (session) {
+      delete userSessions[hashToken(token)];
+      saveUserSessions();
+    }
+    return null;
+  }
+  const account = siteAccounts.find(item => item.id === session.userId);
+  if (!account) return null;
+  return { token, session, account };
+}
+
+function requireSitePage(req, res, next) {
+  if (!getSiteSession(req)) {
+    const nextPath = encodeURIComponent(req.originalUrl || '/');
+    return res.redirect(`/login.html?next=${nextPath}`);
+  }
+  next();
+}
+
+function hashPassword(password, salt) {
+  return new Promise((resolve, reject) => {
+    crypto.scrypt(String(password), salt, 64, (error, derivedKey) => {
+      if (error) return reject(error);
+      resolve(derivedKey.toString('hex'));
+    });
+  });
+}
+
+function validEmail(email) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(email || '').trim());
+}
+
+function setUserCookie(res, token, req) {
+  res.setHeader('Set-Cookie', `sixvoid_user=${encodeURIComponent(token)}; HttpOnly; SameSite=Lax; Path=/; Max-Age=${USER_SESSION_TTL / 1000}${req.secure ? '; Secure' : ''}`);
+}
+
+function clearUserCookie(res, req) {
+  res.setHeader('Set-Cookie', `sixvoid_user=; HttpOnly; SameSite=Lax; Path=/; Max-Age=0${req.secure ? '; Secure' : ''}`);
+}
+
+app.post('/api/auth/register', async (req, res) => {
+  try {
+    const name = String(req.body?.name || '').trim().slice(0, 60);
+    const email = String(req.body?.email || '').trim().toLowerCase();
+    const password = String(req.body?.password || '');
+
+    if (name.length < 2) return res.status(400).json({ success: false, message: 'Informe seu nome.' });
+    if (!validEmail(email)) return res.status(400).json({ success: false, message: 'Informe um e-mail válido.' });
+    if (password.length < 8 || password.length > 128) return res.status(400).json({ success: false, message: 'A senha deve ter entre 8 e 128 caracteres.' });
+    if (siteAccounts.some(item => item.email === email)) return res.status(409).json({ success: false, message: 'Este e-mail já possui uma conta. Faça login.' });
+
+    const salt = crypto.randomBytes(16).toString('hex');
+    const passwordHash = await hashPassword(password, salt);
+    const account = {
+      id: crypto.randomUUID(),
+      name,
+      email,
+      passwordSalt: salt,
+      passwordHash,
+      createdAt: new Date().toISOString()
+    };
+    siteAccounts.push(account);
+    saveSiteAccounts();
+
+    const token = crypto.randomBytes(32).toString('hex');
+    userSessions[hashToken(token)] = { userId: account.id, expiresAt: Date.now() + USER_SESSION_TTL };
+    saveUserSessions();
+    setUserCookie(res, token, req);
+
+    return res.status(201).json({ success: true, message: 'Conta criada com sucesso.', user: { id: account.id, name: account.name, email: account.email } });
+  } catch (error) {
+    console.error('[SITE REGISTER]', error);
+    return res.status(500).json({ success: false, message: 'Não foi possível criar sua conta.' });
+  }
+});
+
+app.post('/api/auth/login', async (req, res) => {
+  try {
+    const ip = req.ip || req.socket.remoteAddress || 'unknown';
+    const attempt = userLoginAttempts.get(ip) || { count: 0, until: 0 };
+    if (attempt.until > Date.now() && attempt.count >= 8) {
+      return res.status(429).json({ success: false, message: 'Muitas tentativas. Aguarde 10 minutos.' });
+    }
+
+    const email = String(req.body?.email || '').trim().toLowerCase();
+    const password = String(req.body?.password || '');
+    const account = siteAccounts.find(item => item.email === email);
+    let valid = false;
+    if (account && account.passwordSalt && account.passwordHash) {
+      const calculated = await hashPassword(password, account.passwordSalt);
+      valid = sameSecret(calculated, account.passwordHash);
+    }
+
+    if (!valid) {
+      attempt.count += 1;
+      if (attempt.count >= 8) attempt.until = Date.now() + 10 * 60 * 1000;
+      userLoginAttempts.set(ip, attempt);
+      return res.status(401).json({ success: false, message: 'E-mail ou senha incorretos.' });
+    }
+
+    userLoginAttempts.delete(ip);
+    const token = crypto.randomBytes(32).toString('hex');
+    userSessions[hashToken(token)] = { userId: account.id, expiresAt: Date.now() + USER_SESSION_TTL };
+    saveUserSessions();
+    setUserCookie(res, token, req);
+    return res.json({ success: true, message: 'Login realizado com sucesso.', user: { id: account.id, name: account.name, email: account.email } });
+  } catch (error) {
+    console.error('[SITE LOGIN]', error);
+    return res.status(500).json({ success: false, message: 'Não foi possível entrar na sua conta.' });
+  }
+});
+
+app.get('/api/auth/me', (req, res) => {
+  const auth = getSiteSession(req);
+  if (!auth) return res.status(401).json({ authenticated: false });
+  auth.session.expiresAt = Date.now() + USER_SESSION_TTL;
+  saveUserSessions();
+  res.json({ authenticated: true, user: { id: auth.account.id, name: auth.account.name, email: auth.account.email } });
+});
+
+app.post('/api/auth/logout', (req, res) => {
+  const token = parseCookies(req).sixvoid_user;
+  if (token && userSessions[hashToken(token)]) {
+    delete userSessions[hashToken(token)];
+    saveUserSessions();
+  }
+  clearUserCookie(res, req);
+  res.json({ success: true });
+});
+
+// Protege somente as páginas de membros. Solicitar Key, admin, login e APIs continuam públicos.
+app.use((req, res, next) => {
+  const protectedPages = new Set(['/', '/index.html', '/docs.html']);
+  if (!protectedPages.has(req.path)) return next();
+  return requireSitePage(req, res, next);
+});
+
+app.get('/login', (req, res) => res.redirect('/login.html'));
 app.use(express.static(path.join(ROOT, 'public')));
 
 function readJson(file, fallback) {
